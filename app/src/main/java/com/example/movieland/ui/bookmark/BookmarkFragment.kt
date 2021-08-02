@@ -1,4 +1,4 @@
-package com.example.movieland.ui.dashboard
+package com.example.movieland.ui.bookmark
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.movieland.R
-import com.example.movieland.databinding.FragmentDashboardBinding
+import com.example.movieland.databinding.FragmentNotificationsBinding
 
-class DashboardFragment : Fragment() {
+class BookmarkFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
-    private var _binding: FragmentDashboardBinding? = null
+    private lateinit var bookmarkViewModel: BookmarkViewModel
+    private var _binding: FragmentNotificationsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +24,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        bookmarkViewModel =
+            ViewModelProvider(this).get(BookmarkViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        val textView: TextView = binding.textNotifications
+        bookmarkViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

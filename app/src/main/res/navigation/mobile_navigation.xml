@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.movieland.ui.dashboard.DashboardFragment"
+        android:name="com.example.movieland.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.movieland.ui.notifications.NotificationsFragment"
+        android:name="com.example.movieland.ui.bookmark.BookmarkFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
