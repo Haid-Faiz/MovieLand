@@ -2,6 +2,21 @@
 buildscript {
     ext {
         kotlin_version = "1.5.21"
+        moshi_version = "1.11.0"
+        coil_version = "1.2.2"
+        coroutine_version = "1.5.0"
+        retrofit_version = "2.9.0"
+        nav_version = "2.3.5"
+        intuit_version = "1.0.6"
+//        hilt_version = "2.35"
+        lifecycle_version = "2.3.1"
+//        room_version = "2.3.0"
+        okk_http_version = "4.9.1"
+//        paging_version = "3.0.1"
+//        datastore_version = "1.0.0-rc02"
+        lottie_version = "3.7.0"
+        facebook_shimmer = "0.5.0"
+        dot_indicator = "1.2.1"
     }
     repositories {
         google()
@@ -20,6 +35,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 
