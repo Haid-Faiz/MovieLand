@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_124sdp"
+        android:layout_alignTop="@+id/intro_image"
+        android:background="@drawable/intro_bg"
+        android:translationZ="@dimen/_72sdp" />
+
+    <ImageView
+        android:id="@+id/intro_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_396sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/movie_land_intro_1" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_216sdp"
+        android:layout_alignBottom="@+id/intro_image"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/intro_bg_down"
+        android:translationZ="@dimen/_72sdp" />
+
+    <TextView
+        android:id="@+id/intro_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/intro_image"
+        android:layout_marginBottom="@dimen/_18sdp"
+        android:layout_marginStart="@dimen/_36sdp"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:textAlignment="center"
+        android:translationZ="@dimen/_72sdp"
+        android:text="Unlimited entertainment, one low price."
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/_28ssp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/intro_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_36sdp"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:textAlignment="center"
+        android:layout_below="@id/intro_title"
+        android:translationZ="@dimen/_72sdp"
+        android:text="Everything on Netflix, starting at just Rs 199"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
