@@ -21,23 +21,23 @@
         android:layout_marginTop="@dimen/_16sdp"
         android:gravity="center_horizontal"
         android:text="M"
-        android:translationZ="@dimen/_7sdp"
         android:textColor="@color/red"
         android:textSize="@dimen/_22ssp"
         android:textStyle="bold"
+        android:translationZ="@dimen/_7sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_sign_in"
+        android:id="@+id/button_skip"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_12sdp"
-        android:translationZ="@dimen/_7sdp"
-        android:text="SIGN IN"
+        android:text="SKIP"
         android:textAllCaps="false"
         android:textColor="@color/text_primary"
+        android:translationZ="@dimen/_7sdp"
         app:layout_constraintBottom_toBottomOf="@id/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/app_name" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_8sdp"
-        app:layout_constraintBottom_toTopOf="@id/button_auth"
+        app:layout_constraintBottom_toTopOf="@id/button_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:vpi_orientation="horizontal"
@@ -58,14 +58,14 @@
         app:vpi_style="circle" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_auth"
+        android:id="@+id/button_sign_in"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_42sdp"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_8sdp"
-        android:text="Continue"
+        android:text="Sign in"
         android:textAllCaps="false"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/_14ssp"
@@ -75,16 +75,16 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <ProgressBar
-        android:id="@+id/progress_auth"
+        android:id="@+id/progress_sign_in"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/_8sdp"
         android:indeterminateTint="@color/text_secondary"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/button_auth"
-        app:layout_constraintEnd_toEndOf="@+id/button_auth"
-        app:layout_constraintStart_toStartOf="@+id/button_auth"
-        app:layout_constraintTop_toTopOf="@+id/button_auth"
+        app:layout_constraintBottom_toBottomOf="@+id/button_sign_in"
+        app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+        app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+        app:layout_constraintTop_toTopOf="@+id/button_sign_in"
         tools:visibility="visible" />
 
     <!--    <com.google.android.material.button.MaterialButton-->

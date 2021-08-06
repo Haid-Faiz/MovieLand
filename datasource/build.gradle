@@ -11,8 +11,6 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -21,19 +19,21 @@ android {
     buildTypes {
         debug {
             buildConfigField 'String', 'API_KEY', api_key
+            buildConfigField 'String', 'READ_ACCESS_TOKEN', read_access_token
         }
         release {
             buildConfigField 'String', 'API_KEY', api_key
+            buildConfigField 'String', 'READ_ACCESS_TOKEN', read_access_token
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.6'
+        jvmTarget = '1.8'
     }
 }
 
