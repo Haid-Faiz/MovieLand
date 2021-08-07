@@ -57,47 +57,23 @@
         app:vpi_slider_radius="@dimen/_4sdp"
         app:vpi_style="circle" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.dx.dxloadingbutton.lib.LoadingButton
         android:id="@+id/button_sign_in"
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_42sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_8sdp"
-        android:text="Sign in"
-        android:textAllCaps="false"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/_14ssp"
-        app:cornerRadius="@dimen/_2sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:strokeColor="@color/text_primary"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progress_sign_in"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/_8sdp"
-        android:indeterminateTint="@color/text_secondary"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/button_sign_in"
-        app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
-        app:layout_constraintStart_toStartOf="@+id/button_sign_in"
-        app:layout_constraintTop_toTopOf="@+id/button_sign_in"
-        tools:visibility="visible" />
-
-    <!--    <com.google.android.material.button.MaterialButton-->
-    <!--        android:id="@+id/button_skip"-->
-    <!--        style="@style/Widget.MaterialComponents.Button.TextButton"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Skip for now"-->
-    <!--        android:textAllCaps="false"-->
-    <!--        android:textColor="@color/red"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
-
+        app:lb_btnColor="@color/red"
+        app:lb_btnDisabledColor="#cccccc"
+        app:lb_btnRippleColor="#ffffff"
+        app:lb_btnText="SIGN IN"
+        app:lb_cornerRadius="@dimen/_2sdp"
+        app:lb_disabledTextColor="#999999"
+        app:lb_resetAfterFailed="true"
+        app:lb_rippleEnable="true"
+        app:lb_textColor="@color/text_primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

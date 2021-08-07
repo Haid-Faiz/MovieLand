@@ -55,6 +55,8 @@ dependencies {
     // Coil for image loading
     implementation "io.coil-kt:coil:$coil_version"
 
+    implementation 'com.github.StevenDXC:DxLoadingButton:2.4'
+
 //    // Dagger-Hilt for Dependency Injection
 //    implementation "com.google.dagger:hilt-android:$hilt_version"
 //    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
