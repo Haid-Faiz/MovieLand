@@ -9,9 +9,9 @@ import retrofit2.Response
 import retrofit2.http.*
 
 // TMDB API Version - 4
-interface TMDBApiService {
+interface TMDBApiServiceV4 {
 
-    @POST("auth/request_token")
+    @POST("4/auth/request_token")
     @FormUrlEncoded
     suspend fun requestToken(
         @Field("redirect_to") redirectTo: String
@@ -19,7 +19,7 @@ interface TMDBApiService {
 
 
     // Create access token (successfully returns access token iff user has approved request token)
-    @POST("auth/access_token")
+    @POST("4/auth/access_token")
     suspend fun requestAccessToken(
         @Body requestToken: RequestToken
     ): Response<AccessTokenResponse>
