@@ -1,22 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="?actionBarSize"
+        android:elevation="0dp"
+        app:elevation="0dp"
+        android:translationZ="@dimen/_7sdp"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_8sdp"
+            app:layout_scrollFlags="noScroll">
+
+            <ImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_netflix_short_logo" />
+
+            <TextView
+                android:id="@+id/tv_shows_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="TVprogrammes"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/movies_tv"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Movies"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/my_list"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="My List"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scrollview"
+        android:layout_width="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/banner_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/banner_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_368sdp"
+                    android:background="@color/black"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avengers_blue" />
+                <!--tools:src="@tools:sample/backgrounds/scenic[6]"-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_104sdp"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/gradient_top" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_86sdp"
+                    android:layout_alignBottom="@id/banner_image"
+                    android:background="@drawable/gradient_bottom" />
+
+                <TextView
+                    android:id="@+id/genres_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/ll"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:text="Action • Explosive • Suspenseful • Exciting • Adventure"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/_10ssp" />
+
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/banner_image"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_to_list_button"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/montserrat"
+                        android:text="My List"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/_9ssp"
+                        app:icon="@drawable/ic_add"
+                        app:iconGravity="top"
+                        app:iconPadding="-1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/play_button"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:text="Play"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        app:icon="@drawable/ic_play_arrow"
+                        app:iconTint="@color/black" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/banner_info_button"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Info"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/_9ssp"
+                        app:icon="@drawable/ic_info"
+                        app:iconGravity="top"
+                        app:iconPadding="-1dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_feed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/banner_rl"
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_feed_horizontal_list" />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

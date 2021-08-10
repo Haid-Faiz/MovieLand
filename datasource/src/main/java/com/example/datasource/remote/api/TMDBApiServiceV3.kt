@@ -21,6 +21,18 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
 
+    @GET("3/movie/popular")
+    suspend fun fetchPopularMovies(
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
+
+
+    @GET("3/tv/popular")
+    suspend fun fetchPopularTvShows(
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
 
     @GET("3/movie/upcoming")
     suspend fun fetchUpcomingMovies(
@@ -37,13 +49,13 @@ interface TMDBApiServiceV3 {
     ): Response<MovieDetailResponse>
 
 
-//    @GET("3/trending/{media_type}/{time_window}")
-//    suspend fun fetchTrending(
-//        @Path("media_type") mediaType: String = "movie",   // movie, tv, person, all
-//        @Path("time_window") timeWindow: String = "day",        // day, week                       // day, week
-//        @Query("language") lang: String? = "en-US",
-//    @Query("page") page: Int = 1
-//    ): Response<>
+    @GET("3/trending/{media_type}/{time_window}")
+    suspend fun fetchTrending(
+        @Path("media_type") mediaType: String = "movie",   // movie, tv, person, all
+        @Path("time_window") timeWindow: String = "day",        // day, week                       // day, week
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
 
 
     //    @GET("3/movie/latest")
@@ -54,13 +66,6 @@ interface TMDBApiServiceV3 {
 }
 
 
-//
-//@GET("movie/upcoming")
-//suspend fun fetchUpcomingMovies(@Query("page") page: Int): PageResponse<Movie>
-//
-//@GET("movie/popular")
-//suspend fun fetchPopularMovies(@Query("page") page: Int): PageResponse<Movie>
-//
 //@GET("movie/{id}?append_to_response=similar,videos")
 //suspend fun fetchMovieDetails(@Path("id") movieId: Int): MovieDetailsResponse
 //
@@ -69,9 +74,6 @@ interface TMDBApiServiceV3 {
 //
 //@GET("movie/{id}/videos")
 //suspend fun fetchMovieVideos(@Path("id") movieId: Int): VideosResponse
-//
-//@GET("tv/popular")
-//suspend fun fetchPopularTvShows(@Query("page") page: Int): PageResponse<TvShow>
 //
 //@GET("tv/top_rated")
 //suspend fun fetchTopRatedTvs(): PageResponse<TvShow>
