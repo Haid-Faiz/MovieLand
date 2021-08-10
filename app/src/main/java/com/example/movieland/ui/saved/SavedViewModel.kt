@@ -1,10 +1,10 @@
-package com.example.movieland.ui.bookmark
+package com.example.movieland.ui.saved
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class BookmarkViewModel : ViewModel() {
+class SavedViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"

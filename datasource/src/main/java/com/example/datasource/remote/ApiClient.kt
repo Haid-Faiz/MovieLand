@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 class ApiClient {
 
-    private val BASE_URL = "https://api.themoviedb.org/4/"
+    private val BASE_URL = "https://api.themoviedb.org/"
 
     private val okHttpBuilder: OkHttpClient.Builder by lazy {
         OkHttpClient.Builder()

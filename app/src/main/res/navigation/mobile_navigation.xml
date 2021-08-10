@@ -9,17 +9,39 @@
         android:id="@+id/navigation_home"
         android:name="com.example.movieland.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_search"
         android:name="com.example.movieland.ui.search.SearchFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.movieland.ui.bookmark.BookmarkFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_coming_soon"
+        android:name="com.example.movieland.ui.coming_soon.ComingSoonFragment"
+        android:label="@string/title_coming_soon"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <fragment
+        android:id="@+id/navigation_saved"
+        android:name="com.example.movieland.ui.saved.SavedFragment"
+        android:label="@string/title_saved"
+        tools:layout="@layout/fragment_saved" />
+
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.example.movieland.ui.account.AccountFragment"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account" />
+    <dialog
+        android:id="@+id/detailFragment"
+        android:name="com.example.movieland.ui.home.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail_bsd" />
+
 </navigation>
