@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 class ApiClient {
 
-    private val BASE_URL = "https://api.themoviedb.org/"
+    private val TMDB_BASE_URL = "https://api.themoviedb.org/"
 
     private val okHttpBuilder: OkHttpClient.Builder by lazy {
         OkHttpClient.Builder()
@@ -19,7 +19,7 @@ class ApiClient {
 
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(TMDB_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .client(
                 okHttpBuilder.addInterceptor(Interceptor { chain: Interceptor.Chain ->

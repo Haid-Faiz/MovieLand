@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 // This class includes movie result + tv shows results
 
 @JsonClass(generateAdapter = true)
-data class Result(
+data class MovieResult(
     @Json(name = "backdrop_path")
-    var backdropPath: String,
+    var backdropPath: String? = null,  // it is sometimes coming null in search api call
     @Json(name = "genre_ids")
     var genreIds: List<Int>,
     @Json(name = "id")
@@ -22,21 +22,21 @@ data class Result(
     @Json(name = "popularity")
     var popularity: Double,
     @Json(name = "poster_path")
-    var posterPath: String,
+    var posterPath: String? = null, // it is sometimes coming null in search api call
     @Json(name = "title")
-    var title: String,
+    var title: String? = null,  // movies will have title & tv shows will have name
     @Json(name = "video")
-    var isVideoAvailable: Boolean,
+    var isVideoAvailable: Boolean? = null ,  // tv shows doesn't have this field
     @Json(name = "vote_average")
     var voteAverage: Double,
     @Json(name = "vote_count")
     var voteCount: Int,
     @Json(name = "release_date")
-    var releaseDate: String,
+    var releaseDate: String? = null,   // tv shows doesn't have this field
     @Json(name = "original_title")
-    var originalTitle: String,
+    var originalTitle: String? = null,    // tv shows doesn't have this field
     @Json(name = "adult")
-    var adult: Boolean,
+    var adult: Boolean? = null,    // tv shows doesn't have this field
     @Json(name = "name")
     var tvShowName: String? = null,
     @Json(name = "first_air_date")

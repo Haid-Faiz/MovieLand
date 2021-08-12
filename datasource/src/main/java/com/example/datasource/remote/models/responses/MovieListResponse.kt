@@ -12,7 +12,7 @@ data class MovieListResponse(
     @Json(name = "page")
     var page: Int,
     @Json(name = "results")
-    var results: List<Result>,
+    var movieResults: List<MovieResult>,
     @Json(name = "total_pages")
     var totalPages: Int,
     @Json(name = "total_results")

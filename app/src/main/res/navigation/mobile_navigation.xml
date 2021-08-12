@@ -9,17 +9,27 @@
         android:id="@+id/navigation_home"
         android:name="com.example.movieland.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_movieListFragment"
+            app:destination="@id/movieListFragment"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"/>
     </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.movieland.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_coming_soon"
@@ -43,5 +53,14 @@
         android:name="com.example.movieland.ui.home.detail.DetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/fragment_detail_bsd" />
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.example.movieland.ui.home.lists.MovieListFragment"
+        android:label="MovieListFragment"
+        tools:layout="@layout/fragment_movie_list">
+        <argument
+            android:name="tag"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

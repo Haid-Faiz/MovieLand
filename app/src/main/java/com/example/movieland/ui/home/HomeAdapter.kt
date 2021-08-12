@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.datasource.remote.models.responses.Result
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.ItemFeedHorizontalListBinding
 
 class HomeAdapter(
-    private var onPosterClick: (result: Result) -> Unit
+    private var onPosterClick: (movieResult: MovieResult) -> Unit
 ) : ListAdapter<HomeFeed, HomeAdapter.ViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
