@@ -26,4 +26,17 @@ class MoviesRepo : BaseRepo() {
     suspend fun fetchPopularTvShows() = safeApiCall {
         apiV3.fetchPopularTvShows()
     }
+
+    suspend fun fetchTrendingMovies() = safeApiCall {
+        apiV3.fetchTrending(mediaType = "movie", timeWindow = "week")
+    }
+
+    suspend fun fetchTrendingTvShows() = safeApiCall {
+        apiV3.fetchTrending(mediaType = "tv", timeWindow = "week")
+    }
+
+    suspend fun fetchSearchedMovies(searchQuery: String) = safeApiCall {
+        apiV3.fetchSearchQueryResults(searchQuery = searchQuery)
+    }
+
 }

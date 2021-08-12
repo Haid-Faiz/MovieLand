@@ -1,7 +1,6 @@
 package com.example.movieland.ui.home
 
-import android.util.Log
-import com.example.datasource.remote.models.responses.Result
+import com.example.datasource.remote.models.responses.MovieResult
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,8 +11,8 @@ import com.example.movieland.databinding.ItemPosterBinding
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W500
 
 class HorizontalAdapter(
-    private var onPosterClick: (result: Result) -> Unit
-) : ListAdapter<Result, HorizontalAdapter.ViewHolder>(DiffUtilCallback()) {
+    private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null
+) : ListAdapter<MovieResult, HorizontalAdapter.ViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,20 +26,20 @@ class HorizontalAdapter(
         private val binding: ItemPosterBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(result: Result) = binding.apply {
-            posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(result.posterPath))
+        fun bind(movieResult: MovieResult) = binding.apply {
+            posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
             posterImage.setOnClickListener {
-                onPosterClick(result)
+                onPosterClick?.invoke(movieResult)
             }
         }
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<Result>() {
+    class DiffUtilCallback : DiffUtil.ItemCallback<MovieResult>() {
 
-        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean =
+        override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean =
             oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean =
+        override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean =
             oldItem.equals(newItem)
     }
 }

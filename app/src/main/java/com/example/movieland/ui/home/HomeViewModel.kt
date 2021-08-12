@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.responses.MovieListResponse
-import com.example.datasource.remote.models.responses.Result
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
 import kotlinx.coroutines.launch
@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
 
     private val movieRepo = MoviesRepo()
-    var movieDetail: Result? = null
 
     private var _movieListNowPlaying: MutableLiveData<Resource<MovieListResponse>> =
         MutableLiveData()
@@ -50,6 +49,14 @@ class HomeViewModel : ViewModel() {
 
     fun getPopularTvShows() = viewModelScope.launch {
         _movieListUpcoming.postValue(movieRepo.fetchPopularTvShows())
+    }
+
+    fun getTrendingTvShows() = viewModelScope.launch {
+        _movieListUpcoming.postValue(movieRepo.fetchTrendingTvShows())
+    }
+
+    fun getTrendingMovies() = viewModelScope.launch {
+        _movieListUpcoming.postValue(movieRepo.fetchTrendingMovies())
     }
 
 }

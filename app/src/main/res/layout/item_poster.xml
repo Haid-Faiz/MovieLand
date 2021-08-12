@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     android:foreground="?selectableItemBackgroundBorderless"
     android:id="@+id/poster_ll"
-    android:layout_marginStart="@dimen/_4sdp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/poster_image"
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_124sdp"
+        android:layout_margin="@dimen/_2sdp"
         android:scaleType="fitXY"
         android:background="@drawable/poster_bg" />
 

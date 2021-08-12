@@ -16,6 +16,7 @@
         android:fontFamily="@font/montserrat"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
         tools:text="Trending now" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,7 @@ import kotlin.math.min
 
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navController: NavController
 
@@ -55,8 +55,8 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${it.data?.results!![1].posterPath}")
-                    feedList.add(HomeFeed("Now Playing", it.data.results))
+                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${it.data?.movieResults!![1].posterPath}")
+                    feedList.add(HomeFeed("Now Playing", it.data.movieResults))
                     homeAdapter.submitList(feedList)
                 }
             }
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Top Rated", it.data?.results!!))
+                    feedList.add(HomeFeed("Top Rated", it.data?.movieResults!!))
                     homeAdapter.submitList(feedList)
                 }
             }
@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Upcoming", it.data?.results!!))
+                    feedList.add(HomeFeed("Upcoming", it.data?.movieResults!!))
                     homeAdapter.submitList(feedList)
                 }
             }
@@ -100,7 +100,7 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Popular Movies", it.data?.results!!))
+                    feedList.add(HomeFeed("Popular Movies", it.data?.movieResults!!))
                     homeAdapter.submitList(feedList)
                 }
             }
@@ -114,7 +114,7 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Popular Tv Shows", it.data?.results!!))
+                    feedList.add(HomeFeed("Popular Tv Shows", it.data?.movieResults!!))
                     homeAdapter.submitList(feedList)
                 }
             }
@@ -131,17 +131,44 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpClickListeners() = binding.apply {
+        moviesText.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                "media_key",
+                bundleOf("movie" to "movies_mania")
+            )
+            navController.navigate(R.id.action_navigation_home_to_movieListFragment)
+        }
+
+        tvShowsText.setOnClickListener {
+            parentFragmentManager.setFragmentResult("media_key", bundleOf("tv" to "tvShows"))
+            navController.navigate(R.id.action_navigation_home_to_movieListFragment)
+        }
         bannerInfoButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                "home_movie_key",
+                bundleOf(
+                    "movie_title" to (feedList[1].list[0].title ?: feedList[1].list[0].tvShowName),
+                    "movie_overview" to feedList[1].list[0].overview,
+                    "movie_image_url" to feedList[1].list[0].posterPath,
+                    "movie_year" to (feedList[1].list[0].releaseDate ?: feedList[1].list[0].tvShowFirstAirDate)
+                )
+            )
             navController.navigate(R.id.action_navigation_home_to_detailFragment)
-            homeViewModel.movieDetail = feedList[1].list[0]
         }
     }
 
     private fun setUpRecyclerView() {
         homeAdapter = HomeAdapter(onPosterClick = {
-            Log.d("HomeAdapterOnPosterClick", "called")
             navController.navigate(R.id.action_navigation_home_to_detailFragment)
-            homeViewModel.movieDetail = it
+            parentFragmentManager.setFragmentResult(
+                "home_movie_key",
+                bundleOf(
+                    "movie_title" to (feedList[1].list[0].title ?: feedList[1].list[0].tvShowName),
+                    "movie_overview" to feedList[1].list[0].overview,
+                    "movie_image_url" to feedList[1].list[0].posterPath,
+                    "movie_year" to (feedList[1].list[0].releaseDate ?: feedList[1].list[0].tvShowFirstAirDate)
+                )
+            )
         })
         binding.rvHomeFeed.setHasFixedSize(true)
         binding.rvHomeFeed.adapter = homeAdapter
