@@ -21,13 +21,26 @@ class TMDBApiUnitTest {
 
     @Test
     fun `POST-Request Token`() = runBlocking {
-        val response: Response<RequestTokenResponse> = apiV4.requestToken("android://com.example.movieland/ui/auth/AuthActivity")
+        val response: Response<RequestTokenResponse> =
+            apiV4.requestToken("android://com.example.movieland/ui/auth/AuthActivity")
         assertNotNull(response.body())
     }
 
     @Test
     fun `GET-Now Playing Movies`() = runBlocking {
         val response: Response<MovieListResponse> = apiV3.fetchNowPlayingMovies()
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Popular Movies`() = runBlocking {
+        val response: Response<MovieListResponse> = apiV3.fetchPopularMovies()
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Popular TV Shows`() = runBlocking {
+        val response: Response<MovieListResponse> = apiV3.fetchPopularTvShows()
         assertNotNull(response.body())
     }
 
@@ -43,21 +56,34 @@ class TMDBApiUnitTest {
         assertNotNull(response.body())
     }
 
-//    @Test
-//    fun `GET-Trending Movies`() = runBlocking {
-//        val response: Response<MovieListResponse> = apiV3.fetchTrending()
-//        assertNotNull(response.body())
-//    }
-//
-//    @Test
-//    fun `GET-Trending Shows`() = runBlocking {
-//        val response: Response<MovieListResponse> = apiV3.fetchTrending()
-//        assertNotNull(response.body())
-//    }
+    @Test
+    fun `GET-Trending Movies`() = runBlocking {
+        val response: Response<MovieListResponse> = apiV3.fetchTrending(
+            mediaType = "movie",
+            timeWindow = "week"
+        )
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Trending TV Shows`() = runBlocking {
+        val response: Response<MovieListResponse> = apiV3.fetchTrending(
+            mediaType = "tv",
+            timeWindow = "week"
+        )
+        assertNotNull(response.body())
+    }
 
     @Test
     fun `GET-Movie Detail`() = runBlocking {
         val response: Response<MovieDetailResponse> = apiV3.fetchMovieDetail(movieId = "451048")
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Searched Movies`() = runBlocking {
+        val response: Response<MovieListResponse> =
+            apiV3.fetchSearchQueryResults(searchQuery = "Avengers")
         assertNotNull(response.body())
     }
 
