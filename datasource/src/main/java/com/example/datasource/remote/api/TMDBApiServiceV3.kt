@@ -58,6 +58,14 @@ interface TMDBApiServiceV3 {
     ): Response<MovieListResponse>
 
 
+    @GET("3/search/movie")
+    suspend fun fetchSearchQueryResults(
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("query") searchQuery: String
+    ): Response<MovieListResponse>
+
     //    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(
 //        @Query("language") lang: String? = "en-US",
