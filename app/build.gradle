@@ -2,16 +2,18 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+//    id 'dagger.hilt.android.plugin'
+//    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.movieland"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -43,6 +45,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+//    implementation 'androidx.fragment:fragment-ktx:1.3.6'
 
     // ViewModel & LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -55,15 +58,19 @@ dependencies {
     // Coil for image loading
     implementation "io.coil-kt:coil:$coil_version"
 
+    // Loading button
     implementation 'com.github.StevenDXC:DxLoadingButton:2.4'
+
+    // Carousel Recyclerview
+    implementation 'com.github.sparrow007:carouselrecyclerview:1.2.1'
 
 //    // Dagger-Hilt for Dependency Injection
 //    implementation "com.google.dagger:hilt-android:$hilt_version"
 //    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
-//    // JetPack DataStore
-//    implementation "androidx.datastore:datastore-preferences:$datastore_version"
-//    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02'
+    // JetPack DataStore
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03'
 
 //    // Room components
 //    implementation "androidx.room:room-runtime:$room_version"

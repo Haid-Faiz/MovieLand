@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:orientation="vertical"
+    tools:context=".ui.coming_soon.ComingSoonFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_height="?actionBarSize"
+        app:title="Coming Soon"
+        app:titleTextColor="@color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
+                android:id="@+id/coming_soon_rv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_318sdp"
+                android:paddingBottom="@dimen/_6sdp"
+                tools:listitem="@layout/item_coming_soon" />
+
+            <RelativeLayout
+                android:id="@+id/description_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_4sdp">
+
+                <ImageButton
+                    android:id="@+id/like_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/title"
+                    android:layout_alignBottom="@id/release_date"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@android:color/transparent"
+                    android:src="@drawable/ic_outline_thumb_up" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/like_btn"
+                    android:paddingTop="@dimen/_6sdp"
+                    android:text="TextView"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    tools:text="The Fast Saga" />
+
+                <TextView
+                    android:id="@+id/overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/release_date"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:text="It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:layout_alignRight="@id/title"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:textColor="@color/text_secondary"
+                    tools:text="Coming on August 21" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
