@@ -15,7 +15,9 @@ import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
 import com.example.movieland.utils.Resource
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ComingSoonFragment : Fragment() {
 
     private var _binding: FragmentComingSoonBinding? = null

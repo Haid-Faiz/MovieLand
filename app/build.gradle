@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-//    id 'dagger.hilt.android.plugin'
+    id 'dagger.hilt.android.plugin'
 //    id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -64,9 +64,9 @@ dependencies {
     // Carousel Recyclerview
     implementation 'com.github.sparrow007:carouselrecyclerview:1.2.1'
 
-//    // Dagger-Hilt for Dependency Injection
-//    implementation "com.google.dagger:hilt-android:$hilt_version"
-//    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    // Dagger-Hilt for Dependency Injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // JetPack DataStore
     implementation "androidx.datastore:datastore-preferences:$datastore_version"

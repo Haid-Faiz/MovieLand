@@ -26,9 +26,11 @@ import com.example.movieland.R
 import com.example.movieland.databinding.FragmentSearchBinding
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModels()
@@ -56,13 +58,13 @@ class SearchFragment : Fragment() {
             text?.let {
                 if (it.isNotEmpty() && it.isNotBlank()) {
                     binding.eraseQueryBtn.isGone = false
-                    binding.querySearchIcon.isGone = true
+                    binding.querySearchIcon.isVisible = false
                     binding.emptySearchContent.isGone = true
                     binding.searchedResultLl.isGone = false
                     performSearch(it.trim().toString())
                 } else {
                     binding.eraseQueryBtn.isGone = true
-                    binding.querySearchIcon.isGone = false
+                    binding.querySearchIcon.isVisible = true
                     binding.emptySearchContent.isGone = false
                     binding.searchedResultLl.isGone = true
                 }
@@ -110,7 +112,6 @@ class SearchFragment : Fragment() {
     private fun hideKeyboard() {
         val imm: InputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 

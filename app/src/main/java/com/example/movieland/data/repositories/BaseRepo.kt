@@ -1,7 +1,9 @@
 package com.example.movieland.data.repositories
 
 import com.example.movieland.utils.Resource
+import com.example.movieland.utils.SessionPrefs
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -9,7 +11,9 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-abstract class BaseRepo {
+abstract class BaseRepo constructor(
+    private val sessionPrefs: SessionPrefs
+) {
 
     suspend fun <T> safeApiCall(api: suspend () -> Response<T>): Resource<T> {
 
@@ -35,4 +39,10 @@ abstract class BaseRepo {
         jsonError.getString("")
         jsonError.getString("")
     }
+
+    suspend fun saveSessionToken(sessionToken: String) {
+        sessionPrefs.saveSessionToken(sessionToken)
+    }
+
+    fun getSessionToken(): Flow<String?> = sessionPrefs.getSessionToken()
 }

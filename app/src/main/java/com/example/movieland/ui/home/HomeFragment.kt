@@ -18,8 +18,10 @@ import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.FragmentHomeBinding
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()

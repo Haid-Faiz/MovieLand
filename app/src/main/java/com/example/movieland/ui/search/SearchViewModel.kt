@@ -7,11 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
-
-    private val repo = MoviesRepo()
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val moviesRepo: MoviesRepo
+) : ViewModel() {
 
     private val _trendingMovies = MutableLiveData<Resource<MovieListResponse>>()
     val trendingMovies: LiveData<Resource<MovieListResponse>> = _trendingMovies
@@ -21,10 +24,10 @@ class SearchViewModel : ViewModel() {
 
 
     fun trendingMovies() = viewModelScope.launch {
-        _trendingMovies.postValue(repo.fetchTrendingMovies())
+        _trendingMovies.postValue(moviesRepo.fetchTrendingMovies())
     }
 
     fun searchedMovies(searchQuery: String) = viewModelScope.launch {
-        _searchedMovies.postValue(repo.fetchSearchedMovies(searchQuery))
+        _searchedMovies.postValue(moviesRepo.fetchSearchedMovies(searchQuery))
     }
 }

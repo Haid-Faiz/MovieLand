@@ -17,7 +17,7 @@ class ApiClient {
             .readTimeout(5, TimeUnit.SECONDS)
     }
 
-    private val retrofit by lazy {
+    val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(TMDB_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
@@ -33,5 +33,5 @@ class ApiClient {
             ).build()
     }
 
-    fun <T> buildApi(api: Class<T>): T = retrofit.create(api)
+//    fun <T> buildApi(api: Class<T>): T = retrofit.create(api)
 }

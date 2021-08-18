@@ -1,11 +1,15 @@
 package com.example.movieland.data.repositories
 
-import com.example.datasource.remote.ApiClient
 import com.example.datasource.remote.api.TMDBApiServiceV3
+import com.example.movieland.utils.SessionPrefs
+import javax.inject.Inject
 
-class MoviesRepo : BaseRepo() {
+class MoviesRepo @Inject constructor(
+    private val apiV3 : TMDBApiServiceV3,
+    private val sessionPrefs: SessionPrefs
+) : BaseRepo(sessionPrefs) {
 
-    private val apiV3 = ApiClient().buildApi(TMDBApiServiceV3::class.java)
+//    private val apiV3 = ApiClient().buildApi(TMDBApiServiceV3::class.java)
 
     suspend fun fetchNowPlayingMovies() = safeApiCall {
         apiV3.fetchNowPlayingMovies()

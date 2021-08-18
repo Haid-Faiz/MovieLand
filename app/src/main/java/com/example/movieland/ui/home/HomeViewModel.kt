@@ -8,11 +8,14 @@ import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-
-    private val movieRepo = MoviesRepo()
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val movieRepo: MoviesRepo
+) : ViewModel() {
 
     private var _movieListNowPlaying: MutableLiveData<Resource<MovieListResponse>> =
         MutableLiveData()

@@ -10,7 +10,9 @@ import com.example.movieland.databinding.FragmentDetailBsdBinding
 import com.example.movieland.ui.home.HomeViewModel
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W500
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentDetailBsdBinding? = null
