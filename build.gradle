@@ -1,12 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = "1.5.21"
+        kotlin_version = "1.5.30"
         moshi_version = "1.12.0"
         coil_version = "1.2.2"
-        coroutine_version = "1.5.0"
+        coroutine_version = "1.5.1"
         retrofit_version = "2.9.0"
         nav_version = "2.3.5"
+        youtube_version = "10.0.5"
         intuit_version = "1.0.6"
         hilt_version = "2.37"
         lifecycle_version = "2.3.1"
@@ -24,7 +25,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:7.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Dagger-Hilt
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -40,6 +41,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
         maven { url "https://jitpack.io" }
     }
 }

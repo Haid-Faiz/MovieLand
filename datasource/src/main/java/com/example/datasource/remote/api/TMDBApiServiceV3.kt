@@ -40,10 +40,10 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
 
-    //movie/451048?append_to_response=videos
+    // movie/451048?append_to_response=videos
     @GET("3/movie/{movie_id}")
     suspend fun fetchMovieDetail(
-        @Path("movie_id") movieId: String,
+        @Path("movie_id") movieId: Int,
         @Query("append_to_response") appendToResponse: String = "videos",
         @Query("language") lang: String? = "en-US"
     ): Response<MovieDetailResponse>
@@ -53,6 +53,13 @@ interface TMDBApiServiceV3 {
     suspend fun fetchTrending(
         @Path("media_type") mediaType: String = "movie",   // movie, tv, person, all
         @Path("time_window") timeWindow: String = "day",        // day, week                       // day, week
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
+
+    @GET("3/movie/{movie_id}/similar")
+    suspend fun fetchSimilarMovies(
+        @Path("movie_id") movieId: Int,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>

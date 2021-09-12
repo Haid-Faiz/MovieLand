@@ -26,7 +26,7 @@ data class MovieResult(
     @Json(name = "title")
     var title: String? = null,  // movies will have title & tv shows will have name
     @Json(name = "video")
-    var isVideoAvailable: Boolean? = null ,  // tv shows doesn't have this field
+    var isVideoAvailable: Boolean? = null,  // tv shows doesn't have this field
     @Json(name = "vote_average")
     var voteAverage: Double,
     @Json(name = "vote_count")
@@ -44,4 +44,3 @@ data class MovieResult(
     @Json(name = "original_name")
     var tvShowOriginalName: String? = null
 )
-

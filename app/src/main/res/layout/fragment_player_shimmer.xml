@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_172sdp"
+        android:background="@color/dark_gray" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:background="@drawable/shimmer_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_4sdp">
+
+        <View
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:background="@drawable/poster_bg" />
+
+        <View
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:background="@drawable/poster_bg" />
+
+        <View
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:background="@drawable/poster_bg"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_68sdp"
+        android:background="@drawable/shimmer_bg" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_102sdp"
+        android:background="@drawable/shimmer_bg" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:background="@drawable/shimmer_bg" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:background="@color/divider" />
+
+    <View
+        android:layout_width="@dimen/_72sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:background="@drawable/poster_bg"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/poster_bg"/>
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:background="@drawable/poster_bg"/>
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/poster_bg"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/poster_bg"/>
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:background="@drawable/poster_bg"/>
+
+        <View
+            android:layout_width="@dimen/_92sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/poster_bg"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,7 +5,7 @@ import com.example.movieland.utils.SessionPrefs
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(
-    private val apiV3 : TMDBApiServiceV3,
+    private val apiV3: TMDBApiServiceV3,
     private val sessionPrefs: SessionPrefs
 ) : BaseRepo(sessionPrefs) {
 
@@ -41,6 +41,14 @@ class MoviesRepo @Inject constructor(
 
     suspend fun fetchSearchedMovies(searchQuery: String) = safeApiCall {
         apiV3.fetchSearchQueryResults(searchQuery = searchQuery)
+    }
+
+    suspend fun fetchMovieDetail(movieId: Int) = safeApiCall {
+        apiV3.fetchMovieDetail(movieId = movieId)
+    }
+
+    suspend fun fetchSimilarMovies(movieId: Int) = safeApiCall {
+        apiV3.fetchSimilarMovies(movieId = movieId)
     }
 
 }
