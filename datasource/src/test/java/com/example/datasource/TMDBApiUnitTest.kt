@@ -16,8 +16,8 @@ import retrofit2.Response
  */
 class TMDBApiUnitTest {
 
-    private val apiV4 = ApiClient().buildApi(TMDBApiServiceV4::class.java)
-    private val apiV3 = ApiClient().buildApi(TMDBApiServiceV3::class.java)
+    private val apiV4 = ApiClient().retrofit.create(TMDBApiServiceV4::class.java)
+    private val apiV3 = ApiClient().retrofit.create(TMDBApiServiceV3::class.java)
 
     @Test
     fun `POST-Request Token`() = runBlocking {
@@ -76,7 +76,14 @@ class TMDBApiUnitTest {
 
     @Test
     fun `GET-Movie Detail`() = runBlocking {
-        val response: Response<MovieDetailResponse> = apiV3.fetchMovieDetail(movieId = "451048")
+        val response: Response<MovieDetailResponse> = apiV3.fetchMovieDetail(movieId = 451048)
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Tv Show Detail`() = runBlocking {
+        val response: Response<TvShowDetailsResponse> =
+            apiV3.fetchTvShowDetail(tvId = 91363)  // what if show id
         assertNotNull(response.body())
     }
 
@@ -84,6 +91,34 @@ class TMDBApiUnitTest {
     fun `GET-Searched Movies`() = runBlocking {
         val response: Response<MovieListResponse> =
             apiV3.fetchSearchQueryResults(searchQuery = "Avengers")
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Similar Movies`() = runBlocking {
+        val response: Response<MovieListResponse> =
+            apiV3.fetchSimilarMovies(movieId = 566525)
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-Similar TV Shows`() = runBlocking {
+        val response: Response<MovieListResponse> =
+            apiV3.fetchSimilarShows(tvId = 91363)
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-TV Season Details`() = runBlocking {
+        val response: Response<TvSeasonDetailResponse> =
+            apiV3.fetchTvSeasonDetails(91363, 1)
+        assertNotNull(response.body())
+    }
+
+    @Test
+    fun `GET-TV Episode Details`() = runBlocking {
+        val response: Response<TvEpisodeDetailResponse> =
+            apiV3.fetchTvEpisodeDetails(91363, 1, 1) // WhatIf tv show id
         assertNotNull(response.body())
     }
 
