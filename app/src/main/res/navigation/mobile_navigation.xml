@@ -16,16 +16,17 @@
         <action
             android:id="@+id/action_navigation_home_to_movieListFragment"
             app:destination="@id/movieListFragment"
-            app:popEnterAnim="@android:anim/fade_in"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@android:anim/slide_out_right"/>
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.movieland.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_navigation_search_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -38,12 +39,6 @@
         tools:layout="@layout/fragment_coming_soon" />
 
     <fragment
-        android:id="@+id/navigation_saved"
-        android:name="com.example.movieland.ui.saved.SavedFragment"
-        android:label="@string/title_saved"
-        tools:layout="@layout/fragment_saved" />
-
-    <fragment
         android:id="@+id/navigation_account"
         android:name="com.example.movieland.ui.account.AccountFragment"
         android:label="@string/title_account"
@@ -52,7 +47,7 @@
         android:id="@+id/detailFragment"
         android:name="com.example.movieland.ui.home.detail.DetailFragment"
         android:label="DetailFragment"
-        tools:layout="@layout/fragment_detail_bsd" >
+        tools:layout="@layout/fragment_detail_bsd">
         <action
             android:id="@+id/action_detailFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
@@ -72,10 +67,17 @@
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.movieland.ui.player.PlayerFragment"
-        android:label="PlayerFragment" >
+        android:label="PlayerFragment">
         <action
             android:id="@+id/action_playerFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_playerFragment_to_seasonPickerDialogFragment"
+            app:destination="@id/seasonPickerDialogFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/seasonPickerDialogFragment"
+        android:name="com.example.movieland.ui.player.SeasonPickerDialogFragment"
+        android:label="SeasonPickerDialogFragment" />
 
 </navigation>

@@ -64,11 +64,6 @@ data class Genre(
     var name: String
 )
 
-@JsonClass(generateAdapter = true)
-data class Videos(
-    @Json(name = "results")
-    var videosList: List<VideoResult>
-)
 
 //@JsonClass(generateAdapter = true)
 //data class SpokenLanguage(

@@ -48,6 +48,13 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<MovieDetailResponse>
 
+    @GET("3/tv/{tv_id}")
+    suspend fun fetchTvShowDetail(
+        @Path("tv_id") tvId: Int,
+        @Query("append_to_response") appendToResponse: String = "videos",
+        @Query("language") lang: String? = "en-US"
+    ): Response<TvShowDetailsResponse>
+
 
     @GET("3/trending/{media_type}/{time_window}")
     suspend fun fetchTrending(
@@ -65,6 +72,14 @@ interface TMDBApiServiceV3 {
     ): Response<MovieListResponse>
 
 
+    @GET("3/tv/{tv_id}/similar")
+    suspend fun fetchSimilarShows(
+        @Path("tv_id") tvId: Int,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
+
+
     @GET("3/search/movie")
     suspend fun fetchSearchQueryResults(
         @Query("language") lang: String? = "en-US",
@@ -72,6 +87,24 @@ interface TMDBApiServiceV3 {
         @Query("include_adult") includeAdult: Boolean = false,
         @Query("query") searchQuery: String
     ): Response<MovieListResponse>
+
+    @GET("3/tv/{tv_id}/season/{season_number}")
+    suspend fun fetchTvSeasonDetails(
+        @Path("tv_id") tvId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("append_to_response") appendToResponse: String = "videos",
+        @Query("language") lang: String? = "en-US"
+    ): Response<TvSeasonDetailResponse>
+
+
+    @GET("3/tv/{tv_id}/season/{season_number}/episode/{episode_number}")
+    suspend fun fetchTvEpisodeDetails(
+        @Path("tv_id") tvId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Path("episode_number") episodeNumber: Int,
+        @Query("append_to_response") appendToResponse: String = "videos",
+        @Query("language") lang: String? = "en-US"
+    ): Response<TvEpisodeDetailResponse>
 
     //    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(
@@ -84,9 +117,6 @@ interface TMDBApiServiceV3 {
 //@GET("movie/{id}?append_to_response=similar,videos")
 //suspend fun fetchMovieDetails(@Path("id") movieId: Int): MovieDetailsResponse
 //
-//@GET("movie/{id}/similar")
-//suspend fun fetchSimilarMovies(@Path("id") movieId: Int): PageResponse<Movie>
-//
 //@GET("movie/{id}/videos")
 //suspend fun fetchMovieVideos(@Path("id") movieId: Int): VideosResponse
 //
@@ -96,17 +126,8 @@ interface TMDBApiServiceV3 {
 //@GET("tv/{id}?append_to_response=similar,videos")
 //suspend fun fetchTvDetails(@Path("id") tvId: Int): TvDetailsResponse
 //
-//@GET("tv/{id}/similar")
-//suspend fun fetchSimilarTvs(@Path("id") tvId: Int): PageResponse<TvShow>
-//
 //@GET("tv/{id}/videos")
 //suspend fun fetchTvVideos(@Path("id") tvId: Int): VideosResponse
-//
-//@GET("tv/{tv_id}/season/{season_number}")
-//suspend fun fetchTvSeasonDetails(
-//    @Path("tv_id") tvId: Int,
-//    @Path("season_number") seasonNumber: Int
-//): TvSeasonDetailsResponse
 //
 //@GET("search/multi")
 //suspend fun fetchSearchResults(

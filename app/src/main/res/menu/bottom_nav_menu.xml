@@ -17,11 +17,6 @@
         android:title="@string/title_coming_soon" />
 
     <item
-        android:id="@+id/navigation_saved"
-        android:icon="@drawable/ic_nav_saved_24"
-        android:title="@string/title_saved" />
-
-    <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/ic_account_circle"
         android:title="@string/title_account" />

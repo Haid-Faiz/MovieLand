@@ -2,6 +2,7 @@ package com.example.movieland.data.repositories
 
 import com.example.datasource.remote.api.TMDBApiServiceV3
 import com.example.movieland.utils.SessionPrefs
+import retrofit2.http.Path
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(
@@ -47,8 +48,28 @@ class MoviesRepo @Inject constructor(
         apiV3.fetchMovieDetail(movieId = movieId)
     }
 
+    suspend fun fetchTvShowDetail(tvId: Int) = safeApiCall {
+        apiV3.fetchTvShowDetail(tvId = tvId)
+    }
+
     suspend fun fetchSimilarMovies(movieId: Int) = safeApiCall {
         apiV3.fetchSimilarMovies(movieId = movieId)
+    }
+
+    suspend fun fetchSimilarShows(tvID: Int) = safeApiCall {
+        apiV3.fetchSimilarShows(tvId = tvID)
+    }
+
+    suspend fun fetchTvSeasonDetails(tvId: Int, seasonNumber: Int) = safeApiCall {
+        apiV3.fetchTvSeasonDetails(tvId = tvId, seasonNumber)
+    }
+
+    suspend fun fetchTvEpisodeDetails(
+        tvId: Int,
+        seasonNumber: Int,
+        episodeNumber: Int
+    ) = safeApiCall {
+        apiV3.fetchTvEpisodeDetails(tvId = tvId, seasonNumber, episodeNumber)
     }
 
 }

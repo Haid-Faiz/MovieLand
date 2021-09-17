@@ -129,7 +129,6 @@ class HomeFragment : Fragment() {
             )
             binding.appBarLayout.setBackgroundColor(color)
         }
-
     }
 
     private fun setUpClickListeners() = binding.apply {
@@ -145,6 +144,7 @@ class HomeFragment : Fragment() {
             parentFragmentManager.setFragmentResult("media_key", bundleOf("tv" to "tvShows"))
             navController.navigate(R.id.action_navigation_home_to_movieListFragment)
         }
+
         bannerInfoButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 "home_movie_key",
@@ -152,7 +152,8 @@ class HomeFragment : Fragment() {
                     "movie_title" to (feedList[1].list[0].title ?: feedList[1].list[0].tvShowName),
                     "movie_overview" to feedList[1].list[0].overview,
                     "movie_image_url" to feedList[1].list[0].posterPath,
-                    "movie_year" to (feedList[1].list[0].releaseDate ?: feedList[1].list[0].tvShowFirstAirDate)
+                    "movie_year" to (feedList[1].list[0].releaseDate
+                        ?: feedList[1].list[0].tvShowFirstAirDate)
                 )
             )
             navController.navigate(R.id.action_navigation_home_to_detailFragment)
@@ -161,16 +162,18 @@ class HomeFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         homeAdapter = HomeAdapter(onPosterClick = {
-            navController.navigate(R.id.action_navigation_home_to_detailFragment)
             parentFragmentManager.setFragmentResult(
                 "home_movie_key",
                 bundleOf(
-                    "movie_title" to (feedList[1].list[0].title ?: feedList[1].list[0].tvShowName),
-                    "movie_overview" to feedList[1].list[0].overview,
-                    "movie_image_url" to feedList[1].list[0].posterPath,
-                    "movie_year" to (feedList[1].list[0].releaseDate ?: feedList[1].list[0].tvShowFirstAirDate)
+                    "movie_title" to (it.title ?: it.tvShowName),
+                    "isMovie" to !it.title.isNullOrBlank(),
+                    "movie_overview" to it.overview,
+                    "movie_image_url" to it.posterPath,
+                    "movie_year" to (it.releaseDate ?: it.tvShowFirstAirDate),
+                    "movie_id" to it.id
                 )
             )
+            navController.navigate(R.id.action_navigation_home_to_detailFragment)
         })
         binding.rvHomeFeed.setHasFixedSize(true)
         binding.rvHomeFeed.adapter = homeAdapter

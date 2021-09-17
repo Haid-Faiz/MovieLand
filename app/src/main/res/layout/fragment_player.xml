@@ -218,72 +218,64 @@
                     app:tabTextColor="@color/text_secondary">
 
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/episodes_tab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="EPISODES" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:id="@+id/more_like_this_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="MORE LIKE THIS" />
 
                     <com.google.android.material.tabs.TabItem
-                        android:id="@+id/trailers_and_more_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TRAILERS &amp; MORE" />
 
                 </com.google.android.material.tabs.TabLayout>
 
-                <!--                <com.google.android.material.tabs.TabLayout-->
-                <!--                    android:id="@+id/shows_tab_layout"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:background="@color/black"-->
-                <!--                    android:theme="@style/TabLayoutTheme"-->
-                <!--                    android:visibility="gone"-->
-                <!--                    app:tabIndicatorFullWidth="false"-->
-                <!--                    app:tabIndicatorGravity="top"-->
-                <!--                    app:tabIndicatorHeight="@dimen/_3sdp"-->
-                <!--                    app:tabMode="scrollable"-->
-                <!--                    app:tabSelectedTextColor="@color/text_primary"-->
-                <!--                    app:tabTextAppearance="@style/TabText"-->
-                <!--                    app:tabTextColor="@color/text_secondary">-->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/shows_tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:theme="@style/TabLayoutTheme"
+                    android:visibility="gone"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorGravity="top"
+                    app:tabIndicatorHeight="@dimen/_3sdp"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/text_primary"
+                    app:tabTextAppearance="@style/TabText"
+                    app:tabTextColor="@color/text_secondary">
 
-                <!--                    <com.google.android.material.tabs.TabItem-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="EPISODES" />-->
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EPISODES" />
 
-                <!--                    <com.google.android.material.tabs.TabItem-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="MORE LIKE THIS" />-->
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MORE LIKE THIS" />
 
-                <!--                    <com.google.android.material.tabs.TabItem-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="TRAILERS &amp; MORE" />-->
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TRAILERS &amp; MORE" />
 
-                <!--                </com.google.android.material.tabs.TabLayout>-->
+                </com.google.android.material.tabs.TabLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/shows_seasons_btn"
+                    android:id="@+id/pick_season_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_6sdp"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:backgroundTint="@color/dark_gray"
                     android:fontFamily="@font/montserrat"
+                    android:text="Season 1"
                     android:textAllCaps="false"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:icon="@drawable/ic_arrow_drop_down"
-                    app:iconGravity="textEnd"
-                    tools:text="Season 1" />
+                    app:iconGravity="textEnd" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_episodes_list"
@@ -303,7 +295,7 @@
                     android:layout_marginTop="8dp"
                     android:nestedScrollingEnabled="false"
                     android:paddingHorizontal="2dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="3"
                     tools:itemCount="15"
@@ -315,7 +307,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:paddingHorizontal="2dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="10"
                     tools:listitem="@layout/item_video" />
