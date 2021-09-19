@@ -36,7 +36,15 @@
         android:id="@+id/navigation_coming_soon"
         android:name="com.example.movieland.ui.coming_soon.ComingSoonFragment"
         android:label="@string/title_coming_soon"
-        tools:layout="@layout/fragment_coming_soon" />
+        tools:layout="@layout/fragment_coming_soon">
+        <action
+            android:id="@+id/action_navigation_coming_soon_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/pop_up"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_account"

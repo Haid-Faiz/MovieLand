@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/dark_gray"
+    android:orientation="vertical"
     android:paddingTop="@dimen/_8sdp">
 
     <LinearLayout
@@ -13,12 +13,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/_6sdp"
-        android:paddingTop="8dp">
+        android:paddingTop="@dimen/_6sdp">
 
         <ImageView
             android:id="@+id/poster_image"
-            android:layout_width="@dimen/_74sdp"
-            android:layout_height="@dimen/_102sdp"
+            android:layout_width="@dimen/_84sdp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:background="@drawable/poster_bg"
             android:scaleType="fitXY" />
 
@@ -45,6 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_4sdp"
                         android:ellipsize="end"
+                        android:fontFamily="@font/montserrat"
                         android:maxLines="2"
                         android:textColor="@color/text_primary"
                         android:textSize="@dimen/_16ssp"
@@ -54,7 +56,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -62,6 +63,7 @@
                             android:id="@+id/release_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/hind"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp"
                             tools:text="2016" />
@@ -70,6 +72,7 @@
                             android:id="@+id/runtime_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/hind"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp"
                             tools:text="  \u2022  2h 31m" />
@@ -95,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:ellipsize="end"
+                android:fontFamily="@font/hind"
                 android:maxLines="4"
                 android:textColor="@color/white"
                 tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
@@ -107,6 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/_6sdp"
         android:paddingEnd="@dimen/_8sdp">
@@ -117,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:layout_toStartOf="@+id/save_ll"
             android:backgroundTint="@color/white"
             android:text="Play"
@@ -134,69 +139,68 @@
             android:layout_alignTop="@id/play_button"
             android:layout_alignBottom="@id/play_button"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
-            android:layout_weight="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_8sdp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_bookmark"
+                android:src="@drawable/ic_add"
                 app:tint="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Bookmark"
+                android:text="Add"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8ssp" />
         </LinearLayout>
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/divider" />
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0.5dp"-->
+    <!--        android:layout_marginTop="12dp"-->
+    <!--        android:background="@color/divider" />-->
 
-    <LinearLayout
-        android:id="@+id/details_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:selectableItemBackgroundBorderless"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="16dp">
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/details_button"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:clickable="true"-->
+    <!--        android:focusable="true"-->
+    <!--        android:foreground="?android:selectableItemBackgroundBorderless"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:paddingHorizontal="8dp"-->
+    <!--        android:paddingVertical="16dp">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_info"
-            app:tint="@color/white" />
+    <!--        <ImageView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:src="@drawable/ic_info"-->
+    <!--            app:tint="@color/white" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_6sdp"
-            android:layout_weight="1"
-            android:paddingStart="@dimen/_4sdp"
-            android:text="Details &amp; More"
-            android:textColor="@color/white" />
+    <!--        <TextView-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="@dimen/_6sdp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:paddingStart="@dimen/_4sdp"-->
+    <!--            android:text="Details &amp; More"-->
+    <!--            android:textColor="@color/white" />-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_chevron_right"
-            app:tint="@color/white" />
-    </LinearLayout>
+    <!--        <ImageView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:src="@drawable/ic_chevron_right"-->
+    <!--            app:tint="@color/white" />-->
+    <!--    </LinearLayout>-->
 
 </LinearLayout>

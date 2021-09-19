@@ -8,16 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.FragmentHomeBinding
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Resource
+import com.example.movieland.utils.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
 
@@ -32,7 +35,8 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var homeAdapter: HomeAdapter
-    private val feedList: ArrayList<HomeFeed> = arrayListOf()
+    private var feedList: ArrayList<HomeFeed>? = null
+    private lateinit var bannerMovie: MovieResult
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,15 +61,16 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${it.data?.movieResults!![1].posterPath}")
-                    feedList.add(HomeFeed("Now Playing", it.data.movieResults))
-                    homeAdapter.submitList(feedList)
+                    bannerMovie = it.data!!.movieResults[0]
+                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${bannerMovie.posterPath}")
+
+                    feedList = ArrayList()
+                    feedList!!.add(HomeFeed("Now Playing Movies", it.data.movieResults))
+                    homeViewModel.getTopRatedMovies()
                 }
             }
         }
 
-
-        homeViewModel.getTopRatedMovies()
         homeViewModel.movieListTopRated.observe(viewLifecycleOwner) {
             Log.d("TAGObserver2", "onViewCreated: Called")
             when (it) {
@@ -73,56 +78,86 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Top Rated", it.data?.movieResults!!))
-                    homeAdapter.submitList(feedList)
+                    feedList?.add(HomeFeed("Top Rated Movies", it.data!!.movieResults))
+                    homeViewModel.getPopularMovies()
                 }
             }
         }
 
+        homeViewModel.movieListPopular.observe(viewLifecycleOwner) {
+            Log.d("TAGObserver3", "onViewCreated: Called")
+            when (it) {
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> TODO()
+                is Resource.Success -> {
+                    feedList?.add(HomeFeed("Popular Movies", it.data!!.movieResults))
+                    homeViewModel.getPopularTvShows()
+                }
+            }
+        }
 
-        homeViewModel.getUpcomingMovies()
+        homeViewModel.tvListPopular.observe(viewLifecycleOwner) {
+            Log.d("TAGObserver4", "onViewCreated: Called")
+            when (it) {
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    feedList?.add(HomeFeed("Popular Tv Shows", it.data!!.movieResults))
+                    homeViewModel.getTrendingMovies()
+                }
+            }
+        }
+
+        homeViewModel.movieListTrending.observe(viewLifecycleOwner) {
+            Log.d("TAGObserver5", "onViewCreated: Called")
+            when (it) {
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> TODO()
+                is Resource.Success -> {
+                    feedList?.add(HomeFeed("Trending Movies", it.data!!.movieResults))
+                    homeViewModel.getTrendingTvShows()
+                }
+            }
+        }
+
+        homeViewModel.tvListTrending.observe(viewLifecycleOwner) {
+            Log.d("TAGObserver6", "onViewCreated: Called")
+            when (it) {
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    feedList?.add(HomeFeed("Trending Tv Shows", it.data!!.movieResults))
+                    homeViewModel.getUpcomingMovies()
+                }
+            }
+        }
+
         homeViewModel.movieListUpcoming.observe(viewLifecycleOwner) {
-            Log.d("TAGObserver3", "onViewCreated: Called")
+            Log.d("TAGObserver7", "onViewCreated: Called")
             when (it) {
                 is Resource.Error -> {
+                    showSnackBar(it.message ?: "Something went wrong" )
                 }
-                is Resource.Loading -> TODO()
+                is Resource.Loading -> {
+                }
                 is Resource.Success -> {
-                    feedList.add(HomeFeed("Upcoming", it.data?.movieResults!!))
+                    feedList?.add(HomeFeed("Upcoming Movies", it.data!!.movieResults))
                     homeAdapter.submitList(feedList)
+                    feedList = null
+                    // Show RV
+                    binding.rvPlaceholder.isGone = true
+                    binding.rvHomeFeed.isGone = false
                 }
             }
         }
 
-        homeViewModel.getPopularMovies()
-        homeViewModel.movieListPopular.observe(viewLifecycleOwner) {
-            Log.d("TAGObserver3", "onViewCreated: Called")
-            when (it) {
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> TODO()
-                is Resource.Success -> {
-                    feedList.add(HomeFeed("Popular Movies", it.data?.movieResults!!))
-                    homeAdapter.submitList(feedList)
-                }
-            }
-        }
-
-        homeViewModel.getPopularTvShows()
-        homeViewModel.movieListPopular.observe(viewLifecycleOwner) {
-            Log.d("TAGObserver3", "onViewCreated: Called")
-            when (it) {
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> TODO()
-                is Resource.Success -> {
-                    feedList.add(HomeFeed("Popular Tv Shows", it.data?.movieResults!!))
-                    homeAdapter.submitList(feedList)
-                }
-            }
-        }
-
-        binding.nestedScrollview.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+        binding.nestedScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val color = changeAppBarAlpha(
                 ContextCompat.getColor(requireContext(), R.color.black_transparent),
                 (min(255, scrollY).toFloat() / 255.0f).toDouble()
@@ -149,15 +184,18 @@ class HomeFragment : Fragment() {
             parentFragmentManager.setFragmentResult(
                 "home_movie_key",
                 bundleOf(
-                    "movie_title" to (feedList[1].list[0].title ?: feedList[1].list[0].tvShowName),
-                    "movie_overview" to feedList[1].list[0].overview,
-                    "movie_image_url" to feedList[1].list[0].posterPath,
-                    "movie_year" to (feedList[1].list[0].releaseDate
-                        ?: feedList[1].list[0].tvShowFirstAirDate)
+                    "movie_title" to (bannerMovie.title ?: bannerMovie.tvShowName),
+                    "movie_overview" to bannerMovie.overview,
+                    "movie_image_url" to bannerMovie.posterPath,
+                    "movie_year" to (bannerMovie.releaseDate ?: bannerMovie.tvShowFirstAirDate)
                 )
             )
             navController.navigate(R.id.action_navigation_home_to_detailFragment)
         }
+
+        addToListButton.setOnClickListener {}
+
+        playButton.setOnClickListener {}
     }
 
     private fun setUpRecyclerView() {
@@ -192,5 +230,4 @@ class HomeFragment : Fragment() {
         _binding = null
         Log.d("isItCalled", "onStop: Called")
     }
-
 }

@@ -21,15 +21,24 @@ class HomeAdapter(
         holder.bind(getItem(position))
     }
 
+//    fun updateList(homeFeed: HomeFeed) {
+//        val oldList: ArrayList<HomeFeed> = ArrayList()
+//        oldList.addAll(currentList)
+//        Log.d("CurrentList", "updateList: $oldList")
+//        oldList.add(homeFeed)
+//        submitList(oldList)
+//    }
+
     inner class ViewHolder(private val binding: ItemFeedHorizontalListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(homeFeed: HomeFeed) = binding.apply {
             title.text = homeFeed.title
-            // Setting Horizontal recyclerview
+            // Setting up inner horizontal recyclerview
+            recyclerviewPostersList.setHasFixedSize(true)
             HorizontalAdapter(onPosterClick = onPosterClick).let {
-                it.submitList(homeFeed.list)
                 recyclerviewPostersList.adapter = it
+                it.submitList(homeFeed.list)
             }
         }
     }
@@ -42,4 +51,5 @@ class HomeAdapter(
         override fun areContentsTheSame(oldItem: HomeFeed, newItem: HomeFeed): Boolean =
             oldItem.equals(newItem)
     }
+
 }

@@ -13,6 +13,6 @@ fun View.showSnackBar(message: String, action: (() -> Unit)? = null, actionMsg: 
     }
 }
 
-fun Fragment.showSnackBar() {
-
+fun Fragment.showSnackBar(message: String, action: (() -> Unit)? = null, actionMsg: String? = null) {
+    requireView().showSnackBar(message, action, actionMsg)
 }
