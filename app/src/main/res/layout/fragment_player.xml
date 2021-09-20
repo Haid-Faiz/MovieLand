@@ -168,6 +168,19 @@
                         app:iconTint="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/favourite_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/transparent"
+                        android:text="Favourite"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        app:icon="@drawable/ic_favorite_outline"
+                        app:iconGravity="top"
+                        app:iconTint="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/rate_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -176,7 +189,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10ssp"
-                        app:icon="@drawable/ic_outline_thumb_up"
+                        app:icon="@drawable/ic_star_outline"
                         app:iconGravity="top"
                         app:iconTint="@color/white" />
 

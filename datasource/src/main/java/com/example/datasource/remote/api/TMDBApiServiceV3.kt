@@ -1,12 +1,14 @@
 package com.example.datasource.remote.api
 
+import com.example.datasource.remote.models.requests.AddToFavouriteRequest
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
+import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.*
+import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
-// TMDB API Version - 4
+// TMDB API Version - 3
 interface TMDBApiServiceV3 {
 
     @GET("3/movie/now_playing")
@@ -106,30 +108,59 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<TvEpisodeDetailResponse>
 
+    //----------------------------These Requests requires SESSION ID--------------------------------
+
+    @GET("3/account")
+    suspend fun getAccountDetails(
+        @Query("session_id") sessionId: String
+    ): Response<AccountDetailsResponse>
+
+    @POST("3/movie/{movie_id}/rating")
+    suspend fun rateMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String,
+        @Body mediaRatingRequest: MediaRatingRequest
+    ): Response<ResponseBody>
+
+    @POST("3/tv/{tv_id}/rating")
+    suspend fun rateTvShow(
+        @Path("tv_id") tvId: Int,
+        @Query("session_id") sessionId: String,
+        @Body mediaRatingRequest: MediaRatingRequest
+    ): Response<ResponseBody>
+
+    @POST("3/account/{account_id}/watchlist")
+    suspend fun addToWatchList(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Body addToWatchListRequest: AddToWatchListRequest
+    ): Response<ResponseBody>
+
+    @POST("3/account/{account_id}/favorite")
+    suspend fun addToFavourites(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Body addToFavouriteRequest: AddToFavouriteRequest
+    ): Response<ResponseBody>
+
+
     //    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(
 //        @Query("language") lang: String? = "en-US",
 //        @Query("page") page: Int = 1
 //    ) : Response<>
+
 }
 
 
 //@GET("movie/{id}?append_to_response=similar,videos")
 //suspend fun fetchMovieDetails(@Path("id") movieId: Int): MovieDetailsResponse
 //
-//@GET("movie/{id}/videos")
-//suspend fun fetchMovieVideos(@Path("id") movieId: Int): VideosResponse
-//
-//@GET("tv/top_rated")
-//suspend fun fetchTopRatedTvs(): PageResponse<TvShow>
-//
 //@GET("tv/{id}?append_to_response=similar,videos")
 //suspend fun fetchTvDetails(@Path("id") tvId: Int): TvDetailsResponse
 //
-//@GET("tv/{id}/videos")
-//suspend fun fetchTvVideos(@Path("id") tvId: Int): VideosResponse
-//
-//@GET("search/multi")
+//***************************************************************************8
+//@GET("search/multi") // Multi endpoint searches Movies, Tv Shows, Persons
 //suspend fun fetchSearchResults(
 //    @Query("query") query: String,
 //    @Query("page") page: Int

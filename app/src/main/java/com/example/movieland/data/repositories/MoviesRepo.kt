@@ -1,8 +1,16 @@
 package com.example.movieland.data.repositories
 
 import com.example.datasource.remote.api.TMDBApiServiceV3
+import com.example.datasource.remote.models.requests.AddToFavouriteRequest
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
+import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.movieland.utils.SessionPrefs
+import okhttp3.ResponseBody
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(
@@ -70,6 +78,47 @@ class MoviesRepo @Inject constructor(
         episodeNumber: Int
     ) = safeApiCall {
         apiV3.fetchTvEpisodeDetails(tvId = tvId, seasonNumber, episodeNumber)
+    }
+
+
+    suspend fun rateMovie(
+        movieId: Int,
+        sessionId: String,
+        mediaRatingRequest: MediaRatingRequest
+    ) = safeApiCall {
+        apiV3.rateMovie(
+            movieId = movieId,
+            sessionId = sessionId,
+            mediaRatingRequest = mediaRatingRequest
+        )
+    }
+
+    suspend fun rateTvShow(
+        tvId: Int,
+        sessionId: String,
+        mediaRatingRequest: MediaRatingRequest
+    ) = safeApiCall {
+        apiV3.rateTvShow(
+            tvId = tvId,
+            sessionId = sessionId,
+            mediaRatingRequest = mediaRatingRequest
+        )
+    }
+
+    suspend fun addToWatchList(
+        accountId: Int,
+        sessionId: String,
+        addToWatchListRequest: AddToWatchListRequest
+    ) = safeApiCall {
+        apiV3.addToWatchList(accountId, sessionId, addToWatchListRequest)
+    }
+
+    suspend fun addToFavourites(
+        accountId: Int,
+        sessionId: String,
+        addToFavouriteRequest: AddToFavouriteRequest
+    ) = safeApiCall {
+        apiV3.addToFavourites(accountId, sessionId, addToFavouriteRequest)
     }
 
 }

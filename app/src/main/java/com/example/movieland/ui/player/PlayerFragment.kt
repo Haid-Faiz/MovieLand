@@ -1,12 +1,18 @@
 package com.example.movieland.ui.player
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.RatingBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movieland.databinding.FragmentPlayerBinding
@@ -16,11 +22,16 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.example.datasource.remote.models.responses.Season
-import com.example.datasource.remote.models.responses.VideoResult
+import com.example.datasource.remote.models.requests.AddToFavouriteRequest
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
+import com.example.datasource.remote.models.requests.MediaRatingRequest
+import com.example.datasource.remote.models.responses.*
 import com.example.movieland.R
+import com.example.movieland.databinding.RatingDialogBinding
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
@@ -28,9 +39,11 @@ import com.example.movieland.utils.Constants.KEY_IS_MOVIE
 import com.example.movieland.utils.Constants.KEY_MOVIE_ID
 import com.example.movieland.utils.Constants.KEY_VIDEO_REQUEST
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import kotlinx.coroutines.flow.first
 
 /*
  1) Create Exoplayer object
@@ -50,9 +63,11 @@ class PlayerFragment : Fragment() {
     private lateinit var moreVideosAdapter: MoreVideosAdapter
     private var _isItMovie: Boolean = true
     private var _id: Int? = null
-    private lateinit var onTabSelectedListener: TabLayout.OnTabSelectedListener
+    private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
     private var _seasonList: List<Season>? = null
     private var _currentSeasonNumber: Int = 1
+    private lateinit var _currentMedia: MovieDetailResponse
+    private lateinit var shakeAnim: Animation
 //    private var videoKey: String? = null
     // Player state helper variables
 //    private var playWhenReady = true
@@ -70,6 +85,7 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        shakeAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpRecyclerViewAndUi()
         setUpFragmentResultListeners()
         setUpObservers()
@@ -77,6 +93,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpClickListeners() = binding.apply {
+
         pickSeasonBtn.setOnClickListener {
             _seasonList?.let { seasonList ->
                 parentFragmentManager.setFragmentResult(
@@ -91,15 +108,129 @@ class PlayerFragment : Fragment() {
         }
 
         rateButton.setOnClickListener {
-            val shakeAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.shake_anim)
-            rateButton.startAnimation(shakeAnim)
+//            rateButton.startAnimation(shakeAnim)
+
+            val ratingDialog = RatingDialogBinding.inflate(layoutInflater)
+            ratingDialog.apply {
+                rateButton.setOnClickListener { }
+                mediaName.text = _currentMedia.title
+                ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar, ratingValue: Float, b ->
+                    Log.d("ratingBar", "setUpClickListeners: ${ratingBar.rating}")
+
+//                    if(ratingValue <= 1) else
+                    starImageView.animate().scaleX(ratingValue / 2)
+                    starImageView.animate().scaleY(ratingValue / 2)
+                }
+                rateButton.setOnClickListener {
+                    // start progress & call the api here
+                    rateButton.text = ""
+                    rateButton.isEnabled = false
+                    progressBar.isGone = false
+
+                    viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                        Log.d(
+                            "SsionToken",
+                            "setUpClickListeners: ${viewModel.getSessionToken().first()!!}  " +
+                                    "id: ${_currentMedia.id}  " +
+                                    "rating: ${ratingDialog.ratingBar.rating}"
+                        )
+                        if (_isItMovie)
+                            viewModel.rateMovie(
+                                movieId = _currentMedia.id,
+                                sessionId = viewModel.getSessionToken().first()!!,
+                                mediaRatingRequest = MediaRatingRequest(ratingDialog.ratingBar.rating)
+                            ).let {
+                                when (it) {
+                                    is Resource.Error -> {
+                                        progressBar.isGone = true
+                                        rateButton.text = "Rate"
+                                        rateButton.isEnabled = true
+                                        showSnackBar("Something went wrong")
+                                    }
+                                    is Resource.Loading -> TODO()
+                                    is Resource.Success -> {
+                                        // Dismiss dialog
+                                        showSnackBar("Success")
+                                    }
+                                }
+                            }
+                        else
+                            viewModel.rateTvShow(
+                                tvId = _currentMedia.id,
+                                sessionId = viewModel.getSessionToken().first()!!,
+                                mediaRatingRequest = MediaRatingRequest(ratingDialog.ratingBar.rating)
+                            ).let {
+                                when (it) {
+                                    is Resource.Error -> {
+                                        progressBar.isGone = true
+                                        rateButton.text = "Rate"
+                                        rateButton.isEnabled = true
+                                        showSnackBar(it.message ?: "Something went wrong")
+                                    }
+                                    is Resource.Loading -> TODO()
+                                    is Resource.Success -> {
+                                        // Dismiss dialog
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+
+            val dialog = Dialog(requireContext(), R.style.RatingDialog).apply {
+//                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                setContentView(ratingDialog.root)
+                setCancelable(true)
+            }
+            dialog.show()
         }
+
+        addToListButton.setOnClickListener {
+            addToListButton.startAnimation(shakeAnim)
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.addToWatchList(
+                    accountId = 0,
+                    sessionId = viewModel.getSessionToken().first()!!,
+                    addToWatchListRequest = AddToWatchListRequest(
+                        mediaId = _currentMedia.id,
+                        mediaType = "Movie",
+                        watchlist = true
+                    )
+                ).let {
+                    showSnackBar("Added to My List")
+                }
+            }
+        }
+
+        favouriteButton.setOnClickListener {
+            favouriteButton.startAnimation(shakeAnim)
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.addToFavourites(
+                    accountId = 0,
+                    sessionId = viewModel.getSessionToken().first()!!,
+                    addToFavouriteRequest = AddToFavouriteRequest(
+                        mediaId = _currentMedia.id,
+                        mediaType = "Movie",
+                        favorite = true
+                    )
+                ).let {
+                    showSnackBar("Added to Favourites")
+                }
+            }
+        }
+
+        shareButton.setOnClickListener {
+
+        }
+
     }
 
     private fun setUpObservers() {
         viewModel.movieDetail.observe(viewLifecycleOwner) {
+            Log.d("LiveObserver0", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
+
                 }
                 is Resource.Loading -> binding.apply {
                     shimmerLayout.isGone = false
@@ -111,33 +242,23 @@ class PlayerFragment : Fragment() {
                     binding.shimmerLayout.isGone = true
                     binding.mainLayout.isGone = false
                     binding.shimmerLayout.stopShimmer()
-                    _id?.let { id ->
-                        viewModel.getSimilarMovies(id)
-                    }
-                    moreVideosAdapter.submitList(it.data!!.videos.videosList)
 
-                    val a: List<VideoResult> = it.data!!.videos.videosList.filter { toFilter ->
+                    _currentMedia = it.data!!
+
+                    val a: List<VideoResult> = it.data.videos.videosList.filter { toFilter ->
                         toFilter.type == "Trailer" && toFilter.site == "Youtube"
                     }
                     val videoKey = it.data.videos.videosList[0].key
                     Log.d("VideoKey", "onViewCreated: $videoKey   | a: $a")
                     initializePlayer(videoKey)
-
-                    binding.apply {
-                        binding.thumbnailContainer.backdropImage.load(
-                            TMDB_IMAGE_BASE_URL_W780.plus(it.data.backdropPath)
-                        )
-                        titleText.text = it.data.title
-                        overviewText.text = it.data.overview
-                        yearText.text = it.data.releaseDate
-                        runtimeText.text = it.data.runtime.toString()
-                        ratingText.text = String.format("%.2f", it.data.voteAverage)
-                    }
+                    updateDetails(movieDetailResponse = it.data)
+                    moreVideosAdapter.submitList(it.data.videos.videosList)
                 }
             }
         }
 
         viewModel.tvShowDetail.observe(viewLifecycleOwner) {
+            Log.d("LiveObserver1", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
                 }
@@ -147,7 +268,6 @@ class PlayerFragment : Fragment() {
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> {
-
                     Log.d("isTvSuccess", "setUpObservers: Success")
 
                     binding.shimmerLayout.isGone = true
@@ -155,54 +275,39 @@ class PlayerFragment : Fragment() {
                     binding.shimmerLayout.stopShimmer()
                     _seasonList = it.data!!.seasons
 
-                    _id?.let { id ->
-                        viewModel.getTvSeasonDetail(
-                            tvId = id,
-                            seasonNumber = _currentSeasonNumber
-                        )
-                        viewModel.getSimilarMovies(id)
-                    }
-                    moreVideosAdapter.submitList(it.data.videos.videosList)
-
                     val videoKey = it.data.videos.videosList[0].key
                     Log.d("VideoKey", "onViewCreated: $videoKey")
                     initializePlayer(videoKey)
-
-
-                    binding.apply {
-                        binding.thumbnailContainer.backdropImage.load(
-                            TMDB_IMAGE_BASE_URL_W780.plus(it.data.backdropPath)
-                        )
-                        titleText.text = it.data.name
-                        overviewText.text = it.data.overview
-                        yearText.text = it.data.firstAirDate
-//                        runtimeText.text = it.data.runtime.toString()
-                        ratingText.text = String.format("%.1f", it.data.voteAverage)
-                    }
+                    updateDetails(tvDetailResponse = it.data)
+                    moreVideosAdapter.submitList(it.data.videos.videosList)
                 }
             }
         }
 
         viewModel.similarMovies.observe(viewLifecycleOwner) {
+            Log.d("LiveObserver2", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), "${it?.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
+                    Log.d("SuccessObserver2", " success ")
                     similarMoviesAdapter.submitList(it.data?.movieResults)
                 }
             }
         }
 
         viewModel.tvSeasonDetail.observe(viewLifecycleOwner) {
+            Log.d("LiveObserver3", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
                 }
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
+                    Log.d("SuccessObserver3", " success ")
                     tvShowEpisodesAdapter.submitList(it.data?.episodes)
                 }
             }
@@ -215,24 +320,31 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             _isItMovie = bundle.getBoolean(KEY_IS_MOVIE)
-            Log.d("isItaMovie", "setUpFragmentResultListeners: $_isItMovie")
             binding.apply {
                 pickSeasonBtn.isGone = _isItMovie
                 moviesTabLayout.isGone = !_isItMovie
                 showsTabLayout.isGone = _isItMovie
                 rvEpisodesList.isGone = _isItMovie
                 rvSimilarList.isGone = !_isItMovie
+                rvSimilarList.isVisible = _isItMovie
+                rvEpisodesList.isVisible = !_isItMovie
             }
 
             setUpTabLayout()
 
             bundle.getInt(KEY_MOVIE_ID).let { movieId: Int ->
                 _id = movieId
-                if (_isItMovie)
-                // Fetch movie detail
+                if (_isItMovie) {
                     viewModel.getMovieDetail(movieId)
-                else
+                    viewModel.getSimilarMovies(movieId)
+                } else {
                     viewModel.getTvShowDetail(tvId = movieId) // using same name for movie and tv id
+                    viewModel.getTvSeasonDetail(
+                        tvId = movieId,
+                        seasonNumber = _currentSeasonNumber
+                    )
+                    viewModel.getSimilarMovies(movieId)
+                }
             }
         }
     }
@@ -256,6 +368,33 @@ class PlayerFragment : Fragment() {
                     )
                 }
             }
+        }
+    }
+
+    private fun updateDetails(
+        movieDetailResponse: MovieDetailResponse? = null,
+        tvDetailResponse: TvShowDetailsResponse? = null
+    ) = binding.apply {
+        Log.d("updateDetailsIsMovie", "updateDetails: $_isItMovie")
+
+        if (_isItMovie) {
+            thumbnailContainer.backdropImage.load(
+                TMDB_IMAGE_BASE_URL_W780.plus(movieDetailResponse!!.backdropPath)
+            )
+            titleText.text = movieDetailResponse.title
+            overviewText.text = movieDetailResponse.overview
+            yearText.text = movieDetailResponse.releaseDate
+            runtimeText.text = movieDetailResponse.runtime.toString()
+            ratingText.text = String.format("%.1f", movieDetailResponse.voteAverage)
+        } else {
+            thumbnailContainer.backdropImage.load(
+                TMDB_IMAGE_BASE_URL_W780.plus(tvDetailResponse!!.backdropPath)
+            )
+            titleText.text = tvDetailResponse.name
+            overviewText.text = tvDetailResponse.overview
+            yearText.text = tvDetailResponse.firstAirDate
+//            runtimeText.text = tvDetailResponse.runtime
+            ratingText.text = String.format("%.1f", tvDetailResponse.voteAverage)
         }
     }
 
@@ -309,8 +448,8 @@ class PlayerFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
-        if (_isItMovie) moviesTabLayout.addOnTabSelectedListener(onTabSelectedListener)
-        else showsTabLayout.addOnTabSelectedListener(onTabSelectedListener)
+        if (_isItMovie) moviesTabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
+        else showsTabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
     }
 
     private fun setUpRecyclerViewAndUi() = binding.apply {
@@ -359,7 +498,10 @@ class PlayerFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.moviesTabLayout.removeOnTabSelectedListener(onTabSelectedListener)
-        binding.showsTabLayout.removeOnTabSelectedListener(onTabSelectedListener)
+        onTabSelectedListener?.let {
+            binding.moviesTabLayout.removeOnTabSelectedListener(it)
+            binding.showsTabLayout.removeOnTabSelectedListener(it)
+        }
+        onTabSelectedListener = null
     }
 }
