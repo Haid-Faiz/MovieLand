@@ -133,7 +133,6 @@
 
                 </LinearLayout>
 
-
                 <TextView
                     android:id="@+id/overview_text"
                     android:layout_width="match_parent"
@@ -148,10 +147,22 @@
                     android:textSize="@dimen/_12ssp"
                     tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_genres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="RtlSymmetry"
+                    tools:listitem="@layout/item_genre" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton

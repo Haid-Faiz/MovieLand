@@ -32,12 +32,12 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
     </style>
 
-    <style name="AppBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppBottomSheetStyle</item>
     </style>
 
-    <style name="AppBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet">
-        <item name="background">@drawable/bsd_bg</item>
+    <style name="AppBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="TabLayoutTheme" parent="@style/Theme.MovieLand">

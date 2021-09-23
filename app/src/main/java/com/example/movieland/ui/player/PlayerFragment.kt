@@ -1,8 +1,6 @@
 package com.example.movieland.ui.player
 
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RatingBar
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movieland.databinding.FragmentPlayerBinding
@@ -32,6 +30,7 @@ import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.*
 import com.example.movieland.R
 import com.example.movieland.databinding.RatingDialogBinding
+import com.example.movieland.ui.coming_soon.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
@@ -61,6 +60,8 @@ class PlayerFragment : Fragment() {
     private lateinit var similarMoviesAdapter: HorizontalAdapter
     private lateinit var tvShowEpisodesAdapter: TvShowEpisodesAdapter
     private lateinit var moreVideosAdapter: MoreVideosAdapter
+    private lateinit var genreAdapter: GenreAdapter
+
     private var _isItMovie: Boolean = true
     private var _id: Int? = null
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
@@ -117,9 +118,13 @@ class PlayerFragment : Fragment() {
                 ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar, ratingValue: Float, b ->
                     Log.d("ratingBar", "setUpClickListeners: ${ratingBar.rating}")
 
-//                    if(ratingValue <= 1) else
-                    starImageView.animate().scaleX(ratingValue / 2)
-                    starImageView.animate().scaleY(ratingValue / 2)
+                    if (ratingValue < 2) {
+                        starImageView.animate().scaleX((ratingValue / 1.6).toFloat())
+                        starImageView.animate().scaleY((ratingValue / 1.6).toFloat())
+                    } else {
+                        starImageView.animate().scaleX(ratingValue / 2)
+                        starImageView.animate().scaleY(ratingValue / 2)
+                    }
                 }
                 rateButton.setOnClickListener {
                     // start progress & call the api here
@@ -129,23 +134,23 @@ class PlayerFragment : Fragment() {
 
                     viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                         Log.d(
-                            "SsionToken",
-                            "setUpClickListeners: ${viewModel.getSessionToken().first()!!}  " +
+                            "SessionId",
+                            "sessionId: ${viewModel.getSessionId().first()!!}  " +
                                     "id: ${_currentMedia.id}  " +
                                     "rating: ${ratingDialog.ratingBar.rating}"
                         )
                         if (_isItMovie)
                             viewModel.rateMovie(
                                 movieId = _currentMedia.id,
-                                sessionId = viewModel.getSessionToken().first()!!,
-                                mediaRatingRequest = MediaRatingRequest(ratingDialog.ratingBar.rating)
+                                sessionId = viewModel.getSessionId().first()!!,
+                                mediaRatingRequest = MediaRatingRequest(5f)
                             ).let {
                                 when (it) {
                                     is Resource.Error -> {
                                         progressBar.isGone = true
                                         rateButton.text = "Rate"
                                         rateButton.isEnabled = true
-                                        showSnackBar("Something went wrong")
+                                        showSnackBar(" Something went wrong")
                                     }
                                     is Resource.Loading -> TODO()
                                     is Resource.Success -> {
@@ -157,7 +162,7 @@ class PlayerFragment : Fragment() {
                         else
                             viewModel.rateTvShow(
                                 tvId = _currentMedia.id,
-                                sessionId = viewModel.getSessionToken().first()!!,
+                                sessionId = viewModel.getSessionId().first()!!,
                                 mediaRatingRequest = MediaRatingRequest(ratingDialog.ratingBar.rating)
                             ).let {
                                 when (it) {
@@ -190,7 +195,7 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 viewModel.addToWatchList(
                     accountId = 0,
-                    sessionId = viewModel.getSessionToken().first()!!,
+                    sessionId = viewModel.getSessionId().first()!!,
                     addToWatchListRequest = AddToWatchListRequest(
                         mediaId = _currentMedia.id,
                         mediaType = "Movie",
@@ -207,7 +212,7 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 viewModel.addToFavourites(
                     accountId = 0,
-                    sessionId = viewModel.getSessionToken().first()!!,
+                    sessionId = viewModel.getSessionId().first()!!,
                     addToFavouriteRequest = AddToFavouriteRequest(
                         mediaId = _currentMedia.id,
                         mediaType = "Movie",
@@ -386,6 +391,8 @@ class PlayerFragment : Fragment() {
             yearText.text = movieDetailResponse.releaseDate
             runtimeText.text = movieDetailResponse.runtime.toString()
             ratingText.text = String.format("%.1f", movieDetailResponse.voteAverage)
+            // Setting up Genre Adapter
+            genreAdapter.submitList(movieDetailResponse.genres)
         } else {
             thumbnailContainer.backdropImage.load(
                 TMDB_IMAGE_BASE_URL_W780.plus(tvDetailResponse!!.backdropPath)
@@ -395,6 +402,8 @@ class PlayerFragment : Fragment() {
             yearText.text = tvDetailResponse.firstAirDate
 //            runtimeText.text = tvDetailResponse.runtime
             ratingText.text = String.format("%.1f", tvDetailResponse.voteAverage)
+            // Setting up Genre Adapter
+            genreAdapter.submitList(tvDetailResponse.genres)
         }
     }
 
@@ -453,6 +462,11 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpRecyclerViewAndUi() = binding.apply {
+        // Setting up Genre Adapter
+        genreAdapter = GenreAdapter()
+        binding.rvGenres.setHasFixedSize(true)
+        binding.rvGenres.adapter = genreAdapter
+
         // Setting up Similar list Adapter
         rvSimilarList.setHasFixedSize(true)
         similarMoviesAdapter = HorizontalAdapter {
