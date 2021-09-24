@@ -1,6 +1,471 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/not_sign_in_layout"
+        layout="@layout/account_not_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/main_logged_in_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/_2sdp"
+                android:paddingTop="@dimen/_16sdp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/user_image"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:src="@drawable/ic_account_circle"
+                    app:tint="@color/red" />
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+                    tools:text="Haid-Faiz"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/_16ssp" />
+
+                <ImageView
+                    android:id="@+id/log_out_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/red" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="@color/black_light"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_8sdp">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Your WatchList"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/watchlist_movies_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_1sdp"
+                        android:layout_toStartOf="@id/watchlist_shows_card"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
+                        android:checkable="true"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/watchlist_movies_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingVertical="@dimen/_1sdp"
+                            android:text="Movies"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/watchlist_shows_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:checkable="true"
+                        app:checkedIcon="@null"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/watchlist_shows_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingVertical="@dimen/_1sdp"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:text="TV Shows"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_watchlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_poster" />
+
+                <LinearLayout
+                    android:id="@+id/watchlist_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/black_light"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_8sdp">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Your Ratings"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/rating_movies_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/rating_shows_card"
+                        android:checkable="true"
+                        app:checkedIcon="@null"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_1sdp"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/rating_movies_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:text="Movies"
+                            android:paddingVertical="1dp"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/rating_shows_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:checkable="true"
+                        app:checkedIcon="@null"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/rating_shows_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:text="TV Shows"
+                            android:paddingVertical="1dp"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ratings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_poster" />
+
+                <LinearLayout
+                    android:id="@+id/ratings_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/black_light"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_8sdp">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Your Favourites"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/favourite_movies_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/favourite_shows_card"
+                        android:checkable="true"
+                        app:checkedIcon="@null"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        android:layout_marginEnd="@dimen/_1sdp"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/favourite_movies_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:text="Movies"
+                            android:paddingVertical="1dp"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/favourite_shows_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:checkable="true"
+                        app:checkedIcon="@null"
+                        app:cardBackgroundColor="@color/dark_gray"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:strokeColor="@color/text_secondary"
+                        app:strokeWidth="1dp">
+
+                        <TextView
+                            android:id="@+id/favourite_shows_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/hind"
+                            android:paddingVertical="1dp"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:text="TV Shows"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_favourites"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_poster" />
+
+                <LinearLayout
+                    android:id="@+id/favourite_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+
+                    <View
+                        android:layout_width="@dimen/_92sdp"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:background="@drawable/poster_bg" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

@@ -31,6 +31,8 @@ data class MovieResult(
     var voteAverage: Double,
     @Json(name = "vote_count")
     var voteCount: Int,
+    @Json(name = "rating")      // This field is only available in User Rated Movies/Shows Response
+    var ratingByYou: Int? = null,
     @Json(name = "release_date")
     var releaseDate: String? = null,   // tv shows doesn't have this field
     @Json(name = "original_title")

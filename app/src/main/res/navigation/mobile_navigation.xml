@@ -50,7 +50,11 @@
         android:id="@+id/navigation_account"
         android:name="com.example.movieland.ui.account.AccountFragment"
         android:label="@string/title_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_navigation_account_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <dialog
         android:id="@+id/detailFragment"
         android:name="com.example.movieland.ui.home.detail.DetailFragment"
