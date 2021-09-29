@@ -143,8 +143,69 @@ interface TMDBApiServiceV3 {
         @Body addToFavouriteRequest: AddToFavouriteRequest
     ): Response<ResponseBody>
 
+    @POST("3/authentication/session/convert/4")
+    @FormUrlEncoded
+    suspend fun createSessionIdFromV4(
+        @Field("access_token") v4AccessToken: String
+    ): Response<SessionResponse>
 
-    //    @GET("3/movie/latest")
+
+    @GET("3/account/{account_id}/favorite/movies")
+    suspend fun getFavouriteMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+    @GET("3/account/{account_id}/favorite/tv")
+    suspend fun getFavouriteTvShows(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+    @GET("3/account/{account_id}/rated/movies")
+    suspend fun getRatedMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+    @GET("3/account/{account_id}/rated/tv")
+    suspend fun getRatedTvShows(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+    @GET("3/account/{account_id}/watchlist/movies")
+    suspend fun getMoviesWatchList(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+    @GET("3/account/{account_id}/watchlist/tv")
+    suspend fun getTvShowsWatchList(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+    ): Response<MovieListResponse>
+
+
+//    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(
 //        @Query("language") lang: String? = "en-US",
 //        @Query("page") page: Int = 1

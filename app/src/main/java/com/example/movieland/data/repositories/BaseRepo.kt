@@ -40,9 +40,31 @@ abstract class BaseRepo constructor(
         jsonError.getString("")
     }
 
-    suspend fun saveSessionToken(sessionToken: String) {
-        sessionPrefs.saveSessionToken(sessionToken)
+    suspend fun clearSessionPrefs() {
+        sessionPrefs.clearSessionPrefs()
     }
 
-    fun getSessionToken(): Flow<String?> = sessionPrefs.getSessionToken()
+    suspend fun saveSessionId(sessionId: String) {
+        sessionPrefs.saveSessionId(sessionID = sessionId)
+    }
+
+    fun getSessionId(): Flow<String?> = sessionPrefs.getSessionId()
+
+    suspend fun saveAccessToken(accessToken: String) {
+        sessionPrefs.saveAccessToken(accessToken)
+    }
+
+    fun getAccessToken(): Flow<String?> = sessionPrefs.getAccessToken()
+
+    suspend fun saveAccountId(accountId: Int) {
+        sessionPrefs.saveAccountId(accountId)
+    }
+
+    fun getAccountId(): Flow<Int?> = sessionPrefs.getAccountId()
+
+    suspend fun saveUserName(username: String) {
+        sessionPrefs.saveUserName(username)
+    }
+
+    fun getUserName(): Flow<String?> = sessionPrefs.getUserName()
 }

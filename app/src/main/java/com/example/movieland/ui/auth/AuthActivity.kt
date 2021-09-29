@@ -9,10 +9,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import com.example.datasource.remote.models.responses.RequestTokenResponse
+import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.MainActivity
 import com.example.movieland.databinding.ActivityAuthBinding
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+
+/*** Steps for generating valid session id for TMDB
+ * 1.) Generate request token
+ * 2.) Send user to this url to verify generated request token -> https://www.themoviedb.org/auth/access?request_token=$_requestToken
+ * 3.) On getting approval from user, onNewIntent() method will be called & we'll get our request token verified there
+ * 4.) From verified request token, Generate new User Access Token
+ * 5.) Finally, now we need to generate SESSION ID, use generated Access Token to generate Session ID. */
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
@@ -77,7 +85,9 @@ class AuthActivity : AppCompatActivity() {
         Log.d("WhoCalled", "onNewIntent: called $_requestToken")
 
         intent?.data?.let {
+            // Here we have got request token verified by user
             _requestToken?.let { token ->
+                // Now we need to generate User Access Token
                 authViewModel.requestUserAccessToken(token)
             }
         }
@@ -93,17 +103,52 @@ class AuthActivity : AppCompatActivity() {
                 }
 //                            is Resource.Loading -> TODO()
                 is Resource.Success -> {
+                    // Save AccessToken
+                    authViewModel.saveAccessToken(result.data!!.accessToken)
                     Log.d(
                         "UserAccessToken",
-                        "accessToken: ${result.data?.accessToken} | accountID: ${result.data?.accountId}"
+                        "accessToken: ${result.data.accessToken} | accountID: ${result.data.accountId}"
                     )
-                    binding.buttonSignIn.loadingSuccessful()
-                    startActivity(
-                        Intent(
-                            this@AuthActivity, MainActivity::class.java
-                        )
-                    )
-                    finish()
+
+                    /** Now we need to generate SESSION ID */
+                    authViewModel.createSessionId(accessToken = result.data.accessToken)
+                    authViewModel.sessionId.observe(this@AuthActivity) { sessionResponse: Resource<SessionResponse> ->
+                        // save the sessionToken/UserAccessToken and User Account ID
+                        when (sessionResponse) {
+                            is Resource.Error -> {
+                                binding.buttonSignIn.loadingFailed()
+                                binding.buttonSignIn.isEnabled = true
+                                binding.buttonSkip.isEnabled = true
+                                isCustomTabOpened = false
+                            }
+//                                is Resource.Loading -> TODO()
+                            is Resource.Success -> {
+                                authViewModel.saveSessionId(sessionId = sessionResponse.data!!.sessionId)
+                                // Fetching user details
+                                authViewModel.getUserDetail(sessionId = sessionResponse.data.sessionId)
+                                authViewModel.userAccount.observe(this@AuthActivity) {
+                                    when (it) {
+                                        is Resource.Error -> TODO()
+//                                        is Resource.Loading -> TODO()
+                                        is Resource.Success -> {
+                                            Log.d("credentials:", "onNewIntent: " +
+                                                    "accountId: ${it.data!!.id} |" +
+                                                    "userName: ${it.data.username} |" +
+                                                    "name: ${it.data.name}")
+                                            authViewModel.saveAccountId(accountId = it.data!!.id)
+                                            authViewModel.saveUserName(username = it.data.username)
+
+                                            binding.buttonSignIn.loadingSuccessful()
+                                            startActivity(
+                                                Intent(this@AuthActivity, MainActivity::class.java)
+                                            )
+                                            finish()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
