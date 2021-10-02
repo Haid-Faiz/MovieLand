@@ -4,19 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.datasource.remote.models.responses.MovieResult
+import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val movieRepo: MoviesRepo
-) : ViewModel() {
+) : BaseViewModel(movieRepo) {
 
     private var _movieListNowPlaying: MutableLiveData<Resource<MovieListResponse>> =
         MutableLiveData()
@@ -49,8 +52,18 @@ class HomeViewModel @Inject constructor(
         _movieListTopRated.postValue(movieRepo.fetchTopRatedMovies())
     }
 
-    fun getUpcomingMovies() = viewModelScope.launch {
-        _movieListUpcoming.postValue(movieRepo.fetchUpcomingMovies())
+    suspend fun getAnimationMovies(genresIds: String): Resource<MovieListResponse> {
+//        _movieListUpcoming.postValue(Resource.Loading())
+//        _movieListUpcoming.postValue(movieRepo.fetchUpcomingMovies())
+        return movieRepo.fetchMoviesByGenres(genresIds = genresIds)
+    }
+
+
+
+    suspend fun getAnime(genresIds: String): Resource<MovieListResponse> {
+//        _movieListUpcoming.postValue(Resource.Loading())
+//        _movieListUpcoming.postValue(movieRepo.fetchUpcomingMovies())
+        return movieRepo.fetchTvShowsByGenres(genresIds = genresIds)
     }
 
     fun getPopularMovies() = viewModelScope.launch {
@@ -62,11 +75,21 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getTrendingMovies() = viewModelScope.launch {
+        _movieListTrending.postValue(Resource.Loading())
         _movieListTrending.postValue(movieRepo.fetchTrendingMovies())
     }
 
     fun getTrendingTvShows() = viewModelScope.launch {
+        _tvListTrending.postValue(Resource.Loading())
         _tvListTrending.postValue(movieRepo.fetchTrendingTvShows())
+    }
+
+    suspend fun addToWatchList(
+        accountId: Int,
+        sessionId: String,
+        addToWatchListRequest: AddToWatchListRequest
+    ): Resource<ResponseBody> {
+        return movieRepo.addToWatchList(accountId, sessionId, addToWatchListRequest)
     }
 
 }

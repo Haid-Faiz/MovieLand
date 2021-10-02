@@ -45,6 +45,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:paddingTop="@dimen/_2sdp">
 
             <LinearLayout
@@ -95,6 +96,7 @@
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             android:textStyle="bold" />
+
                     </LinearLayout>
 
                     <TextView
@@ -133,11 +135,24 @@
 
                 </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_genres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_6sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="RtlSymmetry"
+                    tools:listitem="@layout/item_genre" />
+
                 <TextView
                     android:id="@+id/overview_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:ellipsize="end"
                     android:fontFamily="@font/hind"
                     android:lineHeight="20sp"
@@ -147,28 +162,17 @@
                     android:textSize="@dimen/_12ssp"
                     tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_genres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_6sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:ignore="RtlSymmetry"
-                    tools:listitem="@layout/item_genre" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="4">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/add_to_list_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:text="My List"
                         android:textAllCaps="false"
@@ -176,12 +180,14 @@
                         android:textSize="@dimen/_10ssp"
                         app:icon="@drawable/ic_add"
                         app:iconGravity="top"
+                        app:iconSize="@dimen/_16sdp"
                         app:iconTint="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/favourite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:text="Favourite"
                         android:textAllCaps="false"
@@ -189,12 +195,14 @@
                         android:textSize="@dimen/_10ssp"
                         app:icon="@drawable/ic_favorite_outline"
                         app:iconGravity="top"
+                        app:iconSize="@dimen/_16sdp"
                         app:iconTint="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/rate_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:text="Rate"
                         android:textAllCaps="false"
@@ -202,6 +210,7 @@
                         android:textSize="@dimen/_10ssp"
                         app:icon="@drawable/ic_star_outline"
                         app:iconGravity="top"
+                        app:iconSize="@dimen/_16sdp"
                         app:iconTint="@color/white" />
 
 
@@ -209,6 +218,7 @@
                         android:id="@+id/share_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:text="Share"
                         android:textAllCaps="false"
@@ -216,6 +226,7 @@
                         android:textSize="@dimen/_10ssp"
                         app:icon="@drawable/ic_share"
                         app:iconGravity="top"
+                        app:iconSize="@dimen/_16sdp"
                         app:iconTint="@color/white" />
 
                 </LinearLayout>
@@ -223,7 +234,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/divider" />
 
                 <com.google.android.material.tabs.TabLayout
@@ -253,72 +264,80 @@
 
                 </com.google.android.material.tabs.TabLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/shows_tab_layout"
+                <LinearLayout
+                    android:id="@+id/shows_tab_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/black"
-                    android:theme="@style/TabLayoutTheme"
                     android:visibility="gone"
-                    app:tabIndicatorFullWidth="false"
-                    app:tabIndicatorGravity="top"
-                    app:tabIndicatorHeight="@dimen/_3sdp"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/text_primary"
-                    app:tabTextAppearance="@style/TabText"
-                    app:tabTextColor="@color/text_secondary">
+                    android:layout_weight="1"
+                    tools:visibility="visible"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.tabs.TabItem
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/shows_tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black"
+                        android:theme="@style/TabLayoutTheme"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorGravity="top"
+                        app:tabIndicatorHeight="@dimen/_3sdp"
+                        app:tabMode="scrollable"
+                        app:tabSelectedTextColor="@color/text_primary"
+                        app:tabTextAppearance="@style/TabText"
+                        app:tabTextColor="@color/text_secondary">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="EPISODES" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MORE LIKE THIS" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TRAILERS &amp; MORE" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pick_season_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="EPISODES" />
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:backgroundTint="@color/dark_gray"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Season 1"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold"
+                        app:icon="@drawable/ic_arrow_drop_down"
+                        app:iconGravity="textEnd" />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MORE LIKE THIS" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_episodes_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="8"
+                        tools:listitem="@layout/item_episode" />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TRAILERS &amp; MORE" />
-
-                </com.google.android.material.tabs.TabLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/pick_season_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:backgroundTint="@color/dark_gray"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Season 1"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:icon="@drawable/ic_arrow_drop_down"
-                    app:iconGravity="textEnd" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_episodes_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="2dp"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="8"
-                    tools:listitem="@layout/item_episode" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_similar_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="8dp"
+                    android:layout_weight="1"
                     android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="2dp"
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="3"
@@ -328,9 +347,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_more_videos_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="2dp"
                     android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="10"

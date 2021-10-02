@@ -16,6 +16,7 @@ object Constants {
     const val MEDIA_OVERVIEW_KEY = "media_overview"
     const val MEDIA_IMAGE_KEY = "media_image_url"
     const val MEDIA_YEAR_KEY = "media_year"
+    const val MEDIA_RATING_KEY = "media_public_rating"
     const val MEDIA_ID_KEY = "media_id"
     const val MEDIA_KEY = "media"
     const val MOVIE = "movie"

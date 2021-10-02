@@ -19,9 +19,8 @@
         android:paddingHorizontal="@dimen/_12sdp"
         android:layout_gravity="center_vertical"
         android:paddingVertical="@dimen/_1sdp"
-        android:paddingTop="@dimen/_2sdp"
         android:textColor="@color/text_secondary"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_9ssp"
         tools:text="Action" />
 
 </com.google.android.material.card.MaterialCardView>

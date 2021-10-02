@@ -64,21 +64,15 @@ class PlayerViewModel @Inject constructor(
 
     //---------------------------Session Id is required in these requests-----------------------
 
-    suspend fun rateMovie(
-        movieId: Int,
+    suspend fun rateMedia(
+        mediaId: Int,
+        isMovie: Boolean,
         sessionId: String,
         mediaRatingRequest: MediaRatingRequest
-    ): Resource<ResponseBody> {
-        return movieRepo.rateMovie(movieId, sessionId, mediaRatingRequest)
-    }
-
-    suspend fun rateTvShow(
-        tvId: Int,
-        sessionId: String,
-        mediaRatingRequest: MediaRatingRequest
-    ): Resource<ResponseBody> {
-        return movieRepo.rateTvShow(tvId, sessionId, mediaRatingRequest)
-    }
+    ): Resource<ResponseBody> = if (isMovie)
+        movieRepo.rateMovie(movieId = mediaId, sessionId, mediaRatingRequest)
+    else
+        movieRepo.rateTvShow(tvId = mediaId, sessionId, mediaRatingRequest)
 
 
     suspend fun addToWatchList(

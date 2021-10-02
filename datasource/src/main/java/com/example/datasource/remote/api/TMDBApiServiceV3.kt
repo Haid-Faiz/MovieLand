@@ -108,6 +108,25 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<TvEpisodeDetailResponse>
 
+    @GET("3/discover/movie")
+    suspend fun fetchMoviesByGenres(
+        @Query("with_genres") genres: String,  // It will require comma separated string of genres ids
+        // @Query("include_video") includeVideo: Boolean = false,
+        @Query("sort_by") sortBy: String? = "popularity.desc",
+        @Query("page") page: Int = 1,
+        @Query("language") lang: String? = "en-US"
+    ): Response<MovieListResponse>
+
+    @GET("3/discover/tv")
+    suspend fun fetchTvShowsByGenres(
+        @Query("with_genres") genres: String, // genres = "24,14,35...."
+        @Query("sort_by") sortBy: String? = "popularity.desc",
+        // @Query("include_video") includeVideo: Boolean = false,
+        @Query("page") page: Int = 1,
+        @Query("language") lang: String? = "en-US"
+    ): Response<MovieListResponse>
+
+
     //----------------------------These Requests requires SESSION ID--------------------------------
 
     @GET("3/account")

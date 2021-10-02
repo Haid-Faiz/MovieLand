@@ -80,6 +80,13 @@ class MoviesRepo @Inject constructor(
         apiV3.fetchTvEpisodeDetails(tvId = tvId, seasonNumber, episodeNumber)
     }
 
+    suspend fun fetchMoviesByGenres(genresIds: String) = safeApiCall {
+        apiV3.fetchMoviesByGenres(genres = genresIds)
+    }
+
+    suspend fun fetchTvShowsByGenres(genresIds: String) = safeApiCall {
+        apiV3.fetchTvShowsByGenres(genres = genresIds)
+    }
 
     suspend fun rateMovie(
         movieId: Int,

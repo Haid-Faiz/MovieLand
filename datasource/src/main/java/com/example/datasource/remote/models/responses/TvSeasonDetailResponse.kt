@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class TvSeasonDetailResponse(
     @Json(name = "air_date")
-    var airDate: String,
+    var airDate: String?,
     @Json(name = "episodes")
     var episodes: List<Episode>,
     @Json(name = "_id")
@@ -19,7 +19,7 @@ data class TvSeasonDetailResponse(
     @Json(name = "overview")
     var overview: String,
     @Json(name = "poster_path")
-    var posterPath: String,
+    var posterPath: String?,
     @Json(name = "season_number")
     var seasonNumber: Int,
     @Json(name = "videos")

@@ -9,7 +9,7 @@ data class MovieDetailResponse(
     @Json(name = "adult")
     var adult: Boolean,
     @Json(name = "backdrop_path")
-    var backdropPath: String,
+    var backdropPath: String?,
     @Json(name = "belongs_to_collection")
     var belongsToCollection: Any?,
     @Json(name = "budget")

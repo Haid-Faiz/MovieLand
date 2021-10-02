@@ -28,6 +28,7 @@ class HorizontalAdapter(
 
         fun bind(movieResult: MovieResult) = binding.apply {
             posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
+            ratingText.text = String.format("%.1f", movieResult.voteAverage)
             posterImage.setOnClickListener {
                 onPosterClick?.invoke(movieResult)
             }

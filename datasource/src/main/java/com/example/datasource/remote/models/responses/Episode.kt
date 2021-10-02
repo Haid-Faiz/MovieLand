@@ -7,13 +7,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Episode(
     @Json(name = "air_date")
-    var airDate: String,
-    @Json(name = "crew")
-    var crew: List<Crew>,
+    var airDate: String?,
+//    @Json(name = "crew")
+//    var crew: List<Crew>?,
     @Json(name = "episode_number")
     var episodeNumber: Int,
-    @Json(name = "guest_stars")
-    var guestStars: List<GuestStar>,
+//    @Json(name = "guest_stars")
+//    var guestStars: List<GuestStar>?,
     @Json(name = "id")
     var id: Int,
     @Json(name = "name")

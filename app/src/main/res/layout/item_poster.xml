@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/poster_card"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:foreground="?selectableItemBackgroundBorderless"
-    android:id="@+id/poster_ll"
-    android:orientation="vertical">
+    android:layout_margin="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_6sdp">
 
     <ImageView
         android:id="@+id/poster_image"
-        android:layout_width="@dimen/_92sdp"
-        android:layout_height="@dimen/_124sdp"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_width="@dimen/_94sdp"
+        android:layout_height="@dimen/_136sdp"
+        android:background="@drawable/poster_bg"
         android:scaleType="fitXY"
-        android:background="@drawable/poster_bg" />
+        tools:src="@tools:sample/backgrounds/scenic" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:layout_margin="@dimen/_4sdp"
+        android:background="@drawable/rating_bg"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_1sdp"
+        android:text="7.8"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/_10ssp" />
+
+
+</com.google.android.material.card.MaterialCardView>

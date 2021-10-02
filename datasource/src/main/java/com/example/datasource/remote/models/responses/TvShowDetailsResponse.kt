@@ -12,7 +12,7 @@ data class TvShowDetailsResponse(
     @Json(name = "episode_run_time")
     var episodeRunTime: List<Int>,
     @Json(name = "first_air_date")
-    var firstAirDate: String,
+    var firstAirDate: String?,
     @Json(name = "genres")
     var genres: List<Genre>,
     @Json(name = "homepage")
@@ -24,13 +24,13 @@ data class TvShowDetailsResponse(
     @Json(name = "languages")
     var languages: List<String>,
     @Json(name = "last_air_date")
-    var lastAirDate: String,
+    var lastAirDate: String?,
     @Json(name = "last_episode_to_air")
-    var lastEpisodeToAir: LastEpisodeToAir,
+    var lastEpisodeToAir: LastEpisodeToAir?,
     @Json(name = "name")
     var name: String,
     @Json(name = "next_episode_to_air")
-    var nextEpisodeToAir: NextEpisodeToAir,
+    var nextEpisodeToAir: NextEpisodeToAir?,
     @Json(name = "number_of_episodes")
     var numberOfEpisodes: Int,
     @Json(name = "number_of_seasons")
@@ -62,7 +62,7 @@ data class TvShowDetailsResponse(
 @JsonClass(generateAdapter = true)
 data class LastEpisodeToAir(
     @Json(name = "air_date")
-    var airDate: String,
+    var airDate: String?,
     @Json(name = "episode_number")
     var episodeNumber: Int,
     @Json(name = "id")
@@ -72,11 +72,11 @@ data class LastEpisodeToAir(
     @Json(name = "overview")
     var overview: String,
     @Json(name = "production_code")
-    var productionCode: String,
+    var productionCode: String?,
     @Json(name = "season_number")
     var seasonNumber: Int,
     @Json(name = "still_path")
-    var stillPath: String,
+    var stillPath: String?,
     @Json(name = "vote_average")
     var voteAverage: Double,
     @Json(name = "vote_count")
@@ -86,7 +86,7 @@ data class LastEpisodeToAir(
 @JsonClass(generateAdapter = true)
 data class NextEpisodeToAir(
     @Json(name = "air_date")
-    var airDate: String,
+    var airDate: String?,
     @Json(name = "episode_number")
     var episodeNumber: Int,
     @Json(name = "id")
