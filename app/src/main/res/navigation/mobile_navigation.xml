@@ -20,6 +20,16 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_home_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_home_to_selectGenresDialogFragment"
+            app:destination="@id/selectGenresDialogFragment" />
     </fragment>
 
     <fragment
@@ -40,8 +50,8 @@
         <action
             android:id="@+id/action_navigation_coming_soon_to_playerFragment"
             app:destination="@id/playerFragment"
-            app:enterAnim="@anim/pop_up"
-            app:exitAnim="@android:anim/fade_out"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@anim/pop_up"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
@@ -70,8 +80,9 @@
         android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list">
         <argument
-            android:name="tag"
-            app:argType="string" />
+            android:name="media_list_type"
+            app:argType="string"
+            android:defaultValue="sdf" />
         <action
             android:id="@+id/action_movieListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -91,5 +102,13 @@
         android:id="@+id/seasonPickerDialogFragment"
         android:name="com.example.movieland.ui.player.SeasonPickerDialogFragment"
         android:label="SeasonPickerDialogFragment" />
+    <dialog
+        android:id="@+id/selectGenresDialogFragment"
+        android:name="com.example.movieland.ui.genres.SelectGenresDialogFragment"
+        android:label="SelectGenresDialogFragment" >
+        <action
+            android:id="@+id/action_selectGenresDialogFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </dialog>
 
 </navigation>

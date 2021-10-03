@@ -20,6 +20,17 @@ import com.example.movieland.databinding.FragmentAccountBinding
 import com.example.movieland.ui.auth.AuthActivity
 import com.example.movieland.ui.auth.AuthViewModel
 import com.example.movieland.ui.home.HorizontalAdapter
+import com.example.movieland.ui.home.RatedMoviesAdapter
+import com.example.movieland.utils.Constants
+import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
+import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
+import com.example.movieland.utils.Constants.MEDIA_ID_KEY
+import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
+import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
+import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
+import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
+import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
+import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.showSnackBar
 import com.google.android.material.card.MaterialCardView
@@ -38,14 +49,13 @@ class AccountFragment : Fragment() {
     private var _sessionId: String? = null
     private var _accountId: Int? = null
     private lateinit var watchListAdapter: HorizontalAdapter
-    private lateinit var ratingsAdapter: HorizontalAdapter
+    private lateinit var ratingsAdapter: RatedMoviesAdapter
     private lateinit var favouritesAdapter: HorizontalAdapter
 
     // Lists
-    private lateinit var allWatchList: ArrayList<MovieResult>
-    private lateinit var allRatingList: ArrayList<MovieResult>
-    private lateinit var allfavouriteList: ArrayList<MovieResult>
-
+    private var _allWatchList: ArrayList<MovieResult>? = null
+    private var _allRatingList: ArrayList<MovieResult>? = null
+    private var _allFavouriteList: ArrayList<MovieResult>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +71,73 @@ class AccountFragment : Fragment() {
         setUpRecyclerView()
         checkLoginStatus()
         setUpClickListeners()
+
+        authViewModel.watchList.observe(viewLifecycleOwner) {
+            (it is Resource.Loading).let { isLoading ->
+                binding.watchlistPlaceholder.isGone = !isLoading
+                binding.rvWatchlist.isGone = isLoading
+            }
+            when (it) {
+                is Resource.Error -> TODO()
+//                is Resource.Loading -> binding.apply {}
+                is Resource.Success -> binding.apply {
+                    _allWatchList = it.data!! as ArrayList
+                    if (_allWatchList!!.isNotEmpty()) {
+                        rvWatchlist.isGone = false
+                        emptyWatchlistMsg.isGone = true
+                        watchListAdapter.submitList(it.data)
+                    } else {
+                        rvWatchlist.isGone = true
+                        emptyWatchlistMsg.isGone = false
+                    }
+                }
+            }
+        }
+
+        authViewModel.ratingList.observe(viewLifecycleOwner) {
+            (it is Resource.Loading).let { isLoading ->
+                binding.ratingsPlaceholder.isGone = !isLoading
+                binding.rvRatings.isGone = isLoading
+            }
+            when (it) {
+                is Resource.Error -> TODO()
+//                is Resource.Loading -> { }
+                is Resource.Success -> binding.apply {
+                    _allRatingList = it.data!! as ArrayList
+                    if (_allRatingList!!.isNotEmpty()) {
+                        rvRatings.isGone = false
+                        emptyRatingsMsg.isGone = true
+                        ratingsAdapter.submitList(it.data)
+                    } else {
+                        rvRatings.isGone = true
+                        emptyRatingsMsg.isGone = false
+                    }
+                }
+            }
+        }
+
+        authViewModel.favouriteList.observe(viewLifecycleOwner) {
+            (it is Resource.Loading).let { isLoading ->
+                binding.favouritePlaceholder.isGone = !isLoading
+                binding.rvFavourites.isGone = isLoading
+            }
+            when (it) {
+                is Resource.Error -> TODO()
+//                is Resource.Loading -> { }
+                is Resource.Success -> binding.apply {
+                    _allFavouriteList = it.data!! as ArrayList
+
+                    if (_allFavouriteList!!.isNotEmpty()) {
+                        rvFavourites.isGone = false
+                        emptyFavouritesMsg.isGone = true
+                        favouritesAdapter.submitList(it.data)
+                    } else {
+                        rvFavourites.isGone = true
+                        emptyFavouritesMsg.isGone = false
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpClickListeners() = binding.apply {
@@ -75,34 +152,207 @@ class AccountFragment : Fragment() {
             }
         }
 
-        Log.d("checkIsChecked", "onViewCreated: ${binding.watchlistMoviesCard.isChecked}")
         notSignInLayout.accountSignInBtn.setOnClickListener {
             startActivity(Intent(requireActivity(), AuthActivity::class.java))
             requireActivity().finish()
         }
 
         watchlistMoviesCard.setOnClickListener {
-            updateCardBackground(watchlistMoviesCard, watchlistMoviesText)
+            Log.d("Check0", "allWatchList: $_allWatchList")
+            // First check if list is null or not
+            _allWatchList?.let { allWatchList ->
+                // Check if already shows card is checked or not
+                if (watchlistShowsCard.isChecked) {
+                    // Then uncheck shows card & check movie card
+                    updateCardBackground(
+                        watchlistShowsCard,
+                        watchlistShowsText
+                    ) // this will uncheck shows card
+
+                    // Now check movie card
+                    updateCardBackground(watchlistMoviesCard, watchlistMoviesText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allWatchList.filter {
+                        !it.title.isNullOrEmpty()
+                    }
+                    watchListAdapter.submitList(filteredList)
+                } else {
+                    // Now check movie card
+                    updateCardBackground(watchlistMoviesCard, watchlistMoviesText)
+                    // Now submit the filtered list
+                    if (watchlistMoviesCard.isChecked) {
+                        val filteredList: List<MovieResult> = allWatchList.filter {
+                            !it.title.isNullOrEmpty()
+                        }
+                        watchListAdapter.submitList(filteredList)
+                    } else watchListAdapter.submitList(_allWatchList)
+                }
+            }
         }
 
         watchlistShowsCard.setOnClickListener {
-            updateCardBackground(watchlistShowsCard, watchlistShowsText)
+
+            Log.d("Check1", "allWatchList: $_allWatchList")
+
+            _allWatchList?.let { allWatchList ->
+                // Check if already movie card is checked or not
+                if (watchlistMoviesCard.isChecked) {
+                    // Then uncheck movie card & check shows card
+                    updateCardBackground(
+                        watchlistMoviesCard,
+                        watchlistMoviesText
+                    ) // this will uncheck movie card
+
+                    // Now check show card
+                    updateCardBackground(watchlistShowsCard, watchlistShowsText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allWatchList.filter {
+                        it.title.isNullOrEmpty()
+                    }
+                    watchListAdapter.submitList(filteredList)
+                } else {
+                    // check show card
+                    updateCardBackground(watchlistShowsCard, watchlistShowsText)
+                    // Now submit the filtered list
+                    if (watchlistShowsCard.isChecked) {
+                        val filteredList: List<MovieResult> = allWatchList.filter {
+                            it.title.isNullOrEmpty()
+                        }
+                        watchListAdapter.submitList(filteredList)
+                    } else watchListAdapter.submitList(_allWatchList)
+                }
+            }
         }
 
         ratingMoviesCard.setOnClickListener {
-            updateCardBackground(ratingMoviesCard, ratingMoviesText)
+
+            _allRatingList?.let { allRatingList ->
+                // Check if already shows card is checked or not
+                if (ratingShowsCard.isChecked) {
+                    // Then uncheck shows card & check movie card
+                    updateCardBackground(
+                        ratingShowsCard,
+                        ratingShowsText
+                    ) // this will uncheck shows card
+
+                    // Now check movie card
+                    updateCardBackground(ratingMoviesCard, ratingMoviesText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allRatingList.filter {
+                        !it.title.isNullOrEmpty()
+                    }
+                    ratingsAdapter.submitList(filteredList)
+                } else {
+                    // Now check movie card
+                    updateCardBackground(ratingMoviesCard, ratingMoviesText)
+                    // Now submit the filtered list
+                    if (ratingMoviesCard.isChecked) {
+                        val filteredList: List<MovieResult> = allRatingList.filter {
+                            !it.title.isNullOrEmpty()
+                        }
+                        ratingsAdapter.submitList(filteredList)
+                    } else ratingsAdapter.submitList(_allRatingList)
+                }
+            }
         }
 
         ratingShowsCard.setOnClickListener {
-            updateCardBackground(ratingShowsCard, ratingShowsText)
+            _allRatingList?.let { allRatingList ->
+                // Check if already movie card is checked or not
+                if (ratingMoviesCard.isChecked) {
+                    // Then uncheck movie card & check show card
+                    updateCardBackground(
+                        ratingMoviesCard,
+                        ratingMoviesText
+                    ) // this will uncheck movie card
+
+                    // Now check shows card
+                    updateCardBackground(ratingShowsCard, ratingShowsText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allRatingList.filter {
+                        it.title.isNullOrEmpty()
+                    }
+                    ratingsAdapter.submitList(filteredList)
+                } else {
+                    // Now check movie card
+                    updateCardBackground(ratingShowsCard, ratingShowsText)
+                    // Now submit the filtered list
+                    if (ratingShowsCard.isChecked) {
+                        val filteredList: List<MovieResult> = allRatingList.filter {
+                            it.title.isNullOrEmpty()
+                        }
+                        ratingsAdapter.submitList(filteredList)
+                    } else ratingsAdapter.submitList(_allRatingList)
+                }
+            }
         }
 
         favouriteMoviesCard.setOnClickListener {
-            updateCardBackground(favouriteMoviesCard, favouriteMoviesText)
+
+            _allFavouriteList?.let { allFavouriteList ->
+                // Check if already shows card is checked or not
+                if (favouriteShowsCard.isChecked) {
+                    // Then uncheck shows card & check movie card
+                    updateCardBackground(
+                        favouriteShowsCard,
+                        favouriteShowsText
+                    ) // this will uncheck shows card
+
+                    // Now check movie card
+                    updateCardBackground(favouriteMoviesCard, favouriteMoviesText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allFavouriteList.filter {
+                        !it.title.isNullOrEmpty()
+                    }
+                    favouritesAdapter.submitList(filteredList)
+                } else {
+                    // Now check movie card
+                    updateCardBackground(favouriteMoviesCard, favouriteMoviesText)
+                    // Now submit the filtered list
+                    if (favouriteMoviesCard.isChecked) {
+                        val filteredList: List<MovieResult> = allFavouriteList.filter {
+                            !it.title.isNullOrEmpty()
+                        }
+                        favouritesAdapter.submitList(filteredList)
+                    } else {
+                        favouritesAdapter.submitList(_allFavouriteList)
+                    }
+                }
+            }
         }
 
         favouriteShowsCard.setOnClickListener {
-            updateCardBackground(favouriteShowsCard, favouriteShowsText)
+
+            _allFavouriteList?.let { allFavouriteList ->
+                // Check if already movie card is checked or not
+                if (favouriteMoviesCard.isChecked) {
+                    // Then uncheck movie card & check shows card
+                    updateCardBackground(
+                        favouriteMoviesCard,
+                        favouriteMoviesText
+                    ) // this will uncheck movie card
+
+                    // Now check show card
+                    updateCardBackground(favouriteShowsCard, favouriteShowsText)
+                    // Now submit the filtered list
+                    val filteredList: List<MovieResult> = allFavouriteList.filter {
+                        it.title.isNullOrEmpty()
+                    }
+                    favouritesAdapter.submitList(filteredList)
+                } else {
+                    // check show card
+                    updateCardBackground(favouriteShowsCard, favouriteShowsText)
+                    // Now submit the filtered list
+                    if (favouriteShowsCard.isChecked) {
+                        val filteredList: List<MovieResult> = allFavouriteList.filter {
+                            it.title.isNullOrEmpty()
+                        }
+                        favouritesAdapter.submitList(filteredList)
+                    } else
+                        favouritesAdapter.submitList(_allFavouriteList)
+                }
+            }
+
         }
     }
 
@@ -138,37 +388,41 @@ class AccountFragment : Fragment() {
 
         // Setting WatchList RV
         watchListAdapter = HorizontalAdapter {
-            parentFragmentManager.setFragmentResult(
-                "home_movie_key",
-                bundleOf(
-                    "genre_ids_list" to it.genreIds,
-                    "movie_title" to (it.title ?: it.tvShowName),
-                    "isMovie" to !it.title.isNullOrBlank(),
-                    "movie_overview" to it.overview,
-                    "movie_image_url" to it.backdropPath,
-                    "movie_year" to (it.releaseDate ?: it.tvShowFirstAirDate),
-                    "movie_id" to it.id,
-                )
-            )
-
-            findNavController().navigate(R.id.action_navigation_account_to_detailFragment)
+            openDetailBottomSheet(it)
         }
         rvWatchlist.setHasFixedSize(true)
         rvWatchlist.adapter = watchListAdapter
 
         // Setting Rating RV
-        ratingsAdapter = HorizontalAdapter {
-
+        ratingsAdapter = RatedMoviesAdapter {
+            openDetailBottomSheet(it)
         }
         rvRatings.setHasFixedSize(true)
         rvRatings.adapter = ratingsAdapter
 
         // Setting Favourites RV
         favouritesAdapter = HorizontalAdapter {
-
+            openDetailBottomSheet(it)
         }
         rvFavourites.setHasFixedSize(true)
         rvFavourites.adapter = favouritesAdapter
+    }
+
+    private fun openDetailBottomSheet(movieResult: MovieResult) {
+        parentFragmentManager.setFragmentResult(
+            MEDIA_SEND_REQUEST_KEY,
+            bundleOf(
+                GENRES_ID_LIST_KEY to movieResult.genreIds,
+                MEDIA_TITLE_KEY to (movieResult.title ?: movieResult.tvShowName),
+                IS_IT_A_MOVIE_KEY to !movieResult.title.isNullOrEmpty(),
+                MEDIA_OVERVIEW_KEY to movieResult.overview,
+                MEDIA_IMAGE_KEY to movieResult.backdropPath,
+                MEDIA_YEAR_KEY to (movieResult.releaseDate ?: movieResult.tvShowFirstAirDate),
+                MEDIA_ID_KEY to movieResult.id,
+                MEDIA_RATING_KEY to String.format("%.1f", movieResult.voteAverage)
+            )
+        )
+        findNavController().navigate(R.id.action_navigation_account_to_detailFragment)
     }
 
     private fun checkLoginStatus() = viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -199,11 +453,6 @@ class AccountFragment : Fragment() {
         _accountId = authViewModel.getAccountId().first()
         val userName = authViewModel.getUserName().first()
 
-        Log.d(
-            "accountId&userName",
-            "getUserDetailsFromPrefs: accountId: $_accountId | userName: $userName"
-        )
-
         if (_accountId != null && userName != null) {
             binding.userName.text = userName
             // Now fetch Watchlist, rated, favourite lis ts
@@ -212,56 +461,9 @@ class AccountFragment : Fragment() {
     }
 
     private fun fetchLists(accountId: Int, sessionId: String) {
-
         authViewModel.getWatchList(accountId, sessionId)
-        authViewModel.watchList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.watchlistPlaceholder.isGone = !isLoading
-                binding.rvWatchlist.isGone = isLoading
-            }
-            when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Loading -> binding.apply {}
-                is Resource.Success -> {
-                    allWatchList = it.data!! as ArrayList
-                    watchListAdapter.submitList(it.data!!)
-                }
-            }
-        }
-
         authViewModel.getRatedMovies(accountId, sessionId)
-        authViewModel.ratingList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.ratingsPlaceholder.isGone = !isLoading
-                binding.rvRatings.isGone = isLoading
-            }
-            when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Loading -> {
-                }
-                is Resource.Success -> {
-                    allRatingList = it.data!! as ArrayList
-                    ratingsAdapter.submitList(it.data!!)
-                }
-            }
-        }
-
         authViewModel.getFavouriteList(accountId, sessionId)
-        authViewModel.favouriteList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.favouritePlaceholder.isGone = !isLoading
-                binding.rvFavourites.isGone = isLoading
-            }
-            when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Loading -> {
-                }
-                is Resource.Success -> {
-                    allfavouriteList = it.data!! as ArrayList
-                    favouritesAdapter.submitList(it.data!!)
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {

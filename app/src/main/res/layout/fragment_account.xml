@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.account.AccountFragment">
 
     <include
         android:id="@+id/not_sign_in_layout"
@@ -48,9 +49,9 @@
                     android:layout_marginEnd="@dimen/_4sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_bold"
-                    tools:text="Haid-Faiz"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_16ssp"
+                    tools:text="Haid-Faiz" />
 
                 <ImageView
                     android:id="@+id/log_out_btn"
@@ -99,10 +100,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/_1sdp"
                         android:layout_toStartOf="@id/watchlist_shows_card"
-                        app:cardCornerRadius="@dimen/_8sdp"
-                        app:checkedIcon="@null"
                         android:checkable="true"
                         app:cardBackgroundColor="@color/dark_gray"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -126,11 +127,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:checkable="true"
-                        app:checkedIcon="@null"
-                        app:cardBackgroundColor="@color/dark_gray"
                         android:layout_marginStart="@dimen/_4sdp"
+                        android:checkable="true"
+                        app:cardBackgroundColor="@color/dark_gray"
                         app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -140,8 +141,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/hind"
-                            android:paddingVertical="@dimen/_1sdp"
                             android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingVertical="@dimen/_1sdp"
                             android:text="TV Shows"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp" />
@@ -157,17 +158,32 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:paddingHorizontal="@dimen/_2sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster" />
+
+                <TextView
+                    android:id="@+id/empty_watchlist_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_124sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:text="You haven't added any movie/show in watchlist."
+                    android:textColor="@color/text_secondary" />
 
                 <LinearLayout
                     android:id="@+id/watchlist_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
@@ -230,12 +246,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_1sdp"
                         android:layout_toStartOf="@id/rating_shows_card"
                         android:checkable="true"
-                        app:checkedIcon="@null"
                         app:cardBackgroundColor="@color/dark_gray"
                         app:cardCornerRadius="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_1sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -246,8 +262,8 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/hind"
                             android:paddingHorizontal="@dimen/_12sdp"
-                            android:text="Movies"
                             android:paddingVertical="1dp"
+                            android:text="Movies"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp" />
 
@@ -261,9 +277,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:checkable="true"
-                        app:checkedIcon="@null"
                         app:cardBackgroundColor="@color/dark_gray"
                         app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -274,8 +290,8 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/hind"
                             android:paddingHorizontal="@dimen/_12sdp"
-                            android:text="TV Shows"
                             android:paddingVertical="1dp"
+                            android:text="TV Shows"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp" />
 
@@ -294,13 +310,26 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster" />
 
+                <TextView
+                    android:id="@+id/empty_ratings_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_124sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:text="You haven't rated any movie/show yet."
+                    android:textColor="@color/text_secondary" />
+
                 <LinearLayout
                     android:id="@+id/ratings_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
@@ -364,12 +393,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_1sdp"
                         android:layout_toStartOf="@id/favourite_shows_card"
                         android:checkable="true"
-                        app:checkedIcon="@null"
                         app:cardBackgroundColor="@color/dark_gray"
-                        android:layout_marginEnd="@dimen/_1sdp"
                         app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -380,8 +409,8 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/hind"
                             android:paddingHorizontal="@dimen/_12sdp"
-                            android:text="Movies"
                             android:paddingVertical="1dp"
+                            android:text="Movies"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp" />
 
@@ -395,9 +424,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:checkable="true"
-                        app:checkedIcon="@null"
                         app:cardBackgroundColor="@color/dark_gray"
                         app:cardCornerRadius="@dimen/_8sdp"
+                        app:checkedIcon="@null"
                         app:strokeColor="@color/text_secondary"
                         app:strokeWidth="1dp">
 
@@ -407,8 +436,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/hind"
-                            android:paddingVertical="1dp"
                             android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingVertical="1dp"
                             android:text="TV Shows"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/_10ssp" />
@@ -428,13 +457,26 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster" />
 
+                <TextView
+                    android:id="@+id/empty_favourites_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_124sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:text="You haven't marked any movie/show as favourite."
+                    android:textColor="@color/text_secondary" />
+
                 <LinearLayout
                     android:id="@+id/favourite_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
