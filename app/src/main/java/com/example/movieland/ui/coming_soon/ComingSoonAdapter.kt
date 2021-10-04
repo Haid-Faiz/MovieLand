@@ -11,7 +11,7 @@ import com.example.movieland.databinding.ItemComingSoonBinding
 import com.example.movieland.utils.Constants
 
 class ComingSoonAdapter(
-    private var onLikeClick: (movieResult: MovieResult) -> Unit,
+    private var onImageClick: (movieResult: MovieResult) -> Unit,
     private var onFirstLoad: (movieResult: MovieResult) -> Unit,
 ) : ListAdapter<MovieResult, ComingSoonAdapter.ViewHolder>(DiffUtilCallback()) {
 
@@ -36,7 +36,7 @@ class ComingSoonAdapter(
         fun bind(movieResult: MovieResult) = binding.apply {
             movieImage.load(Constants.TMDB_IMAGE_BASE_URL_W780.plus(movieResult.posterPath))
             this.root.setOnClickListener {
-
+                onImageClick(movieResult)
             }
         }
     }

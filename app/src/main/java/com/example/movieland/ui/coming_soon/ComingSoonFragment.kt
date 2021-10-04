@@ -14,15 +14,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
-import com.example.movieland.ui.home.HomeViewModel
+import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.showSnackBar
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ComingSoonFragment : Fragment() {
@@ -32,9 +35,10 @@ class ComingSoonFragment : Fragment() {
     private lateinit var genreAdapter: GenreAdapter
     private val binding get() = _binding!!
     private lateinit var navController: NavController
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: ComingSoonViewModel by viewModels()
     private var isFirstPrinted: Boolean = false
     private lateinit var popInAnim: Animation
+    private var _movieResult: MovieResult? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +54,8 @@ class ComingSoonFragment : Fragment() {
         popInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpRecyclerview()
 
-        viewModel.getUpcomingMovies()
-        viewModel.movieListUpcoming.observe(viewLifecycleOwner) {
+        viewModel.getComingSoonMovies()
+        viewModel.comingSoon.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
                     showSnackBar(it.message ?: "Something went wrong")
@@ -76,15 +80,10 @@ class ComingSoonFragment : Fragment() {
             onImageClick = {
                 // Goto Player Fragment
                 parentFragmentManager.setFragmentResult(
-                    "home_movie_key",
+                    Constants.MEDIA_PLAY_REQUEST_KEY,
                     bundleOf(
-                        "genre_ids_list" to it.genreIds,
-                        "movie_title" to (it.title ?: it.tvShowName),
-                        "isMovie" to !it.title.isNullOrBlank(),
-                        "movie_overview" to it.overview,
-                        "movie_image_url" to it.backdropPath,
-                        "movie_year" to (it.releaseDate ?: it.tvShowFirstAirDate),
-                        "movie_id" to it.id
+                        Constants.MEDIA_ID_KEY to it.id,
+                        Constants.IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty()
                     )
                 )
                 navController.navigate(R.id.action_navigation_coming_soon_to_playerFragment)
@@ -94,10 +93,12 @@ class ComingSoonFragment : Fragment() {
                     isFirstPrinted = true
                     binding.apply {
                         descriptionBox.startAnimation(popingAnim)
-                        genreAdapter.submitList(Helpers.getGenreListFromIds(it.genreIds))
+                        _movieResult = it
                         title.text = it.title
                         overview.text = it.overview
                         releaseDate.text = "Coming on ${it.releaseDate}"
+                        genreAdapter.submitList(Helpers.getMovieGenreListFromIds(it.genreIds))
+                        setUpWatchListClick(it)
                     }
                 }
             })
@@ -117,38 +118,44 @@ class ComingSoonFragment : Fragment() {
                 override fun onItemSelected(position: Int) {
                     val movieResult = adapter.getSelectedItem(position)
                     descriptionBox.startAnimation(popingAnim)
+                    _movieResult = movieResult
                     title.text = movieResult.title
                     // Setting the Genre List
-                    genreAdapter.submitList(Helpers.getGenreListFromIds(movieResult.genreIds))
+                    genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
                     overview.text = movieResult.overview
                     releaseDate.text = "Coming on ${movieResult.releaseDate}"
-
-                    addToWatchlist.setOnClickListener {
-                        addToWatchlist.startAnimation(popInAnim)
-                        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                            viewModel.addToWatchList(
-                                accountId = 2121, sessionId = viewModel.getSessionId().first()!!,
-                                addToWatchListRequest = AddToWatchListRequest(
-                                    mediaId = movieResult.id,
-                                    mediaType = "movie",
-                                    watchlist = true
-                                )
-                            ).let {
-                                when (it) {
-                                    is Resource.Error -> {
-                                        showSnackBar(it.message ?: "Something went wrong")
-                                    }
-                                    is Resource.Loading -> { }
-                                    is Resource.Success -> {
-                                        showSnackBar("${movieResult.title} added to watchlist")
-                                    }
-                                }
-                            }
-                        }
-                    }
-
+                    setUpWatchListClick(movieResult)
                 }
             })
+        }
+    }
+
+    private fun setUpWatchListClick(movieResult: MovieResult) = binding.apply {
+
+        addToWatchlist.setOnClickListener {
+            addToWatchlist.startAnimation(popInAnim)
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+
+                viewModel.addToWatchList(
+                    accountId = viewModel.getAccountId().first()!!,
+                    sessionId = viewModel.getSessionId().first()!!,
+                    addToWatchListRequest = AddToWatchListRequest(
+                        mediaId = movieResult.id,
+                        mediaType = "movie",
+                        watchlist = true
+                    )
+                ).let {
+                    when (it) {
+                        is Resource.Error -> withContext(Dispatchers.Main) {
+                            showSnackBar(it.message ?: "Something went wrong")
+                        }
+//                        is Resource.Loading -> { }
+                        is Resource.Success -> withContext(Dispatchers.Main) {
+                            showSnackBar("${movieResult.title} added to watchlist")
+                        }
+                    }
+                }
+            }
         }
     }
 

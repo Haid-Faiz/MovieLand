@@ -43,6 +43,35 @@
                     android:foreground="?selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_close" />
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:background="@drawable/rating_bg"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_2sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_rated_star"
+                        app:tint="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/rating_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:text="7.8"
+                        android:textColor="@color/text_primary" />
+
+                </LinearLayout>
+
+
             </androidx.cardview.widget.CardView>
 
 
@@ -79,16 +108,38 @@
 
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_genres"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:paddingVertical="@dimen/_6sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:ignore="RtlSymmetry"
-                tools:listitem="@layout/item_genre" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--                <ImageView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:tint="@color/text_secondary"-->
+                <!--                    android:layout_gravity="center_vertical"-->
+                <!--                    android:src="@drawable/ic_rated_star"/>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="@dimen/_30sdp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="7.8"-->
+                <!--                    android:layout_gravity="center_vertical"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:textColor="@color/text_primary" />-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_genres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/_6sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="RtlSymmetry"
+                    tools:listitem="@layout/item_genre" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/release_date"

@@ -8,11 +8,11 @@ import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.BaseViewModel
+import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import javax.inject.Inject
 
@@ -20,6 +20,63 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val movieRepo: MoviesRepo
 ) : BaseViewModel(movieRepo) {
+
+    private var _allFeedList: MutableLiveData<Resource<List<HomeFeed>>> = MutableLiveData()
+    var allFeedList: LiveData<Resource<List<HomeFeed>>> = _allFeedList
+
+    init {
+        fetchAllFeedLists()
+    }
+
+    fun fetchAllFeedLists() = viewModelScope.launch {
+        _allFeedList.postValue(Resource.Loading())
+
+        try {
+            coroutineScope {
+                val nowPlayingMoviesListDef: Deferred<Resource<MovieListResponse>> =
+                    async { movieRepo.fetchNowPlayingMovies() }
+                val topRatedMoviesListDef = async { movieRepo.fetchTopRatedMovies() }
+                val upcomingMoviesListDef = async { movieRepo.fetchUpcomingMovies() }
+                val popularMoviesListDef = async { movieRepo.fetchPopularMovies() }
+                val popularTvListDef = async { movieRepo.fetchPopularTvShows() }
+                val trendingMovieListDef = async { movieRepo.fetchTrendingMovies() }
+                val trendingTvListDef = async { movieRepo.fetchTrendingTvShows() }
+
+                val wholeList = mutableListOf<HomeFeed>()
+
+                // Now playing
+                val nowPlayingMoviesList: Resource<MovieListResponse> =
+                    nowPlayingMoviesListDef.await()
+                // Top Rated
+                val topRatedMoviesList = topRatedMoviesListDef.await()
+                // Upcoming Movies
+                val upcomingMoviesList = upcomingMoviesListDef.await()
+                // Popular Movies
+                val popularMoviesList = popularMoviesListDef.await()
+                // Popular Tv
+                val popularTvList = popularTvListDef.await()
+                // Trending Movies
+                val trendingMovieList = trendingMovieListDef.await()
+                // Trending Tv
+                val trendingTvList = trendingTvListDef.await()
+
+                wholeList.add(HomeFeed("Now Playing", nowPlayingMoviesList.data!!.movieResults))
+                wholeList.add(HomeFeed("Top Rated", topRatedMoviesList.data!!.movieResults))
+                wholeList.add(HomeFeed("Upcoming Movies", upcomingMoviesList.data!!.movieResults))
+                wholeList.add(HomeFeed("Popular Movies", popularMoviesList.data!!.movieResults))
+                wholeList.add(HomeFeed("Popular Tv", popularTvList.data!!.movieResults))
+                wholeList.add(HomeFeed("Trending Movies", trendingMovieList.data!!.movieResults))
+                wholeList.add(HomeFeed("Trending Tv", trendingTvList.data!!.movieResults))
+//                wholeList.add(HomeFeed("Trending Tv", trendingTvList.data!!.movieResults))
+//                wholeList.add(HomeFeed("Trending Tv", trendingTvList.data!!.movieResults))
+//                wholeList.add(HomeFeed("Trending Tv", trendingTvList.data!!.movieResults))
+                _allFeedList.postValue(Resource.Success(data = wholeList))
+            }
+        } catch (e: Exception) {
+            _allFeedList.postValue(Resource.Error(message = e.message ?: "Something went wrong"))
+        }
+    }
+
 
     private var _movieListNowPlaying: MutableLiveData<Resource<MovieListResponse>> =
         MutableLiveData()
@@ -57,7 +114,6 @@ class HomeViewModel @Inject constructor(
 //        _movieListUpcoming.postValue(movieRepo.fetchUpcomingMovies())
         return movieRepo.fetchMoviesByGenres(genresIds = genresIds)
     }
-
 
 
     suspend fun getAnime(genresIds: String): Resource<MovieListResponse> {
