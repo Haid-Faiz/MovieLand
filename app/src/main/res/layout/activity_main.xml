@@ -21,8 +21,9 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/bottom_bar_color"
+        style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+        app:itemIconTint="@color/bottom_bar_color"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />

@@ -3,28 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager_auth"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_12sdp"
-        app:layout_constraintBottom_toTopOf="@+id/dots_indicator"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
+    <ImageView
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_16sdp"
-        android:gravity="center_horizontal"
-        android:text="M"
-        android:textColor="@color/red"
-        android:textSize="@dimen/_22ssp"
-        android:textStyle="bold"
-        android:translationZ="@dimen/_7sdp"
+        android:src="@drawable/ic_movieland_logo"
+        android:translationZ="@dimen/_100sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,16 +26,24 @@
         android:text="SKIP"
         android:textAllCaps="false"
         android:textColor="@color/text_primary"
-        android:translationZ="@dimen/_7sdp"
+        android:translationZ="@dimen/_100sdp"
         app:layout_constraintBottom_toBottomOf="@id/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/app_name" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_auth"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@+id/dots_indicator"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.zhpan.indicator.IndicatorView
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         app:layout_constraintBottom_toTopOf="@id/button_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

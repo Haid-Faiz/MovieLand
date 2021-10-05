@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_124sdp"
-        android:layout_alignTop="@+id/intro_image"
-        android:background="@drawable/intro_bg"
-        android:translationZ="@dimen/_72sdp" />
+        android:layout_height="@dimen/_118sdp"
+        android:background="@drawable/gradient_top"
+        android:translationZ="@dimen/_72sdp"
+        app:layout_constraintTop_toTopOf="@id/intro_image" />
 
     <ImageView
         android:id="@+id/intro_image"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_396sdp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/intro_1" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/fast_saga" />
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_216sdp"
-        android:layout_alignBottom="@+id/intro_image"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/intro_bg_down"
-        android:translationZ="@dimen/_72sdp" />
+        android:background="@drawable/gradient_bottom"
+        android:translationZ="@dimen/_72sdp"
+        app:layout_constraintBottom_toBottomOf="@id/intro_image" />
 
     <TextView
         android:id="@+id/intro_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/intro_image"
-        android:layout_marginBottom="@dimen/_18sdp"
         android:layout_marginStart="@dimen/_36sdp"
         android:layout_marginEnd="@dimen/_36sdp"
-        android:textAlignment="center"
-        android:translationZ="@dimen/_72sdp"
+        android:layout_marginBottom="@dimen/_24sdp"
         android:text="Unlimited entertainment, one low price."
+        android:textAlignment="center"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/_28ssp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:translationZ="@dimen/_72sdp"
+        app:layout_constraintBottom_toBottomOf="@id/intro_image" />
 
     <TextView
         android:id="@+id/intro_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/intro_title"
+        android:layout_below="@+id/intro_title"
         android:layout_marginStart="@dimen/_36sdp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_36sdp"
         android:text="Everything on Netflix, starting at just Rs 199"
         android:textAlignment="center"
         android:textColor="@color/text_secondary"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
-        android:translationZ="@dimen/_72sdp" />
+        android:translationZ="@dimen/_72sdp"
+        app:layout_constraintTop_toBottomOf="@id/intro_title" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

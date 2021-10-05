@@ -27,7 +27,7 @@ class IntroPagerAdapter : RecyclerView.Adapter<IntroPagerAdapter.ViewHolder>() {
             when (position) {
                 0 -> {
                     introTitle.text = "Unlimited entertainment, one low price."
-                    introDescription.text = "Everything on Netflix, starting at just Rs 199"
+                    introDescription.text = "Everything on MovieLand, starting at just Rs 0"
                     introImage.load(R.drawable.intro_1)
                 }
                 1 -> {
@@ -38,7 +38,7 @@ class IntroPagerAdapter : RecyclerView.Adapter<IntroPagerAdapter.ViewHolder>() {
                 2 -> {
                     introTitle.text = "Rate movies, comment on movies."
                     introDescription.text = "It's a world of movies"
-                    introImage.load(R.drawable.avengers_blue)
+                    introImage.load(R.drawable.fast_saga)
                 }
                 else -> {
 
