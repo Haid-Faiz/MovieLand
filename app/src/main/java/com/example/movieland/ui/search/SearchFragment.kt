@@ -25,6 +25,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentSearchBinding
 import com.example.movieland.ui.home.HorizontalAdapter
+import com.example.movieland.utils.Constants
+import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
+import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
+import com.example.movieland.utils.Constants.MEDIA_ID_KEY
+import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
+import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
+import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
+import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
+import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
+import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -61,12 +71,27 @@ class SearchFragment : Fragment() {
                     binding.querySearchIcon.isVisible = false
                     binding.emptySearchContent.isGone = true
                     binding.searchedResultLl.isGone = false
+                    // Show searching progress bar
+                    binding.searchingProgressBar.isGone = false
+                    binding.searchedResultRv.isGone = true
                     performSearch(it.trim().toString())
                 } else {
                     binding.eraseQueryBtn.isGone = true
                     binding.querySearchIcon.isVisible = true
                     binding.emptySearchContent.isGone = false
                     binding.searchedResultLl.isGone = true
+                }
+            }
+        }
+
+        searchViewModel.searchedMovies.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Error -> { TODO() }
+                is Resource.Loading -> binding.apply {}
+                is Resource.Success -> binding.apply {
+                    searchingProgressBar.isGone = true
+                    searchedResultRv.isGone = false
+                    horizontalAdapter.submitList(it.data?.movieResults)
                 }
             }
         }
@@ -78,18 +103,6 @@ class SearchFragment : Fragment() {
                 is Resource.Loading -> TODO()
                 is Resource.Success -> {
                     topSearchesAdapter.submitList(it.data?.movieResults)
-                }
-            }
-        }
-
-        searchViewModel.searchedMovies.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Error -> {
-//                    TODO()
-                }
-                is Resource.Loading -> TODO()
-                is Resource.Success -> {
-                    horizontalAdapter.submitList(it.data?.movieResults)
                 }
             }
         }
@@ -123,12 +136,16 @@ class SearchFragment : Fragment() {
         topSearchesAdapter = TopSearchesAdapter {
             navController.navigate(R.id.action_navigation_search_to_detailFragment)
             parentFragmentManager.setFragmentResult(
-                "home_movie_key",
+                MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
-                    "movie_title" to it.title,
-                    "movie_overview" to it.overview,
-                    "movie_image_url" to it.posterPath,
-                    "movie_year" to it.releaseDate
+                    GENRES_ID_LIST_KEY to it.genreIds,
+                    MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
+                    IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
+                    MEDIA_OVERVIEW_KEY to it.overview,
+                    MEDIA_IMAGE_KEY to it.backdropPath,
+                    MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
+                    MEDIA_ID_KEY to it.id,
+                    MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
         }
@@ -137,12 +154,16 @@ class SearchFragment : Fragment() {
         horizontalAdapter = HorizontalAdapter {
             navController.navigate(R.id.action_navigation_search_to_detailFragment)
             parentFragmentManager.setFragmentResult(
-                "home_movie_key",
+                MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
-                    "movie_title" to it.title,
-                    "movie_overview" to it.overview,
-                    "movie_image_url" to it.posterPath,
-                    "movie_year" to it.releaseDate
+                    GENRES_ID_LIST_KEY to it.genreIds,
+                    MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
+                    IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
+                    MEDIA_OVERVIEW_KEY to it.overview,
+                    MEDIA_IMAGE_KEY to it.backdropPath,
+                    MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
+                    MEDIA_ID_KEY to it.id,
+                    MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
         }

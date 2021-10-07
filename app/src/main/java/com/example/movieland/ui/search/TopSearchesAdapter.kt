@@ -27,7 +27,7 @@ class TopSearchesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult: MovieResult) = binding.apply {
-            movieImage.load(Constants.TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
+            movieImage.load(Constants.TMDB_IMAGE_BASE_URL_W500.plus(movieResult.backdropPath))
             movieNameText.text = movieResult.title
             root.setOnClickListener {
                 onMovieClick(movieResult)

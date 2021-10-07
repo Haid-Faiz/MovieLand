@@ -11,10 +11,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,12 +23,15 @@
 
             <EditText
                 android:id="@+id/search_query_et"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/query_search_icon"
+                android:layout_marginEnd="@dimen/_36sdp"
+                android:autofillHints="name"
+                android:layout_alignParentEnd="true"
                 android:backgroundTint="@color/divider"
                 android:hint="Search for movies..."
+                android:imeOptions="actionDone"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary"
                 android:textSize="@dimen/_12ssp" />
@@ -54,19 +57,19 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-
     <LinearLayout
         android:id="@+id/searched_result_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <TextView
+            android:id="@+id/searched_result_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
@@ -77,12 +80,22 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:id="@+id/searching_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_42sdp"
+            android:layout_gravity="center_horizontal"
+            android:indeterminateTint="@color/red" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searched_result_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_2sdp"
             android:focusable="true"
+            android:paddingHorizontal="@dimen/_6sdp"
             android:focusableInTouchMode="true"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
@@ -97,12 +110,13 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <TextView
+            android:id="@+id/top_searches_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
@@ -117,6 +131,7 @@
             android:id="@+id/top_searches_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_6sdp"
             android:layout_marginTop="@dimen/_2sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_top_movie" />

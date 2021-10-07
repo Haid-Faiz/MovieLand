@@ -28,6 +28,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun searchedMovies(searchQuery: String) = viewModelScope.launch {
+        _searchedMovies.postValue(Resource.Loading())
         _searchedMovies.postValue(moviesRepo.fetchSearchedMovies(searchQuery))
     }
 }

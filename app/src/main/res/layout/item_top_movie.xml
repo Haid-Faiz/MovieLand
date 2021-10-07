@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,21 +10,32 @@
     android:foreground="?selectableItemBackgroundBorderless"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:layout_marginTop="@dimen/_4sdp">
+    android:layout_marginTop="@dimen/_6sdp"
+    android:layout_marginBottom="@dimen/_2sdp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp">
 
     <ImageView
         android:id="@+id/movie_image"
         android:layout_width="@dimen/_124sdp"
-        android:layout_height="@dimen/_84sdp"
+        android:layout_height="@dimen/_82sdp"
         android:scaleType="centerCrop"
-        android:background="@drawable/placeholder" />
+        android:background="@drawable/poster_bg"
+        tools:src="@tools:sample/backgrounds/scenic"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <TextView
         android:id="@+id/movie_name_text"
         android:layout_width="0dp"
         android:textColor="@color/text_secondary"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/_2sdp"
+        android:paddingHorizontal="@dimen/_2sdp"
+        android:fontFamily="@font/montserrat"
         android:layout_marginStart="@dimen/_6sdp"
         android:layout_weight="1"
         tools:text="Batman 3" />
@@ -31,7 +43,6 @@
     <ImageView
         android:layout_width="@dimen/_22sdp"
         android:layout_height="@dimen/_22sdp"
-        android:layout_marginHorizontal="@dimen/_6sdp"
         android:src="@drawable/ic_play_circle_outline" />
 
 </LinearLayout>
