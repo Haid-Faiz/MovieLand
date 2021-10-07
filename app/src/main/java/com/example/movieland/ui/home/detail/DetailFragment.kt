@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentDetailBsdBinding
-import com.example.movieland.ui.coming_soon.GenreAdapter
+import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -92,7 +92,10 @@ class DetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setUpGenreRecyclerView() {
-        genreAdapter = GenreAdapter(ContextCompat.getColor(requireContext(), R.color.dark_gray))
+        genreAdapter = GenreAdapter(
+            cardBackColor = ContextCompat.getColor(requireContext(), R.color.dark_gray),
+            cardStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
+        )
         binding.rvGenres.setHasFixedSize(true)
         binding.rvGenres.adapter = genreAdapter
     }

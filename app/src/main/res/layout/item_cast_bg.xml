@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    android:orientation="vertical"
+    app:shimmer_auto_start="true">
+
+    <View
+        android:layout_width="@dimen/_56sdp"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_dark_grey_bg" />
+
+    <View
+        android:id="@+id/crew_real_name"
+        android:layout_width="@dimen/_52sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@drawable/poster_bg" />
+
+    <View
+        android:id="@+id/crew_character_name"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/poster_bg" />
+
+</LinearLayout>

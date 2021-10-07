@@ -53,262 +53,321 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/title_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_20ssp"
-                    android:textStyle="bold"
-                    tools:text="Avengers: Age of ultron" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_6sdp">
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_8sdp">
+
 
                     <TextView
-                        android:id="@+id/year_text"
+                        android:id="@+id/title_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        tools:text="2016" />
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_20ssp"
+                        android:textStyle="bold"
+                        tools:text="Avengers: Age of ultron" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/hd_tag"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="0dp">
-
-                        <TextView
-                            android:id="@+id/hd_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="HD"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/runtime_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        tools:text="2h 31m" />
-
-                    <LinearLayout
-                        android:id="@+id/rating_ll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_star"
-                            app:tint="@color/text_secondary" />
-
-                        <TextView
-                            android:id="@+id/rating_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="0dp"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            tools:text="8.8" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_genres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:paddingVertical="@dimen/_6sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:ignore="RtlSymmetry"
-                    tools:listitem="@layout/item_genre" />
-
-                <TextView
-                    android:id="@+id/overview_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/hind"
-                    android:lineHeight="20sp"
-                    android:maxLines="4"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp"
-                    tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="4">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/add_to_list_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"
-                        android:text="My List"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10ssp"
-                        app:icon="@drawable/ic_add"
-                        app:iconGravity="top"
-                        app:iconSize="@dimen/_16sdp"
-                        app:iconTint="@color/white" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/favourite_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"
-                        android:text="Favourite"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10ssp"
-                        app:icon="@drawable/ic_favorite_outline"
-                        app:iconGravity="top"
-                        app:iconSize="@dimen/_16sdp"
-                        app:iconTint="@color/white" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/rate_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"
-                        android:text="Rate"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10ssp"
-                        app:icon="@drawable/ic_star_outline"
-                        app:iconGravity="top"
-                        app:iconSize="@dimen/_16sdp"
-                        app:iconTint="@color/white" />
-
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/share_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"
-                        android:text="Share"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10ssp"
-                        app:icon="@drawable/ic_share"
-                        app:iconGravity="top"
-                        app:iconSize="@dimen/_16sdp"
-                        app:iconTint="@color/white" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/divider" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/movies_tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/black"
-                    android:theme="@style/TabLayoutTheme"
-                    android:visibility="visible"
-                    app:tabIndicatorFullWidth="false"
-                    app:tabIndicatorGravity="top"
-                    app:tabIndicatorHeight="@dimen/_3sdp"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/text_primary"
-                    app:tabTextAppearance="@style/TabText"
-                    app:tabTextColor="@color/text_secondary">
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MORE LIKE THIS" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TRAILERS &amp; MORE" />
-
-                </com.google.android.material.tabs.TabLayout>
-
-                <LinearLayout
-                    android:id="@+id/shows_tab_ll"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_weight="1"
-                    tools:visibility="visible"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/shows_tab_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/black"
-                        android:theme="@style/TabLayoutTheme"
-                        app:tabIndicatorFullWidth="false"
-                        app:tabIndicatorGravity="top"
-                        app:tabIndicatorHeight="@dimen/_3sdp"
-                        app:tabMode="scrollable"
-                        app:tabSelectedTextColor="@color/text_primary"
-                        app:tabTextAppearance="@style/TabText"
-                        app:tabTextColor="@color/text_secondary">
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_6sdp">
 
-                        <com.google.android.material.tabs.TabItem
+                        <TextView
+                            android:id="@+id/year_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="EPISODES" />
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp"
+                            tools:text="2016" />
 
-                        <com.google.android.material.tabs.TabItem
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="MORE LIKE THIS" />
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/hd_tag"
+                            android:paddingHorizontal="4dp"
+                            android:paddingVertical="0dp">
 
-                        <com.google.android.material.tabs.TabItem
+                            <TextView
+                                android:id="@+id/hd_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="HD"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/runtime_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TRAILERS &amp; MORE" />
+                            android:layout_marginStart="8dp"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp"
+                            tools:text="2h 31m" />
 
-                    </com.google.android.material.tabs.TabLayout>
+                        <LinearLayout
+                            android:id="@+id/rating_ll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_star"
+                                app:tint="@color/text_secondary" />
+
+                            <TextView
+                                android:id="@+id/rating_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="0dp"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp"
+                                tools:text="8.8" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_genres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:paddingVertical="@dimen/_6sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="RtlSymmetry"
+                        tools:listitem="@layout/item_genre" />
+
+                    <TextView
+                        android:id="@+id/overview_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/hind"
+                        android:maxLines="4"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@color/black_light"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/add_to_list_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:text="My List"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            app:icon="@drawable/ic_add"
+                            app:iconGravity="top"
+                            app:iconSize="@dimen/_16sdp"
+                            app:iconTint="@color/white" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/favourite_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:text="Favourite"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            app:icon="@drawable/ic_favorite_outline"
+                            app:iconGravity="top"
+                            app:iconSize="@dimen/_16sdp"
+                            app:iconTint="@color/white" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/rate_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:text="Rate"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            app:icon="@drawable/ic_star_outline"
+                            app:iconGravity="top"
+                            app:iconSize="@dimen/_16sdp"
+                            app:iconTint="@color/white" />
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/share_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:text="Share"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            app:icon="@drawable/ic_share"
+                            app:iconGravity="top"
+                            app:iconSize="@dimen/_16sdp"
+                            app:iconTint="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <!--                <View-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="1dp"-->
+                <!--                    android:layout_marginTop="@dimen/_8sdp"-->
+                <!--                    android:background="@color/divider" />-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_8sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/_3sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:background="@drawable/vertical_show_line" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Top Billed Cast"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_crews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:visibility="visible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_cast" />
+
+                    <LinearLayout
+                        android:id="@+id/cast_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_6sdp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:visibility="gone">
+
+                        <include
+                            layout="@layout/item_cast_bg"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <include
+                            layout="@layout/item_cast_bg"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <include
+                            layout="@layout/item_cast_bg"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <include
+                            layout="@layout/item_cast_bg"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/episodes_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@color/black_light"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:visibility="visible">
+
+                    <View
+                        android:id="@+id/v"
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_toEndOf="@id/v"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Episodes"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_14ssp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/pick_season_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
                         android:backgroundTint="@color/dark_gray"
                         android:fontFamily="@font/montserrat"
                         android:text="Season 1"
@@ -320,40 +379,149 @@
                         app:iconGravity="textEnd" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_episodes_list"
+                        android:id="@+id/rv_episodes"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pick_season_btn"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="8"
                         tools:listitem="@layout/item_episode" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_8sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black_light"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/_3sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:background="@drawable/vertical_show_line" />
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/media_tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/black_light"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMode="scrollable"
+                            app:tabSelectedTextColor="@color/text_primary"
+                            app:tabTextAppearance="@style/TabText"
+                            app:tabTextColor="@color/text_secondary">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recommendations" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="More like this" />
+
+                        </com.google.android.material.tabs.TabLayout>
+
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_similar_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:paddingHorizontal="@dimen/_4sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="15"
+                        tools:listitem="@layout/item_poster" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recommendations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:paddingHorizontal="@dimen/_4sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/item_poster" />
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_similar_list"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="visible"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    tools:itemCount="15"
-                    tools:listitem="@layout/item_poster" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_8sdp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_more_videos_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/item_video" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/_3sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:background="@drawable/vertical_show_line" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_6sdp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Trailers &amp; More"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/_14ssp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/empty_more_videos_msg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_124sdp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserrat"
+                        android:gravity="center"
+                        android:text="Sorry, no extra videos or clips available for this."
+                        android:textColor="@color/text_secondary" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_more_videos_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_2sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/item_video" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

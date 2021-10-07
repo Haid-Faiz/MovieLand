@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movieland.databinding.FragmentPlayerBinding
@@ -18,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -28,7 +28,8 @@ import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.*
 import com.example.movieland.R
 import com.example.movieland.databinding.RatingDialogBinding
-import com.example.movieland.ui.coming_soon.GenreAdapter
+import com.example.movieland.ui.CastListAdapter
+import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
@@ -40,8 +41,8 @@ import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
-import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
+import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.showSnackBar
@@ -63,10 +64,12 @@ class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModels()
 
     // Adapters
-    private lateinit var similarMoviesAdapter: HorizontalAdapter
+    private lateinit var similarMediaAdapter: HorizontalAdapter
+    private lateinit var recommendationsAdapter: HorizontalAdapter
     private lateinit var tvShowEpisodesAdapter: TvShowEpisodesAdapter
     private lateinit var moreVideosAdapter: MoreVideosAdapter
     private lateinit var genreAdapter: GenreAdapter
+    private lateinit var castAdapter: CastListAdapter
 
     private var _isItMovie: Boolean = true
     private var _id: Int? = null
@@ -76,6 +79,7 @@ class PlayerFragment : Fragment() {
     private var _currentMovie: MovieDetailResponse? = null
     private var _currentTvShow: TvShowDetailsResponse? = null
     private lateinit var popingAnim: Animation
+
 //    private var videoKey: String? = null
     // Player state helper variables
 //    private var playWhenReady = true
@@ -149,7 +153,7 @@ class PlayerFragment : Fragment() {
                             mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
                             isMovie = _isItMovie,
                             sessionId = viewModel.getSessionId().first()!!,
-                            mediaRatingRequest = MediaRatingRequest(ratingBar.rating*2)
+                            mediaRatingRequest = MediaRatingRequest(ratingBar.rating * 2)
                         ).let {
                             when (it) {
                                 is Resource.Error -> {
@@ -207,7 +211,7 @@ class PlayerFragment : Fragment() {
                     sessionId = viewModel.getSessionId().first()!!,
                     addToFavouriteRequest = AddToFavouriteRequest(
                         mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                        mediaType = if (_isItMovie) "movie" else "tv",
+                        mediaType = if (_isItMovie) MOVIE else "tv",
                         favorite = true
                     )
                 ).let { response ->
@@ -227,12 +231,10 @@ class PlayerFragment : Fragment() {
         shareButton.setOnClickListener {
 
         }
-
     }
 
     private fun setUpObservers() {
         viewModel.movieDetail.observe(viewLifecycleOwner) {
-            Log.d("LiveObserver0", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
                     TODO()
@@ -242,17 +244,15 @@ class PlayerFragment : Fragment() {
                     shimmerLayout.startShimmer()
                     mainLayout.isGone = true
                 }
-                is Resource.Success -> {
+                is Resource.Success -> binding.apply {
 
                     _currentMovie = it.data!!
-
-                    Log.d("DDLJ", "setUpObservers: ${it.data.id}")
+                    val totalVideos = it.data.videos.videosList as ArrayList
 
                     binding.shimmerLayout.isGone = true
                     binding.mainLayout.isGone = false
                     binding.shimmerLayout.stopShimmer()
 
-                    val totalVideos = it.data.videos.videosList as ArrayList
                     if (totalVideos.isEmpty()) {
                         // No video to play
                         // initializePlayer(key)
@@ -267,14 +267,17 @@ class PlayerFragment : Fragment() {
                         // removing already played trailer from totalVideos
                         totalVideos.remove(trailer)
                     }
-                    updateDetails(movieDetailResponse = it.data)
-                    moreVideosAdapter.submitList(totalVideos)
+                    updateDetails(movieDetails = it.data)
+                    if (totalVideos.isEmpty()) {
+                        emptyMoreVideosMsg.isGone = false
+                        rvMoreVideosList.isGone = true
+                    } else
+                        moreVideosAdapter.submitList(totalVideos)
                 }
             }
         }
 
         viewModel.tvShowDetail.observe(viewLifecycleOwner) {
-            Log.d("LiveObserver1", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
                     TODO()
@@ -285,28 +288,53 @@ class PlayerFragment : Fragment() {
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> {
-                    Log.d("isTvSuccess", "setUpObservers: Success")
 
                     _currentTvShow = it.data!!
+                    _seasonList = it.data.seasons
 
                     binding.shimmerLayout.isGone = true
                     binding.mainLayout.isGone = false
                     binding.shimmerLayout.stopShimmer()
 
-                    _seasonList = it.data.seasons
                     Log.d("CheckSize", "setUpObservers: ${it.data.videos.videosList}")
                     if (it.data.videos.videosList.isNotEmpty()) {
                         val videoKey = it.data.videos.videosList[0].key
                         Log.d("VideoKey", "onViewCreated: $videoKey")
                         initializePlayer(videoKey)
                     }
-                    updateDetails(tvDetailResponse = it.data)
+                    updateDetails(tvDetails = it.data)
                     moreVideosAdapter.submitList(it.data.videos.videosList)
                 }
             }
         }
 
-        viewModel.similarMovies.observe(viewLifecycleOwner) {
+        viewModel.mediaCast.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Error -> TODO()
+                is Resource.Loading -> TODO()
+                is Resource.Success -> {
+                    binding.rvCrews.isGone = false
+                    binding.castBg.isGone = true
+                    castAdapter.submitList(it.data!!.cast)
+                }
+            }
+        }
+
+        viewModel.recommendedMedia.observe(viewLifecycleOwner) {
+
+            when (it) {
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_LONG).show()
+                }
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    recommendationsAdapter.submitList(it.data?.movieResults)
+                }
+            }
+        }
+
+        viewModel.similarMedia.observe(viewLifecycleOwner) {
             Log.d("LiveObserver2", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> {
@@ -316,13 +344,13 @@ class PlayerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     Log.d("SuccessObserver2", " success ")
-                    similarMoviesAdapter.submitList(it.data?.movieResults)
+                    similarMediaAdapter.submitList(it.data?.movieResults)
                 }
             }
         }
 
         viewModel.tvSeasonDetail.observe(viewLifecycleOwner) {
-            Log.d("LiveObserver3", "setUpObservers: called")
+
             when (it) {
                 is Resource.Error -> {
                     TODO()
@@ -343,44 +371,30 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             _isItMovie = bundle.getBoolean(IS_IT_A_MOVIE_KEY)
-            binding.apply {
-                moviesTabLayout.isGone = !_isItMovie
-//                showsTabLayout.isGone = _isItMovie
-                rvSimilarList.isGone = !_isItMovie
-                showsTabLl.isGone = _isItMovie
-//                rvEpisodesList.isGone = _isItMovie
-//                pickSeasonBtn.isGone = _isItMovie
-
-                rvEpisodesList.isGone = _isItMovie
-                rvEpisodesList.layoutMode = ViewGroup.LAYOUT_MODE_CLIP_BOUNDS
-            }
-
+            binding.episodesLayout.isGone = _isItMovie
             setUpTabLayout()
-
             bundle.getInt(MEDIA_ID_KEY).let { mediaId: Int ->
                 _id = mediaId
-                Log.d(
-                    "CheckId", "media: $_id |" +
-                            " currentSeasonNumber: $_currentSeasonNumber"
-                )
-                if (_isItMovie) {
-                    viewModel.getMovieDetail(movieId = mediaId)
-                    viewModel.getSimilarMovies(movieId = mediaId)
-                } else {
-                    viewModel.getTvShowDetail(tvId = mediaId) // using same name for movie and tv id
+
+                if (!_isItMovie) {
+                    viewModel.getTvShowDetail(tvId = mediaId)
                     viewModel.getTvSeasonDetail(
                         tvId = mediaId,
                         seasonNumber = _currentSeasonNumber
                     )
-                    viewModel.getSimilarShows(tvId = mediaId)
+                } else {
+                    viewModel.getMovieDetail(movieId = mediaId)
                 }
+                viewModel.getMediaCast(mediaId, _isItMovie)
+                viewModel.getRecommendationsMedia(mediaId = mediaId, _isItMovie)
+                viewModel.getSimilarMedia(mediaId = mediaId, _isItMovie)
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("isItMovie_Resume", "onResume: $_isItMovie")
+
         if (!_isItMovie) {
             parentFragmentManager.setFragmentResultListener(
                 "options_selected_item_position",
@@ -389,7 +403,6 @@ class PlayerFragment : Fragment() {
                 _currentSeasonNumber = bundle.getInt("season_number", 1)
                 binding.pickSeasonBtn.text = "Season $_currentSeasonNumber"
 
-                Log.d("isitwprking", "onResume: yes")
                 _id?.let {
                     viewModel.getTvSeasonDetail(
                         tvId = it,
@@ -401,33 +414,32 @@ class PlayerFragment : Fragment() {
     }
 
     private fun updateDetails(
-        movieDetailResponse: MovieDetailResponse? = null,
-        tvDetailResponse: TvShowDetailsResponse? = null
+        movieDetails: MovieDetailResponse? = null,
+        tvDetails: TvShowDetailsResponse? = null
     ) = binding.apply {
-        Log.d("updateDetailsIsMovie", "updateDetails: $_isItMovie")
 
-        if (_isItMovie && movieDetailResponse != null) {
+        if (_isItMovie && movieDetails != null) {
             thumbnailContainer.backdropImage.load(
-                TMDB_IMAGE_BASE_URL_W780.plus(movieDetailResponse!!.backdropPath)
+                TMDB_IMAGE_BASE_URL_W780.plus(movieDetails.backdropPath)
             )
-            titleText.text = movieDetailResponse.title
-            overviewText.text = movieDetailResponse.overview
-            yearText.text = movieDetailResponse.releaseDate
-            runtimeText.text = movieDetailResponse.runtime.toString()
-            ratingText.text = String.format("%.1f", movieDetailResponse.voteAverage)
+            titleText.text = movieDetails.title
+            overviewText.text = movieDetails.overview
+            yearText.text = movieDetails.releaseDate
+            runtimeText.text = movieDetails.runtime.toString()
+            ratingText.text = String.format("%.1f", movieDetails.voteAverage)
             // Setting up Genre Adapter
-            genreAdapter.submitList(movieDetailResponse.genres)
+            genreAdapter.submitList(movieDetails.genres)
         } else {
             thumbnailContainer.backdropImage.load(
-                TMDB_IMAGE_BASE_URL_W780.plus(tvDetailResponse!!.backdropPath)
+                TMDB_IMAGE_BASE_URL_W780.plus(tvDetails!!.backdropPath)
             )
-            titleText.text = tvDetailResponse.name
-            overviewText.text = tvDetailResponse.overview
-            yearText.text = tvDetailResponse.firstAirDate
+            titleText.text = tvDetails.name
+            overviewText.text = tvDetails.overview
+            yearText.text = tvDetails.firstAirDate
 //            runtimeText.text = tvDetailResponse.runtime
-            ratingText.text = String.format("%.1f", tvDetailResponse.voteAverage)
+            ratingText.text = String.format("%.1f", tvDetails.voteAverage)
             // Setting up Genre Adapter
-            genreAdapter.submitList(tvDetailResponse.genres)
+            genreAdapter.submitList(tvDetails.genres)
         }
     }
 
@@ -435,44 +447,17 @@ class PlayerFragment : Fragment() {
 
         onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.d("isItaMovie2", "setUpFragmentResultListeners: $_isItMovie")
 
-                if (_isItMovie) {
-                    when (tab?.position) {
-                        0 -> {
-                            // Similar like this Tab
-                            rvSimilarList.isGone = false
-                            rvMoreVideosList.isGone = true
-                        }
-                        1 -> {
-                            // Trailers and more
-                            rvSimilarList.isGone = true
-                            rvMoreVideosList.isGone = false
-                        }
+                when (tab?.position) {
+                    0 -> {
+                        // Similar like this Tab
+                        rvSimilarList.isGone = true
+                        rvRecommendations.isGone = false
                     }
-                } else {
-                    when (tab?.position) {
-                        0 -> {
-                            // Tv shows episodes tab
-                            rvEpisodesList.isGone = false
-                            rvSimilarList.isGone = true
-                            rvMoreVideosList.isGone = true
-                            pickSeasonBtn.isGone = false
-                        }
-                        1 -> {
-                            // Similar like this tab
-                            rvEpisodesList.isGone = true
-                            rvSimilarList.isGone = false
-                            rvMoreVideosList.isGone = true
-                            pickSeasonBtn.isGone = true
-                        }
-                        2 -> {
-                            // Trailers and more tab
-                            rvEpisodesList.isGone = true
-                            rvSimilarList.isGone = true
-                            rvMoreVideosList.isGone = false
-                            pickSeasonBtn.isGone = true
-                        }
+                    1 -> {
+                        // Trailers and more
+                        rvSimilarList.isGone = false
+                        rvRecommendations.isGone = true
                     }
                 }
             }
@@ -481,19 +466,26 @@ class PlayerFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
-        if (_isItMovie) moviesTabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
-        else showsTabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
+        mediaTabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
     }
 
     private fun setUpRecyclerViewAndUi() = binding.apply {
         // Setting up Genre Adapter
-        genreAdapter = GenreAdapter()
+        genreAdapter = GenreAdapter(
+            cardBackColor = ContextCompat.getColor(requireContext(), R.color.black_light),
+            cardStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
+        )
         binding.rvGenres.setHasFixedSize(true)
         binding.rvGenres.adapter = genreAdapter
 
+        // Setting up Crew Adapter
+        castAdapter = CastListAdapter()
+        binding.rvCrews.setHasFixedSize(true)
+        binding.rvCrews.adapter = castAdapter
+
         // Setting up Similar list Adapter
         rvSimilarList.setHasFixedSize(true)
-        similarMoviesAdapter = HorizontalAdapter {
+        similarMediaAdapter = HorizontalAdapter {
             parentFragmentManager.setFragmentResult(
                 MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
@@ -508,7 +500,26 @@ class PlayerFragment : Fragment() {
             )
             findNavController().navigate(R.id.action_playerFragment_to_detailFragment)
         }
-        rvSimilarList.adapter = similarMoviesAdapter
+        rvSimilarList.adapter = similarMediaAdapter
+
+        // Setting up Recommendations list Adapter
+        rvRecommendations.setHasFixedSize(true)
+        recommendationsAdapter = HorizontalAdapter {
+            parentFragmentManager.setFragmentResult(
+                MEDIA_SEND_REQUEST_KEY,
+                bundleOf(
+                    GENRES_ID_LIST_KEY to it.genreIds,
+                    MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
+                    IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
+                    MEDIA_OVERVIEW_KEY to it.overview,
+                    MEDIA_IMAGE_KEY to it.backdropPath,
+                    MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
+                    MEDIA_ID_KEY to it.id
+                )
+            )
+            findNavController().navigate(R.id.action_playerFragment_to_detailFragment)
+        }
+        rvRecommendations.adapter = recommendationsAdapter
 
         // Setting up More Videos Adapter
         moreVideosAdapter = MoreVideosAdapter()
@@ -523,11 +534,12 @@ class PlayerFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        rvEpisodesList.setHasFixedSize(true)
-        rvEpisodesList.adapter = tvShowEpisodesAdapter
+        rvEpisodes.setHasFixedSize(true)
+        rvEpisodes.adapter = tvShowEpisodesAdapter
     }
 
     private fun initializePlayer(videoKey: String?) {
+
         viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayerView)
         binding.youtubePlayerView
             .addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
@@ -544,9 +556,9 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         onTabSelectedListener?.let {
-            binding.moviesTabLayout.removeOnTabSelectedListener(it)
-            binding.showsTabLayout.removeOnTabSelectedListener(it)
+            binding.mediaTabLayout.removeOnTabSelectedListener(it)
         }
         onTabSelectedListener = null
+        _binding = null
     }
 }

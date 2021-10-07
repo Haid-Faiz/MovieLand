@@ -6,10 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.MovieDetailResponse
-import com.example.datasource.remote.models.responses.MovieListResponse
-import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
-import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.*
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -29,8 +26,14 @@ class PlayerViewModel @Inject constructor(
     private val _tvShowDetail = MutableLiveData<Resource<TvShowDetailsResponse>>()
     val tvShowDetail: LiveData<Resource<TvShowDetailsResponse>> = _tvShowDetail
 
-    private val _similarMovies = MutableLiveData<Resource<MovieListResponse>>()
-    val similarMovies: LiveData<Resource<MovieListResponse>> = _similarMovies
+    private val _similarMedia = MutableLiveData<Resource<MovieListResponse>>()
+    val similarMedia: LiveData<Resource<MovieListResponse>> = _similarMedia
+
+    private val _recommendedMedia = MutableLiveData<Resource<MovieListResponse>>()
+    val recommendedMedia: LiveData<Resource<MovieListResponse>> = _recommendedMedia
+
+    private val _mediaCast = MutableLiveData<Resource<MediaCastResponse>>()
+    val mediaCast: LiveData<Resource<MediaCastResponse>> = _mediaCast
 
     private val _tvSeasonDetail = MutableLiveData<Resource<TvSeasonDetailResponse>>()
     val tvSeasonDetail: LiveData<Resource<TvSeasonDetailResponse>> = _tvSeasonDetail
@@ -45,21 +48,35 @@ class PlayerViewModel @Inject constructor(
         _tvShowDetail.postValue(movieRepo.fetchTvShowDetail(tvId = tvId))
     }
 
-    fun getSimilarMovies(movieId: Int) = viewModelScope.launch {
-        _similarMovies.postValue(Resource.Loading())
-        _similarMovies.postValue(movieRepo.fetchSimilarMovies(movieId = movieId))
+    fun getSimilarMedia(mediaId: Int, isItMovie: Boolean) = viewModelScope.launch {
+        _similarMedia.postValue(Resource.Loading())
+        if (isItMovie)
+            _similarMedia.postValue(movieRepo.fetchSimilarMovies(movieId = mediaId))
+        else
+            _similarMedia.postValue(movieRepo.fetchSimilarShows(tvID = mediaId))
     }
 
-    fun getSimilarShows(tvId: Int) = viewModelScope.launch {
-        _similarMovies.postValue(Resource.Loading())
-        _similarMovies.postValue(movieRepo.fetchSimilarShows(tvID = tvId))
+    fun getRecommendationsMedia(mediaId: Int, isItMovie: Boolean) = viewModelScope.launch {
+        _recommendedMedia.postValue(Resource.Loading())
+        if (isItMovie)
+            _recommendedMedia.postValue(movieRepo.fetchRecommendedMovies(movieId = mediaId))
+        else
+            _recommendedMedia.postValue(movieRepo.fetchRecommendedTvShows(tvID = mediaId))
     }
+
 
     fun getTvSeasonDetail(tvId: Int, seasonNumber: Int) = viewModelScope.launch {
         _tvSeasonDetail.postValue(Resource.Loading())
         _tvSeasonDetail.postValue(
             movieRepo.fetchTvSeasonDetails(tvId = tvId, seasonNumber = seasonNumber)
         )
+    }
+
+    fun getMediaCast(mediaId: Int, isItMovie: Boolean) = viewModelScope.launch {
+        if (isItMovie)
+            _mediaCast.postValue(movieRepo.fetchMovieCast(movieId = mediaId))
+        else
+            _mediaCast.postValue(movieRepo.fetchTvShowCast(tvId = mediaId))
     }
 
     //---------------------------Session Id is required in these requests-----------------------

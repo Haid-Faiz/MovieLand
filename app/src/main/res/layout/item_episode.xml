@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_2sdp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackgroundBorderless"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/_6sdp"
-    android:paddingTop="@dimen/_8sdp"
-    android:paddingBottom="@dimen/_12sdp">
+    android:paddingEnd="@dimen/_6sdp"
+    android:paddingVertical="@dimen/_6sdp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/still_image"
-            android:layout_width="@dimen/_112sdp"
+            android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_63sdp"
             android:background="@drawable/poster_bg" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_6sdp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name_text"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_132sdp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lineHeight="20sp"
+                android:fontFamily="@font/montserrat"
                 android:maxLines="2"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
                 tools:text="1. Episode 1" />
 
@@ -75,9 +73,9 @@
             android:id="@+id/add_to_list_img"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
-            android:layout_marginEnd="@dimen/_4sdp"
             android:padding="@dimen/_4sdp"
             android:src="@drawable/ic_add"
+            android:layout_marginStart="@dimen/_8sdp"
             app:tint="@color/white" />
 
     </LinearLayout>
@@ -86,12 +84,16 @@
         android:id="@+id/overview_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:layout_alignEnd="@+id/ll"
         android:layout_marginTop="@dimen/_8sdp"
         android:ellipsize="end"
         android:fontFamily="@font/hind"
-        android:lineHeight="@dimen/_14sdp"
+        android:layout_alignParentStart="true"
         android:maxLines="3"
+        android:textAlignment="textStart"
         android:textColor="@color/text_secondary"
         android:textSize="@dimen/_12ssp"
         tools:text="After months of preparation and seclusion, The Professor and his band of eight recruited robbers begin to attack the National Coinage and Stamp Factory of Spain. Everything goes according to plan, until the police shows up and shots are fired. Hostage negotiator inspector Raquel Murillo makes initial contact with The Professor, and it turns out that one of the hostages, Alison Parker, is a crucial part of the thieves' plan." />
-</LinearLayout>
+
+</RelativeLayout>

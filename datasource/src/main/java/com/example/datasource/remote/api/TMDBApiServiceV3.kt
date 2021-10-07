@@ -19,6 +19,7 @@ interface TMDBApiServiceV3 {
 
     @GET("3/movie/top_rated")
     suspend fun fetchTopRatedMovies(
+        @Query("region") region: String = "IN",
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
@@ -81,6 +82,20 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
 
+    @GET("3/movie/{movie_id}/recommendations")
+    suspend fun fetchRecommendedMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
+
+    @GET("3/tv/{tv_id}/recommendations")
+    suspend fun fetchRecommendedTvShow(
+        @Path("tv_id") tvId: Int,
+        @Query("language") lang: String? = "en-US",
+        @Query("page") page: Int = 1
+    ): Response<MovieListResponse>
+
 
     @GET("3/search/movie")
     suspend fun fetchSearchQueryResults(
@@ -114,6 +129,7 @@ interface TMDBApiServiceV3 {
         // @Query("include_video") includeVideo: Boolean = false,
         @Query("sort_by") sortBy: String? = "popularity.desc",
         @Query("page") page: Int = 1,
+        @Query("include_adult") includeAdult: Boolean = false,
         @Query("language") lang: String? = "en-US"
     ): Response<MovieListResponse>
 
@@ -123,11 +139,47 @@ interface TMDBApiServiceV3 {
         @Query("sort_by") sortBy: String? = "popularity.desc",
         // @Query("include_video") includeVideo: Boolean = false,
         @Query("page") page: Int = 1,
+        @Query("include_adult") includeAdult: Boolean = false,
         @Query("language") lang: String? = "en-US"
     ): Response<MovieListResponse>
 
+    @GET("3/discover/tv")
+    suspend fun fetchAnimeSeries(
+        @Query("with_genres") genres: String = "16", // Animation genre = "16"
+        @Query("sort_by") sortBy: String? = "popularity.desc",
+        @Query("first_air_date.gte") firstAirDateGreaterThan: String = "2010-01-01",
+        @Query("page") page: Int = 1,
+        @Query("language") lang: String? = "en-US",
+        @Query("with_original_language") origLang: String = "en",
+        @Query("include_null_first_air_dates") include: Boolean = false
+    ): Response<MovieListResponse>
 
-    //----------------------------These Requests requires SESSION ID--------------------------------
+    @GET("3/discover/movie")
+    suspend fun fetchBollywoodMovies(
+        @Query("sort_by") sortBy: String? = "popularity.desc",
+        @Query("primary_release_date.gte") releaseDateGreaterThan: String = "2012-08-01",
+        @Query("page") page: Int = 1,
+        @Query("region") region: String = "IN",
+        @Query("with_release_type") releaseType: String = "3|2",
+        @Query("watch_region") watchRegion: String = "IN",
+        @Query("language") lang: String? = "hi-IN",
+        @Query("with_original_language") origLang: String = "hi",
+    ): Response<MovieListResponse>
+
+    @GET("3/movie/{movie_id}/credits")
+    suspend fun fetchMovieCast(
+        @Path("movie_id") movieId: Int,
+        @Query("language") lang: String? = "en-US"
+    ): Response<MediaCastResponse>
+
+    @GET("3/tv/{tv_id}/credits")
+    suspend fun fetchTvShowsCast(
+        @Path("tv_id") tvId: Int,
+        @Query("language") lang: String? = "en-US"
+    ): Response<MediaCastResponse>
+
+
+    //-------------------------------These Requests requires SESSION ID-----------------------------
 
     @GET("3/account")
     suspend fun getAccountDetails(
@@ -175,7 +227,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/favorite/tv")
@@ -184,7 +236,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/rated/movies")
@@ -193,7 +245,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/rated/tv")
@@ -202,7 +254,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/watchlist/movies")
@@ -211,7 +263,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/watchlist/tv")
@@ -220,7 +272,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.asc"   // created_at.desc
+        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
     ): Response<MovieListResponse>
 
 

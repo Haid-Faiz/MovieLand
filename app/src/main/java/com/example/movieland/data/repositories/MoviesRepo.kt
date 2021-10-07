@@ -28,16 +28,24 @@ class MoviesRepo @Inject constructor(
         apiV3.fetchTopRatedMovies()
     }
 
-    suspend fun fetchUpcomingMovies() = safeApiCall {
-        apiV3.fetchUpcomingMovies()
-    }
-
     suspend fun fetchPopularMovies() = safeApiCall {
         apiV3.fetchPopularMovies()
     }
 
+    suspend fun fetchUpcomingMovies() = safeApiCall {
+        apiV3.fetchUpcomingMovies()
+    }
+
     suspend fun fetchPopularTvShows() = safeApiCall {
         apiV3.fetchPopularTvShows()
+    }
+
+    suspend fun fetchAnimeSeries() = safeApiCall {
+        apiV3.fetchAnimeSeries()
+    }
+
+    suspend fun fetchBollywoodMovies() = safeApiCall {
+        apiV3.fetchBollywoodMovies()
     }
 
     suspend fun fetchTrendingMovies() = safeApiCall {
@@ -68,6 +76,14 @@ class MoviesRepo @Inject constructor(
         apiV3.fetchSimilarShows(tvId = tvID)
     }
 
+    suspend fun fetchRecommendedMovies(movieId: Int) = safeApiCall {
+        apiV3.fetchRecommendedMovies(movieId = movieId)
+    }
+
+    suspend fun fetchRecommendedTvShows(tvID: Int) = safeApiCall {
+        apiV3.fetchRecommendedTvShow(tvId = tvID)
+    }
+
     suspend fun fetchTvSeasonDetails(tvId: Int, seasonNumber: Int) = safeApiCall {
         apiV3.fetchTvSeasonDetails(tvId = tvId, seasonNumber)
     }
@@ -86,6 +102,14 @@ class MoviesRepo @Inject constructor(
 
     suspend fun fetchTvShowsByGenres(genresIds: String) = safeApiCall {
         apiV3.fetchTvShowsByGenres(genres = genresIds)
+    }
+
+    suspend fun fetchMovieCast(movieId: Int) = safeApiCall {
+        apiV3.fetchMovieCast(movieId = movieId)
+    }
+
+    suspend fun fetchTvShowCast(tvId: Int) = safeApiCall {
+        apiV3.fetchTvShowsCast(tvId = tvId)
     }
 
     suspend fun rateMovie(

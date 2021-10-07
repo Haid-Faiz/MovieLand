@@ -1,19 +1,17 @@
-package com.example.movieland.ui.coming_soon
+package com.example.movieland.ui.genres
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.datasource.remote.models.responses.Genre
-import com.example.movieland.R
 import com.example.movieland.databinding.ItemGenreBinding
 
 class GenreAdapter(
-    private val cardBackColor: Int? = null
-) : ListAdapter<Genre, GenreAdapter.ViewHolder>(DiffUtilCallback()) {
+    private val cardBackColor: Int? = null,
+    private val cardStrokeColor: Int? = null
+) : ListAdapter<Genre, GenreAdapter.ViewHolder>(GenresDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         ItemGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,17 +29,10 @@ class GenreAdapter(
             cardBackColor?.let {
                 card.setCardBackgroundColor(it)
             }
+            cardStrokeColor?.let {
+                card.strokeColor = it
+            }
             genresText.text = genre.name
         }
     }
-}
-
-
-class DiffUtilCallback : DiffUtil.ItemCallback<Genre>() {
-
-    override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean =
-        oldItem == newItem
-
-    override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean =
-        oldItem.equals(newItem)
 }
