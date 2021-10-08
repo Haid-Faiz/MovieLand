@@ -10,7 +10,8 @@ import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.ItemFeedHorizontalListBinding
 
 class HomeAdapter(
-    private var onPosterClick: (movieResult: MovieResult) -> Unit
+    private var onPosterClick: (movieResult: MovieResult) -> Unit,
+    private var onBollywoodPosterClick: (movieResult: MovieResult) -> Unit
 ) : ListAdapter<HomeFeed, HomeAdapter.ViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -18,25 +19,21 @@ class HomeAdapter(
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
-
-//    fun updateList(homeFeed: HomeFeed) {
-//        val oldList: ArrayList<HomeFeed> = ArrayList()
-//        oldList.addAll(currentList)
-//        Log.d("CurrentList", "updateList: $oldList")
-//        oldList.add(homeFeed)
-//        submitList(oldList)
-//    }
 
     inner class ViewHolder(private val binding: ItemFeedHorizontalListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(homeFeed: HomeFeed) = binding.apply {
+        fun bind(homeFeed: HomeFeed, position: Int) = binding.apply {
             title.text = homeFeed.title
             // Setting up inner horizontal recyclerview
             recyclerviewPostersList.setHasFixedSize(true)
-            HorizontalAdapter(onPosterClick = onPosterClick).let {
+
+            HorizontalAdapter(
+                // Un setting poster click for Bollywood items...
+                onPosterClick = if (homeFeed.title != "Bollywood") onPosterClick else onBollywoodPosterClick
+            ).let {
                 recyclerviewPostersList.adapter = it
                 it.submitList(homeFeed.list)
             }

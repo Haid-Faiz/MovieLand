@@ -26,7 +26,7 @@
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_netflix_short_logo" />
+                android:src="@drawable/ic_movieland_logo" />
 
             <TextView
                 android:id="@+id/tv_shows_text"
@@ -36,6 +36,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:clickable="true"
+                android:fontFamily="@font/montserrat"
                 android:focusable="true"
                 android:paddingTop="@dimen/_4sdp"
                 android:paddingBottom="@dimen/_4sdp"
@@ -52,6 +53,7 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="@font/montserrat"
                 android:paddingTop="@dimen/_4sdp"
                 android:paddingBottom="@dimen/_4sdp"
                 android:text="Movies"
@@ -59,17 +61,18 @@
                 android:textColor="@color/text_primary" />
 
             <TextView
-                android:id="@+id/my_list"
+                android:id="@+id/genres_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_6sdp"
+                android:fontFamily="@font/montserrat"
                 android:layout_weight="1"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingTop="@dimen/_4sdp"
                 android:paddingBottom="@dimen/_4sdp"
-                android:text="My List"
+                android:text="Genres"
                 android:textAlignment="center"
                 android:textColor="@color/text_primary" />
 
@@ -100,7 +103,7 @@
                 <ImageView
                     android:id="@+id/banner_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_368sdp"
+                    android:layout_height="@dimen/_372sdp"
                     android:background="@color/dark_gray"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/avengers_blue" />
@@ -119,18 +122,20 @@
                     android:background="@drawable/gradient_bottom" />
 
                 <TextView
-                    android:id="@+id/genres_text"
+                    android:id="@+id/banner_genres"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/ll"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:ellipsize="end"
+                    android:fontFamily="@font/hind"
                     android:gravity="center_horizontal"
                     android:maxLines="2"
-                    android:text="Action • Explosive • Suspenseful • Exciting • Adventure"
+                    android:text="Fetching genres..."
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    tools:text="Action • Explosive • Suspenseful • Exciting • Adventure" />
 
                 <LinearLayout
                     android:id="@+id/ll"
@@ -195,17 +200,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:fontFamily="@font/montserrat"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
-                    android:text="Trending now" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_16ssp"
+                        android:textStyle="bold"
+                        android:text="Now Playing Movies" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -213,41 +233,57 @@
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:fontFamily="@font/montserrat"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
-                    android:text="Top Rated Movies" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:background="@drawable/vertical_show_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_16ssp"
+                        android:textStyle="bold"
+                        android:text="Top Rated Movies" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -255,27 +291,27 @@
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_136sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
