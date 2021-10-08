@@ -33,6 +33,7 @@ import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
+import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -42,9 +43,11 @@ import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
+import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.formatMediaDate
 import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
 
@@ -120,116 +123,138 @@ class PlayerFragment : Fragment() {
         }
 
         rateButton.setOnClickListener {
-//            rateButton.startAnimation(shakeAnim)
 
-            val ratingDialog = RatingDialogBinding.inflate(layoutInflater)
-            val dialog = Dialog(requireContext(), R.style.RatingDialog).apply {
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                val sessionId = viewModel.getSessionId().first()
+                val accountId = viewModel.getAccountId().first()
+
+                if (sessionId != null && accountId != null) {
+                    // Now user can rate
+                    val ratingDialog = RatingDialogBinding.inflate(layoutInflater)
+                    val dialog = Dialog(requireContext(), R.style.RatingDialog).apply {
 //                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                setContentView(ratingDialog.root)
-                setCancelable(true)
-            }
-            ratingDialog.apply {
-                rateButton.setOnClickListener { }
-                mediaName.text = _currentMovie?.title ?: _currentTvShow?.name
-                ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar, ratingValue: Float, b ->
-
-                    if (ratingValue < 2) {
-                        starImageView.animate().scaleX((ratingValue / 1.6).toFloat())
-                        starImageView.animate().scaleY((ratingValue / 1.6).toFloat())
-                    } else {
-                        starImageView.animate().scaleX(ratingValue / 2)
-                        starImageView.animate().scaleY(ratingValue / 2)
+                        setContentView(ratingDialog.root)
+                        setCancelable(true)
                     }
-                }
-                rateButton.setOnClickListener {
-                    // start progress & call the api here
-                    rateButton.text = ""
-                    rateButton.isEnabled = false
-                    progressBar.isGone = false
+                    ratingDialog.apply {
+                        mediaName.text = _currentMovie?.title ?: _currentTvShow?.name
+                        ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar, ratingValue: Float, b ->
 
-                    viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                            if (ratingValue < 2) {
+                                starImageView.animate().scaleX((ratingValue / 1.6).toFloat())
+                                starImageView.animate().scaleY((ratingValue / 1.6).toFloat())
+                            } else {
+                                starImageView.animate().scaleX(ratingValue / 2)
+                                starImageView.animate().scaleY(ratingValue / 2)
+                            }
+                        }
+                        rateButton.setOnClickListener {
+                            // start progress & call the api here
+                            rateButton.text = ""
+                            rateButton.isEnabled = false
+                            progressBar.isGone = false
 
-                        viewModel.rateMedia(
-                            mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                            isMovie = _isItMovie,
-                            sessionId = viewModel.getSessionId().first()!!,
-                            mediaRatingRequest = MediaRatingRequest(ratingBar.rating * 2)
-                        ).let {
-                            when (it) {
-                                is Resource.Error -> {
-                                    progressBar.isGone = true
-                                    rateButton.text = "Rate"
-                                    rateButton.isEnabled = true
-                                    showSnackBar(" Something went wrong")
-                                }
+                            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+
+                                viewModel.rateMedia(
+                                    mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
+                                    isMovie = _isItMovie,
+                                    sessionId = sessionId,
+                                    mediaRatingRequest = MediaRatingRequest(ratingBar.rating * 2)
+                                ).let {
+                                    when (it) {
+                                        is Resource.Error -> {
+                                            progressBar.isGone = true
+                                            rateButton.text = "Rate"
+                                            rateButton.isEnabled = true
+                                            showSnackBar(" Something went wrong")
+                                        }
 //                                is Resource.Loading -> TODO()
-                                is Resource.Success -> {
-                                    // Dismiss dialog
-                                    dialog.dismiss()
-                                    showSnackBar("Success")
+                                        is Resource.Success -> {
+                                            // Dismiss dialog
+                                            dialog.dismiss()
+                                            showSnackBar("Success")
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
 
-            dialog.show()
+                    dialog.show()
+                } else showSnackBar("Please login to avail this feature")
+
+            }
         }
 
         addToListButton.setOnClickListener {
             addToListButton.startAnimation(popingAnim)
 
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                viewModel.addToWatchList(
-                    accountId = viewModel.getAccountId().first()!!,
-                    sessionId = viewModel.getSessionId().first()!!,
-                    addToWatchListRequest = AddToWatchListRequest(
-                        mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                        mediaType = if (_isItMovie) "movie" else "tv",
-                        watchlist = true
-                    )
-                ).let { response ->
-                    when (response) {
-                        is Resource.Error -> showSnackBar(
-                            response.message ?: "Something went wrong"
+                val sessionId = viewModel.getSessionId().first()
+                val accountId = viewModel.getAccountId().first()
+
+                if (sessionId != null && accountId != null) {
+
+                    viewModel.addToWatchList(
+                        accountId = accountId,
+                        sessionId = sessionId,
+                        addToWatchListRequest = AddToWatchListRequest(
+                            mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
+                            mediaType = if (_isItMovie) "movie" else "tv",
+                            watchlist = true
                         )
+                    ).let { response ->
+                        when (response) {
+                            is Resource.Error -> showSnackBar(
+                                response.message ?: "Something went wrong"
+                            )
 //                        is Resource.Loading -> TODO()
-                        is Resource.Success -> {
-                            showSnackBar("Added to My List")
+                            is Resource.Success -> {
+                                showSnackBar("Added to My List")
+                            }
                         }
                     }
-                }
+
+
+                } else showSnackBar("Please login to avail this feature")
             }
         }
 
         favouriteButton.setOnClickListener {
             favouriteButton.startAnimation(popingAnim)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                viewModel.addToFavourites(
-                    accountId = viewModel.getAccountId().first()!!,
-                    sessionId = viewModel.getSessionId().first()!!,
-                    addToFavouriteRequest = AddToFavouriteRequest(
-                        mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                        mediaType = if (_isItMovie) MOVIE else "tv",
-                        favorite = true
-                    )
-                ).let { response ->
-                    when (response) {
-                        is Resource.Error -> showSnackBar(
-                            response.message ?: "Something went wrong"
+                val sessionId = viewModel.getSessionId().first()
+                val accountId = viewModel.getAccountId().first()
+
+                if (sessionId != null && accountId != null) {
+
+                    viewModel.addToFavourites(
+                        accountId = accountId,
+                        sessionId = sessionId,
+                        addToFavouriteRequest = AddToFavouriteRequest(
+                            mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
+                            mediaType = if (_isItMovie) MOVIE else "tv",
+                            favorite = true
                         )
+                    ).let { response ->
+                        when (response) {
+                            is Resource.Error -> showSnackBar(
+                                response.message ?: "Something went wrong"
+                            )
 //                        is Resource.Loading -> TODO()
-                        is Resource.Success -> {
-                            showSnackBar("Added to Favourites")
+                            is Resource.Success -> {
+                                showSnackBar("Added to Favourites")
+                            }
                         }
                     }
-                }
+
+                } else showSnackBar("Please login to avail this feature")
             }
         }
 
         shareButton.setOnClickListener {
-
+            Toast.makeText(requireContext(), "Not yet implemented", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -424,8 +449,8 @@ class PlayerFragment : Fragment() {
             )
             titleText.text = movieDetails.title
             overviewText.text = movieDetails.overview
-            yearText.text = movieDetails.releaseDate
-            runtimeText.text = movieDetails.runtime.toString()
+            yearText.formatMediaDate(movieDetails.releaseDate)
+            runtimeText.text = "${movieDetails.runtime / 60} h ${movieDetails.runtime % 60} min"
             ratingText.text = String.format("%.1f", movieDetails.voteAverage)
             // Setting up Genre Adapter
             genreAdapter.submitList(movieDetails.genres)
@@ -435,7 +460,7 @@ class PlayerFragment : Fragment() {
             )
             titleText.text = tvDetails.name
             overviewText.text = tvDetails.overview
-            yearText.text = tvDetails.firstAirDate
+            yearText.formatMediaDate(tvDetails.firstAirDate)
 //            runtimeText.text = tvDetailResponse.runtime
             ratingText.text = String.format("%.1f", tvDetails.voteAverage)
             // Setting up Genre Adapter
@@ -495,7 +520,8 @@ class PlayerFragment : Fragment() {
                     MEDIA_OVERVIEW_KEY to it.overview,
                     MEDIA_IMAGE_KEY to it.backdropPath,
                     MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
-                    MEDIA_ID_KEY to it.id
+                    MEDIA_ID_KEY to it.id,
+                    MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
             findNavController().navigate(R.id.action_playerFragment_to_detailFragment)
@@ -514,7 +540,8 @@ class PlayerFragment : Fragment() {
                     MEDIA_OVERVIEW_KEY to it.overview,
                     MEDIA_IMAGE_KEY to it.backdropPath,
                     MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
-                    MEDIA_ID_KEY to it.id
+                    MEDIA_ID_KEY to it.id,
+                    MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
             findNavController().navigate(R.id.action_playerFragment_to_detailFragment)

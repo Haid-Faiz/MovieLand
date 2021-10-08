@@ -18,10 +18,7 @@ import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
 import com.example.movieland.ui.genres.GenreAdapter
-import com.example.movieland.utils.Constants
-import com.example.movieland.utils.Helpers
-import com.example.movieland.utils.Resource
-import com.example.movieland.utils.showSnackBar
+import com.example.movieland.utils.*
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -97,7 +94,7 @@ class ComingSoonFragment : Fragment() {
                         _movieResult = it
                         title.text = it.title
                         overview.text = it.overview
-                        releaseDate.text = "Coming on ${it.releaseDate}"
+                        releaseDate.formatUpcomingDate(it.releaseDate)
                         genreAdapter.submitList(Helpers.getMovieGenreListFromIds(it.genreIds))
                         setUpWatchListClick(it)
                     }
@@ -124,7 +121,7 @@ class ComingSoonFragment : Fragment() {
                     // Setting the Genre List
                     genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
                     overview.text = movieResult.overview
-                    releaseDate.text = "Coming on ${movieResult.releaseDate}"
+                    releaseDate.formatUpcomingDate(movieResult.releaseDate)
                     setUpWatchListClick(movieResult)
                 }
             })
