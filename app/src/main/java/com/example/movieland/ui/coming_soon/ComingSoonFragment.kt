@@ -17,6 +17,7 @@ import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
+import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
@@ -83,7 +84,7 @@ class ComingSoonFragment : Fragment() {
                     Constants.MEDIA_PLAY_REQUEST_KEY,
                     bundleOf(
                         Constants.MEDIA_ID_KEY to it.id,
-                        Constants.IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty()
+                        Constants.IS_IT_A_MOVIE_KEY to true
                     )
                 )
                 navController.navigate(R.id.action_navigation_coming_soon_to_playerFragment)

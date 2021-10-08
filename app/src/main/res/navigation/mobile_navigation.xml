@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_navigation_home_to_selectGenresDialogFragment"
             app:destination="@id/selectGenresDialogFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_account"
+            app:destination="@id/navigation_account" />
     </fragment>
 
     <fragment

@@ -4,13 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentDetailBsdBinding
 import com.example.movieland.ui.genres.GenreAdapter
+import com.example.movieland.ui.home.HomeViewModel
+import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -21,20 +28,27 @@ import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
+import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.Helpers
+import com.example.movieland.utils.Resource
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import java.util.ArrayList
 
 @AndroidEntryPoint
 class DetailFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentDetailBsdBinding? = null
+    private val homeViewModel: HomeViewModel by viewModels()
     private val binding get() = _binding!!
     private lateinit var genreAdapter: GenreAdapter
     private var _mediaId: Int? = null
     private var _isItMovie = false
+    private lateinit var popingAnim: Animation
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +72,7 @@ class DetailFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        popingAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpGenreRecyclerView()
         setUpFragmentResultListeners()
         setUpClickListeners()
@@ -100,10 +115,10 @@ class DetailFragment : BottomSheetDialogFragment() {
         binding.rvGenres.adapter = genreAdapter
     }
 
-    private fun setUpClickListeners() {
-        binding.closeDetailBtn.setOnClickListener { dismiss() }
+    private fun setUpClickListeners() = binding.apply {
+        closeDetailBtn.setOnClickListener { dismiss() }
 
-        binding.playButton.setOnClickListener {
+        playButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 MEDIA_PLAY_REQUEST_KEY,
                 bundleOf(
@@ -112,6 +127,36 @@ class DetailFragment : BottomSheetDialogFragment() {
                 )
             )
             findNavController().navigate(R.id.action_detailFragment_to_playerFragment)
+        }
+
+        addToWatchlistBtn.setOnClickListener {
+            addToWatchlistBtn.startAnimation(popingAnim)
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+
+                val sessionId = homeViewModel.getSessionId().first()
+                val accountId = homeViewModel.getAccountId().first()
+                if (sessionId != null && accountId != null) {
+                    homeViewModel.addToWatchList(
+                        accountId = accountId,
+                        sessionId = sessionId,
+                        addToWatchListRequest = AddToWatchListRequest(
+                            mediaId = _mediaId!!,
+                            mediaType = if (_isItMovie) MOVIE else TV,
+                            watchlist = true
+                        )
+                    ).let { response ->
+                        when (response) {
+                            is Resource.Error -> showSnackBar(
+                                response.message ?: "Something went wrong"
+                            )
+//                        is Resource.Loading -> TODO()
+                            is Resource.Success -> showSnackBar("Added to My List")
+                        }
+                    }
+
+                } else showSnackBar("Please login to avail this feature")
+
+            }
         }
     }
 

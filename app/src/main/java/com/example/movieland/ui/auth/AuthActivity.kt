@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.lifecycle.lifecycleScope
 import com.example.datasource.remote.models.responses.RequestTokenResponse
 import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.MainActivity
 import com.example.movieland.databinding.ActivityAuthBinding
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 
 /*** Steps for generating valid session id for TMDB
  * 1.) Generate request token
@@ -35,6 +37,9 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        isUserLoggedIn()
+
         val customTab: CustomTabsIntent = CustomTabsIntent.Builder()
             .setShowTitle(true)
             .build()
@@ -71,6 +76,20 @@ class AuthActivity : AppCompatActivity() {
             }
 
             buttonSkip.setOnClickListener {
+                startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+                finish()
+            }
+        }
+    }
+
+    private fun isUserLoggedIn() {
+        // Check if user Session ID & Account ID is saved or not
+        lifecycleScope.launchWhenCreated {
+            if (authViewModel.getSessionId().first() != null &&
+                authViewModel.getAccountId().first() != null
+            ) {
+                // User is in logged state
+                // Finish this activity & goto MainActivity
                 startActivity(Intent(this@AuthActivity, MainActivity::class.java))
                 finish()
             }
@@ -131,10 +150,12 @@ class AuthActivity : AppCompatActivity() {
                                         is Resource.Error -> TODO()
 //                                        is Resource.Loading -> TODO()
                                         is Resource.Success -> {
-                                            Log.d("credentials:", "onNewIntent: " +
-                                                    "accountId: ${it.data!!.id} |" +
-                                                    "userName: ${it.data.username} |" +
-                                                    "name: ${it.data.name}")
+                                            Log.d(
+                                                "credentials:", "onNewIntent: " +
+                                                        "accountId: ${it.data!!.id} |" +
+                                                        "userName: ${it.data.username} |" +
+                                                        "name: ${it.data.name}"
+                                            )
                                             authViewModel.saveAccountId(accountId = it.data!!.id)
                                             authViewModel.saveUserName(username = it.data.username)
 

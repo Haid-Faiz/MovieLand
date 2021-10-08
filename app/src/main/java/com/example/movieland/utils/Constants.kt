@@ -20,6 +20,7 @@ object Constants {
     const val MEDIA_ID_KEY = "media_id"
     const val MEDIA_KEY = "media"
     const val MOVIE = "movie"
+    const val TV = "tv"
     const val MEDIA_PLAY_REQUEST_KEY = "media_play_request_key"
     const val TV_SHOW = "tv_show"
     const val MEDIA_TYPE_KEY = "media_type"

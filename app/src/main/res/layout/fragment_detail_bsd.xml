@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_toStartOf="@+id/save_ll"
+            android:layout_toStartOf="@+id/add_to_watchlist_btn"
             android:backgroundTint="@color/white"
             android:text="Play"
             android:textAllCaps="false"
@@ -189,7 +189,7 @@
             app:iconTint="@color/black" />
 
         <LinearLayout
-            android:id="@+id/save_ll"
+            android:id="@+id/add_to_watchlist_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/play_button"

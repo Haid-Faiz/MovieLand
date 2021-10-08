@@ -150,23 +150,38 @@ class HomeFragment : Fragment() {
         addToListButton.setOnClickListener {
             addToListButton.startAnimation(popingAnim)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                homeViewModel.addToWatchList(
-                    accountId = homeViewModel.getAccountId().first()!!,
-                    sessionId = homeViewModel.getSessionId().first()!!,
-                    addToWatchListRequest = AddToWatchListRequest(
-                        mediaId = bannerMovie.id,
-                        mediaType = MOVIE,
-                        watchlist = true
-                    )
-                ).let { response ->
-                    when (response) {
-                        is Resource.Error -> showSnackBar(
-                            response.message ?: "Something went wrong"
+
+                val sessionId = homeViewModel.getSessionId().first()
+                val accountId = homeViewModel.getAccountId().first()
+                if (sessionId != null && accountId != null) {
+                    homeViewModel.addToWatchList(
+                        accountId = accountId,
+                        sessionId = sessionId,
+                        addToWatchListRequest = AddToWatchListRequest(
+                            mediaId = bannerMovie.id,
+                            mediaType = MOVIE,
+                            watchlist = true
                         )
+                    ).let { response ->
+                        when (response) {
+                            is Resource.Error -> showSnackBar(
+                                response.message ?: "Something went wrong"
+                            )
 //                        is Resource.Loading -> TODO()
-                        is Resource.Success -> showSnackBar("Added to My List")
+                            is Resource.Success -> showSnackBar("Added to My List")
+                        }
                     }
-                }
+
+                } else
+                    showSnackBar(
+                        "Please login to avail this feature",
+                        action = {
+                            navController.navigate(R.id.action_navigation_home_to_navigation_account)
+                        },
+                        actionMsg = "Login"
+                    )
+
+
             }
         }
 

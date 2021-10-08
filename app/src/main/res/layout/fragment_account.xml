@@ -308,7 +308,7 @@
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_poster" />
+                    tools:listitem="@layout/item_poster_rated" />
 
                 <TextView
                     android:id="@+id/empty_ratings_msg"
