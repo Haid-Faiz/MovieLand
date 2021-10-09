@@ -59,6 +59,14 @@
             android:textColor="@color/red"
             android:textSize="@dimen/_28ssp" />
 
+<!--        <ImageView-->
+<!--            android:id="@+id/movie_land_logo"-->
+<!--            android:layout_width="@dimen/_196sdp"-->
+<!--            android:translationZ="@dimen/_100sdp"-->
+<!--            android:layout_height="@dimen/_156sdp"-->
+<!--            android:paddingTop=""-->
+<!--            android:src="@drawable/ic_moviland_text_logo"/>-->
+
         <TextView
             android:id="@+id/intro_description"
             android:layout_width="match_parent"
@@ -73,19 +81,20 @@
 
     </LinearLayout>
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/account_sign_in_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40sdp"
         android:backgroundTint="@color/red"
         android:text="Sign in now"
         android:layout_marginTop="@dimen/_4sdp"
-        app:icon="@drawable/ic_movieland_logo"
-        app:iconTint="@null"
-        android:paddingEnd="@dimen/_20sdp"
+        app:icon="@drawable/ic_movieland_foreground"
+        app:iconTint="@color/black"
+        android:paddingEnd="@dimen/_30sdp"
         app:iconGravity="start"
-        app:iconPadding="@dimen/_16sdp"
+        android:textColor="@color/black"
+        app:iconSize="@dimen/_38sdp"
+        app:iconPadding="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

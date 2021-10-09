@@ -15,7 +15,8 @@
     <color name="text_secondary">#B3B3B3</color>
     <color name="dark_gray">#262626</color>
     <color name="ripple">#E5E5E5</color>
-    <color name="red">#E50914</color>
+    <color name="red">#FF9800</color>
+<!--    red: E50914,  orange: F84107, yellow: FF9800-->
     <color name="black_transparent">#B2000000</color>
     <color name="black_transparent_light">#7E000000</color>
     <color name="bottom_sheet_bg">#2B2B2B</color>

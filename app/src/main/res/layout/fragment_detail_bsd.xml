@@ -1,222 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bsd_bg"
-    android:orientation="vertical"
     android:paddingHorizontal="@dimen/_10sdp"
-    android:paddingTop="@dimen/_10sdp">
+    android:paddingTop="@dimen/_10sdp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_156sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                app:cardCornerRadius="@dimen/_16sdp"
-                app:cardElevation="0dp">
-
-                <ImageView
-                    android:id="@+id/poster_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/poster_bg"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/avengers_blue" />
-
-                <ImageView
-                    android:id="@+id/close_detail_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_close" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:background="@drawable/rating_bg"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    android:paddingVertical="@dimen/_2sdp">
-
-                    <ImageView
-                        android:layout_width="@dimen/_14sdp"
-                        android:layout_height="@dimen/_14sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_rated_star"
-                        app:tint="@color/text_secondary" />
-
-                    <TextView
-                        android:id="@+id/rating_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:gravity="center"
-                        android:text="7.8"
-                        android:textColor="@color/text_primary" />
-
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_76sdp"
-                android:layout_alignBottom="@id/card"
-                android:background="@drawable/gradient_bottom_dark_grey"
-                android:translationZ="@dimen/_100sdp" />
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-30dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/title_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:maxLines="2"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/_16ssp"
-                    tools:text="Batman v Superman: Dawn of Justice" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_156sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    app:cardCornerRadius="@dimen/_16sdp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/poster_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/poster_bg"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avengers_blue" />
+
+                    <ImageView
+                        android:id="@+id/close_detail_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="@dimen/_4sdp"
+                        android:foreground="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_close" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_4sdp"
+                        android:background="@drawable/rating_bg"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_2sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_14sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_rated_star"
+                            app:tint="@color/red" />
+
+                        <TextView
+                            android:id="@+id/rating_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:gravity="center"
+                            android:text="7.8"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_alignBottom="@id/card"
+                    android:background="@drawable/gradient_bottom_dark_grey"
+                    android:translationZ="@dimen/_100sdp" />
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_marginTop="-30dp"
+                android:orientation="vertical">
 
-                <!--                <ImageView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    app:tint="@color/text_secondary"-->
-                <!--                    android:layout_gravity="center_vertical"-->
-                <!--                    android:src="@drawable/ic_rated_star"/>-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="@dimen/_30sdp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="7.8"-->
-                <!--                    android:layout_gravity="center_vertical"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:textColor="@color/text_primary" />-->
+                    <TextView
+                        android:id="@+id/title_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:maxLines="2"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/_16ssp"
+                        tools:text="Batman v Superman: Dawn of Justice" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_genres"
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!--                <ImageView-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    app:tint="@color/text_secondary"-->
+                    <!--                    android:layout_gravity="center_vertical"-->
+                    <!--                    android:src="@drawable/ic_rated_star"/>-->
+
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="@dimen/_30sdp"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:text="7.8"-->
+                    <!--                    android:layout_gravity="center_vertical"-->
+                    <!--                    android:gravity="center"-->
+                    <!--                    android:textColor="@color/text_primary" />-->
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_genres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_6sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="RtlSymmetry"
+                        tools:listitem="@layout/item_genre" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/release_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_6sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:ignore="RtlSymmetry"
-                    tools:listitem="@layout/item_genre" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hind"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/_10ssp"
+                    tools:text="2016" />
+
+                <TextView
+                    android:id="@+id/overview_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/hind"
+                    android:maxLines="4"
+                    android:textColor="@color/white"
+                    tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/release_date"
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/play_button"
+                style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/hind"
-                android:textColor="@color/text_secondary"
-                android:textSize="@dimen/_10ssp"
-                tools:text="2016" />
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_toStartOf="@+id/add_to_watchlist_btn"
+                android:backgroundTint="@color/white"
+                android:text="Play"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                app:icon="@drawable/ic_play_circle_outline"
+                app:iconGravity="textStart"
+                app:iconTint="@color/black" />
 
-            <TextView
-                android:id="@+id/overview_text"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/add_to_watchlist_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:ellipsize="end"
-                android:fontFamily="@font/hind"
-                android:maxLines="4"
-                android:textColor="@color/white"
-                tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
+                android:layout_alignTop="@id/play_button"
+                android:layout_alignBottom="@id/play_button"
+                android:layout_alignParentEnd="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Add"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8ssp" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:gravity="center_vertical">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/play_button"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_toStartOf="@+id/add_to_watchlist_btn"
-            android:backgroundTint="@color/white"
-            android:text="Play"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            app:icon="@drawable/ic_play_circle_outline"
-            app:iconGravity="textStart"
-            app:iconTint="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/add_to_watchlist_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/play_button"
-            android:layout_alignBottom="@id/play_button"
-            android:layout_alignParentEnd="true"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_10sdp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add"
-                app:tint="@color/white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Add"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_8ssp" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

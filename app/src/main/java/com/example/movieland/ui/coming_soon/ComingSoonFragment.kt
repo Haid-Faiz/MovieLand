@@ -52,7 +52,6 @@ class ComingSoonFragment : Fragment() {
         popInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpRecyclerview()
 
-        viewModel.getComingSoonMovies()
         viewModel.comingSoon.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
