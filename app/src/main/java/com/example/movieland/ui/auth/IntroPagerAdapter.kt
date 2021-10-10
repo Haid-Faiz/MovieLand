@@ -26,18 +26,18 @@ class IntroPagerAdapter : RecyclerView.Adapter<IntroPagerAdapter.ViewHolder>() {
         fun bind(position: Int) = binding.apply {
             when (position) {
                 0 -> {
-                    introTitle.text = "Unlimited entertainment, one low price."
-                    introDescription.text = "Everything on MovieLand, starting at just Rs 0"
+                    introTitle.text = "Trailers & info of millions of movies, Tv shows"
+                    introDescription.text = "Every information of any movie/show at no price."
                     introImage.load(R.drawable.intro_1)
                 }
                 1 -> {
-                    introTitle.text = "Don't forget to save your favourite movie."
-                    introDescription.text = "Access saved movies without internet."
+                    introTitle.text = "Search and discover Movies, TV shows"
+                    introDescription.text = "Search or discover movie/show by genres, get cast, find what's trendy from millions of data"
                     introImage.load(R.drawable.avengers_red)
                 }
                 2 -> {
-                    introTitle.text = "Rate movies, comment on movies."
-                    introDescription.text = "It's a world of movies"
+                    introTitle.text = "Liked something... want to watch it later ?"
+                    introDescription.text = "Create your own watchlist, favourite list, or rate any movie/show"
                     introImage.load(R.drawable.fast_saga)
                 }
                 else -> {

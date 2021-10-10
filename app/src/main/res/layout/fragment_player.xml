@@ -65,17 +65,18 @@
                         android:id="@+id/title_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
                         android:paddingHorizontal="@dimen/_6sdp"
+                        android:fontFamily="@font/montserrat_bold"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/_20ssp"
+                        android:textSize="@dimen/_18ssp"
                         android:textStyle="bold"
                         tools:text="Avengers: Age of ultron" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/_6sdp">
@@ -86,6 +87,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"
                             tools:text="2016" />
 
                         <LinearLayout
@@ -114,6 +116,7 @@
                             android:layout_marginStart="8dp"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"
                             tools:text="2h 31m" />
 
                         <LinearLayout
@@ -134,9 +137,10 @@
                                 android:id="@+id/rating_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="0dp"
+                                android:layout_marginStart="@dimen/_2sdp"
                                 android:textColor="@color/text_secondary"
                                 android:textSize="12sp"
+                                android:fontFamily="@font/montserrat"
                                 tools:text="8.8" />
                         </LinearLayout>
 
@@ -286,8 +290,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_12sdp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_6sdp"
-                        android:visibility="visible"
+                        android:paddingHorizontal="@dimen/_4sdp"
+                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_cast" />
 
@@ -298,30 +302,26 @@
                         android:layout_marginTop="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_6sdp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_6sdp"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <include
                             layout="@layout/item_cast_bg"
                             android:layout_width="0dp"
+                            android:layout_marginHorizontal="@dimen/_8sdp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
                         <include
                             layout="@layout/item_cast_bg"
                             android:layout_width="0dp"
+                            android:layout_marginHorizontal="@dimen/_8sdp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
                         <include
                             layout="@layout/item_cast_bg"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <include
-                            layout="@layout/item_cast_bg"
-                            android:layout_width="0dp"
+                            android:layout_marginHorizontal="@dimen/_6sdp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
@@ -439,6 +439,39 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/recommendations_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/empty_recommendations_msg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_136sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_4sdp"
+                            android:fontFamily="@font/montserrat"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:text="Oops, no recommendations are available for this."
+                            android:textColor="@color/text_secondary" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_recommendations"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:paddingHorizontal="@dimen/_4sdp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="10"
+                            tools:listitem="@layout/item_poster" />
+
+                    </LinearLayout>
+
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_similar_list"
                         android:layout_width="match_parent"
@@ -450,18 +483,6 @@
                         android:paddingHorizontal="@dimen/_4sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="15"
-                        tools:listitem="@layout/item_poster" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_recommendations"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:paddingHorizontal="@dimen/_4sdp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="10"
                         tools:listitem="@layout/item_poster" />
 
                 </LinearLayout>

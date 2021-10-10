@@ -36,6 +36,7 @@ import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
+import com.example.movieland.utils.safeFragmentNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -86,7 +87,9 @@ class SearchFragment : Fragment() {
 
         searchViewModel.searchedMovies.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> { TODO() }
+                is Resource.Error -> {
+                    TODO()
+                }
                 is Resource.Loading -> binding.apply {}
                 is Resource.Success -> binding.apply {
                     searchingProgressBar.isGone = true
@@ -134,7 +137,7 @@ class SearchFragment : Fragment() {
             navController.popBackStack()
         }
         topSearchesAdapter = TopSearchesAdapter {
-            navController.navigate(R.id.action_navigation_search_to_detailFragment)
+
             parentFragmentManager.setFragmentResult(
                 MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
@@ -148,11 +151,16 @@ class SearchFragment : Fragment() {
                     MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
+            safeFragmentNavigation(
+                navController = navController,
+                currentFragmentId = R.id.navigation_search,
+                actionId = R.id.action_navigation_search_to_detailFragment
+            )
         }
         binding.topSearchesRv.setHasFixedSize(true)
         binding.topSearchesRv.adapter = topSearchesAdapter
         horizontalAdapter = HorizontalAdapter {
-            navController.navigate(R.id.action_navigation_search_to_detailFragment)
+
             parentFragmentManager.setFragmentResult(
                 MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
@@ -165,6 +173,11 @@ class SearchFragment : Fragment() {
                     MEDIA_ID_KEY to it.id,
                     MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
+            )
+            safeFragmentNavigation(
+                navController = navController,
+                currentFragmentId = R.id.navigation_search,
+                actionId = R.id.action_navigation_search_to_detailFragment
             )
         }
         binding.searchedResultRv.setHasFixedSize(true)

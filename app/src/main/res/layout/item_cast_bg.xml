@@ -9,14 +9,14 @@
     app:shimmer_auto_start="true">
 
     <View
-        android:layout_width="@dimen/_56sdp"
-        android:layout_height="@dimen/_56sdp"
+        android:layout_width="@dimen/_72sdp"
+        android:layout_height="@dimen/_72sdp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/round_dark_grey_bg" />
 
     <View
         android:id="@+id/crew_real_name"
-        android:layout_width="@dimen/_52sdp"
+        android:layout_width="@dimen/_76sdp"
         android:layout_height="@dimen/_8sdp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_4sdp"
@@ -24,7 +24,7 @@
 
     <View
         android:id="@+id/crew_character_name"
-        android:layout_width="@dimen/_36sdp"
+        android:layout_width="@dimen/_48sdp"
         android:layout_height="@dimen/_8sdp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_2sdp"

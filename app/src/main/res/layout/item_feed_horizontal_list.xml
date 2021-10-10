@@ -26,10 +26,9 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
             tools:text="Trending now" />
 
     </LinearLayout>

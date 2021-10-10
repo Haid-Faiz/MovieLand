@@ -53,10 +53,9 @@
         <action
             android:id="@+id/action_navigation_coming_soon_to_playerFragment"
             app:destination="@id/playerFragment"
-            app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@anim/pop_up"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -107,7 +106,7 @@
         android:label="SeasonPickerDialogFragment" />
     <dialog
         android:id="@+id/selectGenresDialogFragment"
-        android:name="com.example.movieland.ui.genres.SelectGenresDialogFragment"
+        android:name="com.example.movieland.ui.genres.GenresDialogFragment"
         android:label="SelectGenresDialogFragment" >
         <action
             android:id="@+id/action_selectGenresDialogFragment_to_detailFragment"

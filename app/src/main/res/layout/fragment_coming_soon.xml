@@ -49,8 +49,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/_10sdp"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
+                android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_4sdp">
 
                 <ImageButton
@@ -76,30 +75,57 @@
                     android:textSize="@dimen/_18sdp"
                     tools:text="The Fast Saga" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_genres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_below="@id/title"
-                    android:layout_alignStart="@id/title"
-                    android:layout_alignParentEnd="true"
-                    android:nestedScrollingEnabled="false"
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_6sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:ignore="RtlSymmetry"
-                    tools:listitem="@layout/item_genre" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_below="@id/title"
+                    android:paddingVertical="@dimen/_2sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_rated_star"
+                        app:tint="@color/red" />
+
+                    <TextView
+                        android:id="@+id/rating_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:text="7.8"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/text_primary" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_genres"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="RtlSymmetry"
+                        tools:listitem="@layout/item_genre" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/release_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/rv_genres"
-                    android:layout_alignEnd="@id/title"
-                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/ll"
                     android:fontFamily="@font/montserrat"
-                    android:paddingTop="@dimen/_2sdp"
-                    android:textColor="@color/text_secondary"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:textColor="@color/red"
                     android:textStyle="bold"
                     tools:text="Coming on August 21" />
 
@@ -111,7 +137,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/hind"
-                    android:paddingTop="@dimen/_10sdp"
+                    android:textAlignment="textStart"
+                    android:paddingTop="@dimen/_6sdp"
                     android:text="It is a ninth installment of FF series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series."
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/_14ssp" />

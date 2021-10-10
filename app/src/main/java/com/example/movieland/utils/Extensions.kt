@@ -3,6 +3,8 @@ package com.example.movieland.utils
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,4 +46,10 @@ fun TextView.formatUpcomingDate(inputTime: String?) {
     val formattedTime = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(parsedDate)
     // Setting time to this textview
     this.text = "Coming on $formattedTime"
+}
+
+fun Fragment.safeFragmentNavigation(navController: NavController, currentFragmentId: Int, actionId: Int) {
+    if (navController.currentDestination?.id == currentFragmentId) {
+        navController.navigate(actionId)
+    }
 }

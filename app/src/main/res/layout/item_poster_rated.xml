@@ -49,7 +49,7 @@
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"
             android:src="@drawable/ic_rated_star"
-            app:tint="@color/text_primary" />
+            app:tint="@color/red" />
 
         <TextView
             android:id="@+id/your_rating_text"

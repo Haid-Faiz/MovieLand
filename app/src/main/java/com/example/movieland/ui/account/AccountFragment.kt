@@ -32,6 +32,7 @@ import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
+import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
@@ -422,7 +423,11 @@ class AccountFragment : Fragment() {
                 MEDIA_RATING_KEY to String.format("%.1f", movieResult.voteAverage)
             )
         )
-        findNavController().navigate(R.id.action_navigation_account_to_detailFragment)
+        safeFragmentNavigation(
+            navController = findNavController(),
+            currentFragmentId = R.id.navigation_account,
+            actionId = R.id.action_navigation_account_to_detailFragment
+        )
     }
 
     private fun checkLoginStatus() = viewLifecycleOwner.lifecycleScope.launchWhenCreated {

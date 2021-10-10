@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
@@ -36,6 +37,7 @@ import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
+import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -127,7 +129,11 @@ class HomeFragment : Fragment() {
         }
 
         genresText.setOnClickListener {
-            navController.navigate(R.id.action_navigation_home_to_selectGenresDialogFragment)
+            safeFragmentNavigation(
+                navController = navController,
+                currentFragmentId = R.id.navigation_home,
+                actionId = R.id.action_navigation_home_to_selectGenresDialogFragment
+            )
         }
 
         bannerInfoButton.setOnClickListener {
@@ -144,7 +150,11 @@ class HomeFragment : Fragment() {
                     MEDIA_RATING_KEY to String.format("%.1f", bannerMovie.voteAverage)
                 )
             )
-            navController.navigate(R.id.action_navigation_home_to_detailFragment)
+            safeFragmentNavigation(
+                navController = navController,
+                currentFragmentId = R.id.navigation_home,
+                actionId = R.id.action_navigation_home_to_detailFragment
+            )
         }
 
         addToListButton.setOnClickListener {
@@ -213,7 +223,11 @@ class HomeFragment : Fragment() {
                         MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                     )
                 )
-                navController.navigate(R.id.action_navigation_home_to_detailFragment)
+                safeFragmentNavigation(
+                    navController = navController,
+                    currentFragmentId = R.id.navigation_home,
+                    actionId = R.id.action_navigation_home_to_detailFragment
+                )
             },
             onBollywoodPosterClick = {
                 parentFragmentManager.setFragmentResult(
@@ -223,7 +237,11 @@ class HomeFragment : Fragment() {
                         IS_IT_A_MOVIE_KEY to true
                     )
                 )
-                navController.navigate(R.id.action_navigation_home_to_playerFragment)
+                safeFragmentNavigation(
+                    navController = navController,
+                    currentFragmentId = R.id.navigation_home,
+                    actionId = R.id.action_navigation_home_to_playerFragment
+                )
             }
         )
         binding.rvHomeFeed.setHasFixedSize(true)
@@ -241,7 +259,5 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("LCMchecks", "onDestroyView: called")
     }
-
 }

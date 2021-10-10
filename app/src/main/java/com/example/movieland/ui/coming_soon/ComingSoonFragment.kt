@@ -93,6 +93,7 @@ class ComingSoonFragment : Fragment() {
                         _movieResult = it
                         title.text = it.title
                         overview.text = it.overview
+                        ratingText.text = String.format("%.1f", it.voteAverage)
                         releaseDate.formatUpcomingDate(it.releaseDate)
                         genreAdapter.submitList(Helpers.getMovieGenreListFromIds(it.genreIds))
                         setUpWatchListClick(it)
@@ -120,7 +121,9 @@ class ComingSoonFragment : Fragment() {
                     // Setting the Genre List
                     genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
                     overview.text = movieResult.overview
+                    ratingText.text = String.format("%.1f", movieResult.voteAverage)
                     releaseDate.formatUpcomingDate(movieResult.releaseDate)
+                    rvGenres.scrollTo(0,0)
                     setUpWatchListClick(movieResult)
                 }
             })

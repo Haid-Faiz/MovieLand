@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movieland.databinding.FragmentPlayerBinding
-import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import androidx.core.os.bundleOf
@@ -33,7 +32,7 @@ import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
-import com.example.movieland.utils.Constants
+import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -47,12 +46,12 @@ import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
-import com.example.movieland.utils.formatMediaDate
-import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /*
  1) Create Exoplayer object
@@ -101,6 +100,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         popingAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
+        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayerView)
         setUpRecyclerViewAndUi()
         setUpFragmentResultListeners()
         setUpObservers()
@@ -118,7 +118,11 @@ class PlayerFragment : Fragment() {
                         "selected_item_position" to _currentSeasonNumber
                     )
                 )
-                findNavController().navigate(R.id.action_playerFragment_to_seasonPickerDialogFragment)
+                safeFragmentNavigation(
+                    navController = findNavController(),
+                    currentFragmentId = R.id.playerFragment,
+                    actionId = R.id.action_playerFragment_to_seasonPickerDialogFragment
+                )
             }
         }
 
@@ -274,30 +278,31 @@ class PlayerFragment : Fragment() {
                     _currentMovie = it.data!!
                     val totalVideos = it.data.videos.videosList as ArrayList
 
-                    binding.shimmerLayout.isGone = true
-                    binding.mainLayout.isGone = false
-                    binding.shimmerLayout.stopShimmer()
+//                    binding.shimmerLayout.isGone = true
+//                    binding.mainLayout.isGone = false
+//                    binding.shimmerLayout.stopShimmer()
+
+                    val trailers: List<VideoResult> = totalVideos.filter { toFilter ->
+                        toFilter.type == "Trailer" && toFilter.site == "YouTube"
+                    }
 
                     if (totalVideos.isEmpty()) {
                         // No video to play
                         // initializePlayer(key)
+                        emptyMoreVideosMsg.isGone = false
+                        rvMoreVideosList.isGone = true
                     } else {
-                        val trailers: List<VideoResult> = totalVideos.filter { toFilter ->
-                            toFilter.type == "Trailer" && toFilter.site == "YouTube"
-                        }
-                        val trailer = trailers[0]
-                        val videoKey = if (trailers.isEmpty()) totalVideos[0].key else trailer.key
+
+                        val videoKey =
+                            if (trailers.isEmpty()) totalVideos[0].key else trailers[0].key
                         Log.d("VideoKey", "onViewCreated: $videoKey   | a: $trailers")
                         initializePlayer(videoKey)
                         // removing already played trailer from totalVideos
-                        totalVideos.remove(trailer)
+                        if (trailers.isNotEmpty())
+                            totalVideos.remove(trailers[0])
+                        moreVideosAdapter.submitList(totalVideos)
                     }
                     updateDetails(movieDetails = it.data)
-                    if (totalVideos.isEmpty()) {
-                        emptyMoreVideosMsg.isGone = false
-                        rvMoreVideosList.isGone = true
-                    } else
-                        moreVideosAdapter.submitList(totalVideos)
                 }
             }
         }
@@ -317,9 +322,9 @@ class PlayerFragment : Fragment() {
                     _currentTvShow = it.data!!
                     _seasonList = it.data.seasons
 
-                    binding.shimmerLayout.isGone = true
-                    binding.mainLayout.isGone = false
-                    binding.shimmerLayout.stopShimmer()
+//                    binding.shimmerLayout.isGone = true
+//                    binding.mainLayout.isGone = false
+//                    binding.shimmerLayout.stopShimmer()
 
                     Log.d("CheckSize", "setUpObservers: ${it.data.videos.videosList}")
                     if (it.data.videos.videosList.isNotEmpty()) {
@@ -353,8 +358,17 @@ class PlayerFragment : Fragment() {
                 }
                 is Resource.Loading -> {
                 }
-                is Resource.Success -> {
-                    recommendationsAdapter.submitList(it.data?.movieResults)
+                is Resource.Success -> binding.apply {
+
+                    Log.d("recommendationsSize", "setUpObservers: ${it.data!!.movieResults.size}")
+
+                    if (it.data!!.movieResults.isNotEmpty()) {
+                        recommendationsAdapter.submitList(it.data.movieResults)
+                    } else {
+                        // Show no recommendations msg
+                        emptyRecommendationsMsg.isGone = false
+                        rvRecommendations.isGone = true
+                    }
                 }
             }
         }
@@ -443,6 +457,10 @@ class PlayerFragment : Fragment() {
         tvDetails: TvShowDetailsResponse? = null
     ) = binding.apply {
 
+        binding.shimmerLayout.isGone = true
+        binding.mainLayout.isGone = false
+        binding.shimmerLayout.stopShimmer()
+
         if (_isItMovie && movieDetails != null) {
             thumbnailContainer.backdropImage.load(
                 TMDB_IMAGE_BASE_URL_W780.plus(movieDetails.backdropPath)
@@ -461,11 +479,15 @@ class PlayerFragment : Fragment() {
             titleText.text = tvDetails.name
             overviewText.text = tvDetails.overview
             yearText.formatMediaDate(tvDetails.firstAirDate)
-//            runtimeText.text = tvDetailResponse.runtime
+//            runtimeText.text = tvDetails.episodeRunTime
             ratingText.text = String.format("%.1f", tvDetails.voteAverage)
             // Setting up Genre Adapter
             genreAdapter.submitList(tvDetails.genres)
         }
+
+//        binding.shimmerLayout.isGone = true
+//        binding.mainLayout.isGone = false
+//        binding.shimmerLayout.stopShimmer()
     }
 
     private fun setUpTabLayout() = binding.apply {
@@ -475,14 +497,14 @@ class PlayerFragment : Fragment() {
 
                 when (tab?.position) {
                     0 -> {
-                        // Similar like this Tab
+                        // Recommendations Tab
                         rvSimilarList.isGone = true
-                        rvRecommendations.isGone = false
+                        recommendationsContainer.isGone = false
                     }
                     1 -> {
-                        // Trailers and more
+                        // More like this tab
                         rvSimilarList.isGone = false
-                        rvRecommendations.isGone = true
+                        recommendationsContainer.isGone = true
                     }
                 }
             }
@@ -524,7 +546,11 @@ class PlayerFragment : Fragment() {
                     MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
-            findNavController().navigate(R.id.action_playerFragment_to_detailFragment)
+            safeFragmentNavigation(
+                navController = findNavController(),
+                currentFragmentId = R.id.playerFragment,
+                actionId = R.id.action_playerFragment_to_detailFragment
+            )
         }
         rvSimilarList.adapter = similarMediaAdapter
 
@@ -544,7 +570,11 @@ class PlayerFragment : Fragment() {
                     MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
                 )
             )
-            findNavController().navigate(R.id.action_playerFragment_to_detailFragment)
+            safeFragmentNavigation(
+                navController = findNavController(),
+                currentFragmentId = R.id.playerFragment,
+                actionId = R.id.action_playerFragment_to_detailFragment
+            )
         }
         rvRecommendations.adapter = recommendationsAdapter
 
@@ -565,19 +595,19 @@ class PlayerFragment : Fragment() {
         rvEpisodes.adapter = tvShowEpisodesAdapter
     }
 
-    private fun initializePlayer(videoKey: String?) {
+    private fun initializePlayer(videoKey: String?) = binding.apply {
 
-        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayerView)
-        binding.youtubePlayerView
-            .addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    videoKey?.let {
-                        binding.thumbnailContainer.container.isGone = true
-                        binding.youtubePlayerView.isGone = false
+        youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                videoKey?.let {
+                    thumbnailContainer.container.isGone = true
+                    youtubePlayerView.isGone = false
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
                         youTubePlayer.loadVideo(it, 0f)
                     }
                 }
-            })
+            }
+        })
     }
 
     override fun onDestroyView() {
