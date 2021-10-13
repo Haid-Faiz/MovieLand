@@ -81,13 +81,12 @@
         android:name="com.example.movieland.ui.home.lists.MovieListFragment"
         android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list">
-        <argument
-            android:name="media_list_type"
-            app:argType="string"
-            android:defaultValue="sdf" />
         <action
             android:id="@+id/action_movieListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <argument
+            android:name="isItMovie"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
