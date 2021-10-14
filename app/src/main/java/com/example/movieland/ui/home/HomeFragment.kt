@@ -11,17 +11,26 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
+import androidx.paging.filter
+import androidx.paging.map
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
+import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.FragmentHomeBinding
+import com.example.movieland.ui.home.lists.MovieListFragment
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_CATEGORY_SEND_REQUEST_KEY
@@ -35,11 +44,14 @@ import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.Constants.TRENDING_MOVIES
+import com.example.movieland.utils.Constants.TRENDING_TV_SHOWS
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlin.math.min
 
@@ -57,6 +69,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var homeAdapter: HomeAdapter
+
     private lateinit var bannerMovie: MovieResult
     private lateinit var popingAnim: Animation
 
@@ -77,30 +90,25 @@ class HomeFragment : Fragment() {
         setUpClickListeners()
 
         homeViewModel.allFeedList.observe(viewLifecycleOwner) {
-//            (it is Resource.Loading).let {
-//                binding.apply {
-//                    addToListButton.isEnabled = !it
-//                    bannerInfoButton.isEnabled = !it
-//                    playButton.isEnabled = !it
-//                }
-//            }
             when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Success -> {
+                is Resource.Error -> showSnackBar(it.message!!)
+                is Resource.Success -> binding.apply {
+
+                    homeAdapter.submitList(it.data!!.homeFeedList)
                     // Setup movie banner
-                    bannerMovie = it.data!![0].list[0]
+                    bannerMovie = it.data.bannerMovie
                     binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${bannerMovie.posterPath}")
                     binding.bannerGenres.text = Helpers.getMovieGenreListFromIds(
                         bannerMovie.genreIds
                     ).joinToString(" • ") { it.name }
 
-                    homeAdapter.submitList(it.data)
                     // Show RV
                     binding.rvPlaceholder.isGone = true
                     binding.rvHomeFeed.isGone = false
                 }
             }
         }
+
 
         binding.nestedScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val color = changeAppBarAlpha(
@@ -113,19 +121,20 @@ class HomeFragment : Fragment() {
 
     private fun setUpClickListeners() = binding.apply {
         moviesText.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                MEDIA_CATEGORY_SEND_REQUEST_KEY,
-                bundleOf(IS_IT_A_MOVIE_KEY to true)
-            )
-            navController.navigate(R.id.action_navigation_home_to_movieListFragment)
+            val action =
+                HomeFragmentDirections.actionNavigationHomeToMovieListFragment(mediaCategory = TRENDING_MOVIES)
+            navController.navigate(action)
+            // Assisted Injection
+            // When we have to pass the arguments by ourself not by DI framework
+            // then we can use Assisted Injection
+            // It comes with a but that we have to create a Factory for it
+            // then we have to pass that argument (assisted) in a factory
         }
 
         tvShowsText.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                MEDIA_CATEGORY_SEND_REQUEST_KEY,
-                bundleOf(IS_IT_A_MOVIE_KEY to false)
-            )
-            navController.navigate(R.id.action_navigation_home_to_movieListFragment)
+            val action =
+                HomeFragmentDirections.actionNavigationHomeToMovieListFragment(mediaCategory = TRENDING_TV_SHOWS)
+            navController.navigate(action)
         }
 
         genresText.setOnClickListener {
@@ -190,8 +199,6 @@ class HomeFragment : Fragment() {
                         },
                         actionMsg = "Login"
                     )
-
-
             }
         }
 
@@ -228,6 +235,11 @@ class HomeFragment : Fragment() {
                     currentFragmentId = R.id.navigation_home,
                     actionId = R.id.action_navigation_home_to_detailFragment
                 )
+            },
+            onSeeAllBtnClick = {
+                val action =
+                    HomeFragmentDirections.actionNavigationHomeToMovieListFragment(mediaCategory = it)
+                navController.navigate(action)
             },
             onBollywoodPosterClick = {
                 parentFragmentManager.setFragmentResult(

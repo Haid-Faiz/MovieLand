@@ -46,7 +46,7 @@
         android:layout_alignBottom="@id/intro_image"
         android:layout_marginHorizontal="@dimen/_28sdp"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="-18dp"
+        android:layout_marginBottom="-24dp"
         android:fontFamily="@font/hind"
         android:text="Every information of any movie/show at no price"
         android:textAlignment="center"

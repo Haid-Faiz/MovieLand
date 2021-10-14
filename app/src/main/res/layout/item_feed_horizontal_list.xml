@@ -6,32 +6,52 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/decorator"
             android:layout_width="@dimen/_3sdp"
             android:layout_height="@dimen/_14sdp"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_8sdp"
+            android:layout_centerVertical="true"
             android:background="@drawable/vertical_show_line" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_toStartOf="@id/see_all_btn"
+            android:layout_toEndOf="@+id/decorator"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/_16ssp"
-            tools:text="Trending now" />
+            tools:text="Newly Launched" />
 
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/see_all_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:translationZ="@dimen/_100sdp"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textColorHint="@color/red"
+            tools:text="See all" />
+
+    </RelativeLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

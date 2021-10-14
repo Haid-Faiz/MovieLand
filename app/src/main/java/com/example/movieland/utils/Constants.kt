@@ -27,4 +27,14 @@ object Constants {
     const val MEDIA_SEND_REQUEST_KEY = "media_set_fragment_result_request_key"
     const val MEDIA_CATEGORY_SEND_REQUEST_KEY = "media_category_set_fragment_result_request_key"
     const val SEASONS_LIST_REQUEST_KEY = "seasons_list_request_key"
+
+
+    const val TRENDING_MOVIES = "Trending Movies"
+    const val TRENDING_TV_SHOWS = "Trending Tv Shows"
+    const val NEWLY_LAUNCHED = "Newly Launched"
+    const val POPULAR_MOVIES = "Popular Movies"
+    const val POPULAR_TV_SHOWS = "Popular Tv Shows"
+    const val TOP_RATED_MOVIES = "Top Rated"
+    const val ANIME_SERIES = "Anime Series"
+    const val BOLLYWOOD_MOVIES = "Bollywood"
 }

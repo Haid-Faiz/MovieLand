@@ -15,6 +15,7 @@ import com.example.movieland.data.paging.*
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.SessionPrefs
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -25,11 +26,19 @@ class MoviesRepo @Inject constructor(
 
 //    private val apiV3 = ApiClient().buildApi(TMDBApiServiceV3::class.java)
 
-    suspend fun fetchBannerMovie(): Response<MovieListResponse> {
-        return apiV3.fetchNowPlayingMovies()
-    }
+    suspend fun fetchNowPlayingMovies() = safeApiCall { apiV3.fetchNowPlayingMovies() }
 
-    fun fetchNowPlayingMovies(): LiveData<PagingData<MovieResult>> {
+    suspend fun fetchTopRatedMovies() = safeApiCall { apiV3.fetchTopRatedMovies() }
+
+    suspend fun fetchPopularMovies() = safeApiCall { apiV3.fetchPopularMovies() }
+
+    suspend fun fetchPopularTvShows() = safeApiCall { apiV3.fetchPopularTvShows() }
+
+    suspend fun fetchAnimeSeries() = safeApiCall { apiV3.fetchAnimeSeries() }
+
+    suspend fun fetchBollywoodMovies() = safeApiCall { apiV3.fetchBollywoodMovies() }
+
+    fun fetchNowPlayingMoviesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -38,7 +47,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    fun fetchTopRatedMovies(): LiveData<PagingData<MovieResult>> {
+    fun fetchTopRatedMoviesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -47,7 +56,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    fun fetchPopularMovies(): LiveData<PagingData<MovieResult>> {
+    fun fetchPopularMoviesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -56,7 +65,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    fun fetchPopularTvShows(): LiveData<PagingData<MovieResult>> {
+    fun fetchPopularTvShowsPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -65,11 +74,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    suspend fun fetchUpcomingMovies() = safeApiCall {
-        apiV3.fetchUpcomingMovies()
-    }
-
-    fun fetchAnimeSeries(): LiveData<PagingData<MovieResult>> {
+    fun fetchAnimeSeriesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -78,7 +83,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    fun fetchBollywoodMovies(): LiveData<PagingData<MovieResult>> {
+    fun fetchBollywoodMoviesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -87,11 +92,15 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
+    suspend fun fetchUpcomingMovies() = safeApiCall {
+        apiV3.fetchUpcomingMovies()
+    }
+
     suspend fun fetchTrendingMovies() = safeApiCall {
         apiV3.fetchTrending(mediaType = "movie", timeWindow = "week")
     }
 
-    fun fetchTrendingMovies1(): LiveData<PagingData<MovieResult>> {
+    fun fetchTrendingMoviesPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -100,7 +109,7 @@ class MoviesRepo @Inject constructor(
         ).liveData
     }
 
-    fun fetchTrendingTvShows1(): LiveData<PagingData<MovieResult>> {
+    fun fetchTrendingTvShowsPaging(): LiveData<PagingData<MovieResult>> {
         return Pager<Int, MovieResult>(
             config = PagingConfig(enablePlaceholders = false, pageSize = 20),
             pagingSourceFactory = {
@@ -157,12 +166,22 @@ class MoviesRepo @Inject constructor(
         apiV3.fetchTvEpisodeDetails(tvId = tvId, seasonNumber, episodeNumber)
     }
 
-    suspend fun fetchMoviesByGenres(genresIds: String) = safeApiCall {
-        apiV3.fetchMoviesByGenres(genres = genresIds)
+    fun fetchMoviesByGenres(genresIds: String): LiveData<PagingData<MovieResult>> {
+        return Pager<Int, MovieResult>(
+            config = PagingConfig(enablePlaceholders = false, pageSize = 20),
+            pagingSourceFactory = {
+                GenresMoviesPagingSource(api = apiV3, genresIds = genresIds)
+            }
+        ).liveData
     }
 
-    suspend fun fetchTvShowsByGenres(genresIds: String) = safeApiCall {
-        apiV3.fetchTvShowsByGenres(genres = genresIds)
+    fun fetchTvShowsByGenres(genresIds: String): LiveData<PagingData<MovieResult>> {
+        return Pager<Int, MovieResult>(
+            config = PagingConfig(enablePlaceholders = false, pageSize = 20),
+            pagingSourceFactory = {
+                GenresTvShowsPagingSource(api = apiV3, genresIds = genresIds)
+            }
+        ).liveData
     }
 
     suspend fun fetchMovieCast(movieId: Int) = safeApiCall {

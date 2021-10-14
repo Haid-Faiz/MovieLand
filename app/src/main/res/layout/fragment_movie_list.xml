@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Popular Movies"
+        app:titleTextAppearance="@style/MonteserratFontStyle"
         app:titleTextColor="@color/text_primary" />
 
 

@@ -137,7 +137,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_genres"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_height="@dimen/_28sdp"
                         android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         android:paddingVertical="@dimen/_6sdp"

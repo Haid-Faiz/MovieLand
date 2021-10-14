@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_navigation_search_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <argument
+            android:name="isMovie"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -85,8 +88,11 @@
             android:id="@+id/action_movieListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
         <argument
-            android:name="isItMovie"
-            app:argType="boolean" />
+            android:name="mediaCategory"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_movieListFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"

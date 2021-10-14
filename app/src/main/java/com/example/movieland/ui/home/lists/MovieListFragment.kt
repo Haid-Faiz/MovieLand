@@ -15,6 +15,8 @@ import androidx.paging.LoadState
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentMovieListBinding
 import com.example.movieland.ui.home.HorizontalPagerAdapter
+import com.example.movieland.utils.Constants
+import com.example.movieland.utils.Constants.BOLLYWOOD_MOVIES
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -43,7 +45,7 @@ class MovieListFragment : Fragment() {
     private val trendingViewModel: TrendingViewModel by viewModels {
         TrendingViewModel.providesFactory(
             assistedFactory = trendingViewModelFactory,
-            isItMovie = args.isItMovie
+            mediaCategory = args.mediaCategory
         )
     }
 
@@ -61,11 +63,10 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
-        if (args.isItMovie) binding.toolbar.title = "Trending Movies"
-        else binding.toolbar.title = "TV Programmes"
+        binding.toolbar.title = args.mediaCategory
         setUpRecyclerViewAndNav()
 
-        trendingViewModel.trendingMedia.observe(viewLifecycleOwner) {
+        trendingViewModel.categoryMedia.observe(viewLifecycleOwner) {
             horizontalAdapter.submitData(lifecycle, it)
         }
     }
@@ -76,28 +77,48 @@ class MovieListFragment : Fragment() {
         }
 
         horizontalAdapter = HorizontalPagerAdapter(
-            onPosterClick = {
-                // callback of Poster click
-                parentFragmentManager.setFragmentResult(
-                    MEDIA_SEND_REQUEST_KEY,
-                    bundleOf(
-                        GENRES_ID_LIST_KEY to it.genreIds,
-                        MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
-                        IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
-                        MEDIA_OVERVIEW_KEY to it.overview,
-                        MEDIA_IMAGE_KEY to it.backdropPath,
-                        MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
-                        MEDIA_ID_KEY to it.id,
-                        MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
+            onPosterClick = if (args.mediaCategory != BOLLYWOOD_MOVIES) {
+                {
+                    // callback of Poster click
+                    parentFragmentManager.setFragmentResult(
+                        MEDIA_SEND_REQUEST_KEY,
+                        bundleOf(
+                            GENRES_ID_LIST_KEY to it.genreIds,
+                            MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
+                            IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
+                            MEDIA_OVERVIEW_KEY to it.overview,
+                            MEDIA_IMAGE_KEY to it.backdropPath,
+                            MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
+                            MEDIA_ID_KEY to it.id,
+                            MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
+                        )
                     )
-                )
 
-                safeFragmentNavigation(
-                    navController = navController,
-                    currentFragmentId = R.id.movieListFragment,
-                    actionId = R.id.action_movieListFragment_to_detailFragment
-                )
-            }
+                    safeFragmentNavigation(
+                        navController = navController,
+                        currentFragmentId = R.id.movieListFragment,
+                        actionId = R.id.action_movieListFragment_to_detailFragment
+                    )
+                }
+            } else {
+
+                // BollyWood item click
+                {
+                    parentFragmentManager.setFragmentResult(
+                        Constants.MEDIA_PLAY_REQUEST_KEY,
+                        bundleOf(
+                            MEDIA_ID_KEY to it.id,
+                            IS_IT_A_MOVIE_KEY to true
+                        )
+                    )
+                    safeFragmentNavigation(
+                        navController = navController,
+                        currentFragmentId = R.id.movieListFragment,
+                        actionId = R.id.action_movieListFragment_to_playerFragment
+                    )
+                }
+
+            },
         )
 //        horizontalAdapter.withLoadStateHeaderAndFooter(
 //            footer = PagingStateAdapter { horizontalAdapter },

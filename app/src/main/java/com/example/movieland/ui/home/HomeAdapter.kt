@@ -2,6 +2,8 @@ package com.example.movieland.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.paging.map
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,8 @@ import com.example.movieland.databinding.ItemFeedHorizontalListBinding
 
 class HomeAdapter(
     private var onPosterClick: (movieResult: MovieResult) -> Unit,
-    private var onBollywoodPosterClick: (movieResult: MovieResult) -> Unit
+    private var onSeeAllBtnClick: (mediaCategory: String) -> Unit,
+    private var onBollywoodPosterClick: (movieResult: MovieResult) -> Unit,
 ) : ListAdapter<HomeFeed, HomeAdapter.ViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -27,6 +30,9 @@ class HomeAdapter(
 
         fun bind(homeFeed: HomeFeed, position: Int) = binding.apply {
             title.text = homeFeed.title
+            seeAllBtn.setOnClickListener {
+                onSeeAllBtnClick(homeFeed.title)
+            }
             // Setting up inner horizontal recyclerview
             recyclerviewPostersList.setHasFixedSize(true)
 
