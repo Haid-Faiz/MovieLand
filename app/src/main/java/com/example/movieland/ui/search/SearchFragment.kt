@@ -1,31 +1,25 @@
 package com.example.movieland.ui.search
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.getSystemService
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentSearchBinding
 import com.example.movieland.ui.home.HorizontalAdapter
-import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -37,18 +31,24 @@ import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
+    private var _isMovieInEmptyState = true
+    private var _query: String? = null
     private val searchViewModel: SearchViewModel by viewModels()
+
     private var _binding: FragmentSearchBinding? = null
     private lateinit var navController: NavController
     private lateinit var horizontalAdapter: HorizontalAdapter
     private lateinit var topSearchesAdapter: TopSearchesAdapter
+    private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
     private var job: Job? = null
     private val binding get() = _binding!!
 
@@ -64,48 +64,103 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerViewAndNav()
-
-        binding.searchQueryEt.doOnTextChanged { text, start, before, count ->
-            text?.let {
-                if (it.isNotEmpty() && it.isNotBlank()) {
-                    binding.eraseQueryBtn.isGone = false
-                    binding.querySearchIcon.isVisible = false
-                    binding.emptySearchContent.isGone = true
-                    binding.searchedResultLl.isGone = false
-                    // Show searching progress bar
-                    binding.searchingProgressBar.isGone = false
-                    binding.searchedResultRv.isGone = true
-                    performSearch(it.trim().toString())
-                } else {
-                    binding.eraseQueryBtn.isGone = true
-                    binding.querySearchIcon.isVisible = true
-                    binding.emptySearchContent.isGone = false
-                    binding.searchedResultLl.isGone = true
+        searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
+        searchViewModel.trendingMedia.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Error -> TODO()
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    topSearchesAdapter.submitList(it.data!!.movieResults)
                 }
             }
         }
 
-        searchViewModel.searchedMovies.observe(viewLifecycleOwner) {
+        onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> binding.apply {
+                        searchViewModel.isMovie = true
+                        if (_query.isNullOrEmpty()) {
+                            _isMovieInEmptyState = true
+                            searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
+                        }
+                        _query?.let {
+                            if (it.isNotEmpty()) {
+                                searchViewModel.searchMedia(
+                                    isMovie = searchViewModel.isMovie,
+                                    searchQuery = it
+                                )
+                                searchingProgressBar.isGone = false
+                                searchedResultRv.isGone = true
+                            }
+                        }
+                    }
+                    1 -> binding.apply {
+                        searchViewModel.isMovie = false
+                        if (_query.isNullOrEmpty()) {
+                            _isMovieInEmptyState = false
+                            searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
+                        }
+                        _query?.let {
+                            if (it.isNotEmpty()) {
+                                searchViewModel.searchMedia(
+                                    isMovie = searchViewModel.isMovie,
+                                    searchQuery = it
+                                )
+                                searchingProgressBar.isGone = false
+                                searchedResultRv.isGone = true
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        }
+
+        binding.tabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
+
+        binding.searchQueryEt.doOnTextChanged { text, start, before, count ->
+            text?.let {
+                _query = it.trim().toString()
+                if (it.isNotEmpty() && it.isNotBlank()) {
+                    binding.eraseQueryBtn.isGone = false
+                    binding.querySearchIcon.isVisible = false
+                    binding.topSearchesRv.isGone = true
+                    // Show searching progress bar
+                    binding.searchText.text = "Searched Results"
+                    binding.searchingProgressBar.isGone = false
+                    binding.searchedResultRv.isGone = true // Make it visible on getting results
+                    performSearch(it.trim().toString())
+                } else {
+                    binding.eraseQueryBtn.isGone = true
+                    binding.querySearchIcon.isVisible = true
+                    binding.searchText.text = "Top Searches"
+                    binding.topSearchesRv.isGone = false
+                    binding.searchedResultRv.isGone = true
+                    //
+                    if (_isMovieInEmptyState && !searchViewModel.isMovie) {
+                        searchViewModel.trendingMovies(isMovie = false)
+                    }
+                    if (!_isMovieInEmptyState && searchViewModel.isMovie)
+                        searchViewModel.trendingMovies(isMovie = true)
+                }
+            }
+        }
+
+        searchViewModel.searchedMedia.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> {
                     TODO()
                 }
                 is Resource.Loading -> binding.apply {}
                 is Resource.Success -> binding.apply {
+                    horizontalAdapter.submitList(it.data?.movieResults)
                     searchingProgressBar.isGone = true
                     searchedResultRv.isGone = false
-                    horizontalAdapter.submitList(it.data?.movieResults)
-                }
-            }
-        }
-
-        searchViewModel.trendingMovies()
-        searchViewModel.trendingMovies.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Loading -> TODO()
-                is Resource.Success -> {
-                    topSearchesAdapter.submitList(it.data?.movieResults)
                 }
             }
         }
@@ -121,7 +176,10 @@ class SearchFragment : Fragment() {
         job = viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             // first let's wait for change in input search query
             delay(800)
-            searchViewModel.searchedMovies(searchQuery)
+            searchViewModel.searchMedia(
+                isMovie = searchViewModel.isMovie,
+                searchQuery = searchQuery
+            )
         }
     }
 
@@ -136,6 +194,8 @@ class SearchFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             navController.popBackStack()
         }
+
+        // Top Searches Adapter
         topSearchesAdapter = TopSearchesAdapter {
 
             parentFragmentManager.setFragmentResult(
@@ -157,8 +217,11 @@ class SearchFragment : Fragment() {
                 actionId = R.id.action_navigation_search_to_detailFragment
             )
         }
+
         binding.topSearchesRv.setHasFixedSize(true)
         binding.topSearchesRv.adapter = topSearchesAdapter
+
+        // Searched Results Adapter
         horizontalAdapter = HorizontalAdapter {
 
             parentFragmentManager.setFragmentResult(
@@ -187,5 +250,6 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        onTabSelectedListener = null
     }
 }

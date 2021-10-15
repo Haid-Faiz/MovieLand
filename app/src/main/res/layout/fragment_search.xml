@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,15 +26,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/_36sdp"
                 android:autofillHints="name"
-                android:layout_alignParentEnd="true"
                 android:backgroundTint="@color/divider"
-                android:hint="Search for movies..."
+                android:hint="Search..."
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_14ssp" />
 
             <ImageButton
                 android:id="@+id/erase_query_btn"
@@ -58,83 +58,80 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
-        android:id="@+id/searched_result_ll"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:visibility="visible">
 
         <TextView
-            android:id="@+id/searched_result_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_6sdp"
-            android:fontFamily="@font/montserrat"
-            android:text="Searched results"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-
-        <ProgressBar
-            android:id="@+id/searching_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_42sdp"
-            android:layout_gravity="center_horizontal"
-            android:indeterminateTint="@color/red" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searched_result_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:focusable="true"
-            android:paddingHorizontal="@dimen/_6sdp"
-            android:focusableInTouchMode="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_poster" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/empty_search_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-        <TextView
-            android:id="@+id/top_searches_text"
-            android:layout_width="wrap_content"
+            android:id="@+id/search_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:layout_marginVertical="@dimen/_8sdp"
+            android:layout_weight="2"
             android:fontFamily="@font/montserrat"
             android:text="Top Searches"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/top_searches_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/_6sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_top_movie" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            app:tabBackground="@color/black"
+            app:tabIndicatorColor="@color/red"
+            app:tabSelectedTextColor="@color/red"
+            app:tabTextAppearance="@style/GenreTabText"
+            app:tabTextColor="@color/text_secondary">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movies" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tv Shows" />
+
+        </com.google.android.material.tabs.TabLayout>
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/searching_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_42sdp"
+        android:indeterminateTint="@color/red"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/top_searches_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_top_movie" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searched_result_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_poster" />
+
+</LinearLayout>

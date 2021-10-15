@@ -56,6 +56,7 @@
         <action
             android:id="@+id/action_navigation_coming_soon_to_playerFragment"
             app:destination="@id/playerFragment"
+            app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@anim/pop_up"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
@@ -81,7 +82,7 @@
     </dialog>
     <fragment
         android:id="@+id/movieListFragment"
-        android:name="com.example.movieland.ui.home.lists.MovieListFragment"
+        android:name="com.example.movieland.ui.media_list.MovieListFragment"
         android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list">
         <action

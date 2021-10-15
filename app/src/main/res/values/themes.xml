@@ -60,8 +60,8 @@
     </style>
 
     <style name="MonteserratFontStyle" >
-        <item name="fontFamily">@font/montserrat</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
     </style>
 
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">

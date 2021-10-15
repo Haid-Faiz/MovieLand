@@ -28,7 +28,7 @@ class TopSearchesAdapter(
 
         fun bind(movieResult: MovieResult) = binding.apply {
             movieImage.load(Constants.TMDB_IMAGE_BASE_URL_W500.plus(movieResult.backdropPath))
-            movieNameText.text = movieResult.title
+            movieNameText.text = movieResult.title ?: movieResult.tvShowName
             root.setOnClickListener {
                 onMovieClick(movieResult)
             }
