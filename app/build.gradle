@@ -93,7 +93,7 @@ dependencies {
     implementation "androidx.browser:browser:$chrome_custom_tab_version"
 
     // Facebook shimmer effect
-    implementation "com.facebook.shimmer:shimmer:$facebook_shimmer"
+    // implementation "com.facebook.shimmer:shimmer:$facebook_shimmer"
 
     // Material Dot viewpager indicator library
     implementation "com.github.zhpanvip:viewpagerindicator:$dot_indicator"

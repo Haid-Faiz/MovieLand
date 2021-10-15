@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/dark_gray"
         android:layout_gravity="center_horizontal"
-        app:cardCornerRadius="@dimen/_34sdp">
+        app:cardCornerRadius="@dimen/_41sdp">
 
         <ImageView
             android:id="@+id/crew_picture"
-            android:layout_width="@dimen/_72sdp"
-            android:layout_height="@dimen/_72sdp"
+            android:layout_width="@dimen/_82sdp"
+            android:layout_height="@dimen/_82sdp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
             android:src="@drawable/fast_saga"/>
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/crew_real_name"
-        android:layout_width="@dimen/_96sdp"
+        android:layout_width="@dimen/_102sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_4sdp"
         android:textAlignment="center"
@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/crew_character_name"
-        android:layout_width="@dimen/_96sdp"
+        android:layout_width="@dimen/_102sdp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:textAlignment="center"

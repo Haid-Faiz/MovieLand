@@ -109,6 +109,10 @@ class PlayerFragment : Fragment() {
 
     private fun setUpClickListeners() = binding.apply {
 
+        backArrow.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         pickSeasonBtn.setOnClickListener {
             _seasonList?.let { seasonList ->
                 parentFragmentManager.setFragmentResult(
@@ -269,8 +273,7 @@ class PlayerFragment : Fragment() {
                     TODO()
                 }
                 is Resource.Loading -> binding.apply {
-                    shimmerLayout.isGone = false
-                    shimmerLayout.startShimmer()
+                    loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> binding.apply {
@@ -313,8 +316,7 @@ class PlayerFragment : Fragment() {
                     TODO()
                 }
                 is Resource.Loading -> binding.apply {
-                    shimmerLayout.isGone = false
-                    shimmerLayout.startShimmer()
+                    loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> {
@@ -457,9 +459,8 @@ class PlayerFragment : Fragment() {
         tvDetails: TvShowDetailsResponse? = null
     ) = binding.apply {
 
-        binding.shimmerLayout.isGone = true
+        loadingBg.loadingStateLayout.isGone = true
         binding.mainLayout.isGone = false
-        binding.shimmerLayout.stopShimmer()
 
         if (_isItMovie && movieDetails != null) {
             thumbnailContainer.backdropImage.load(
