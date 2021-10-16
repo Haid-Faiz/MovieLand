@@ -103,7 +103,7 @@
                 <ImageView
                     android:id="@+id/banner_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_372sdp"
+                    android:layout_height="@dimen/_380sdp"
                     android:background="@color/dark_gray"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/avengers_blue" />
@@ -199,6 +199,8 @@
             <LinearLayout
                 android:id="@+id/rv_placeholder"
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:paddingStart="@dimen/_4sdp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 

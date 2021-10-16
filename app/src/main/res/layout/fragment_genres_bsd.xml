@@ -63,7 +63,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_10sdp">
 
@@ -113,7 +114,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
             android:indeterminateTint="@color/red"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -125,7 +127,8 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_2sdp"
             android:paddingVertical="@dimen/_6sdp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

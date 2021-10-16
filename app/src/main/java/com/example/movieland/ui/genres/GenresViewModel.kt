@@ -1,12 +1,12 @@
 package com.example.movieland.ui.genres
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.datasource.remote.models.responses.MovieListResponse
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
-import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,15 +16,16 @@ class GenresViewModel @Inject constructor(
     private val moviesRepo: MoviesRepo
 ) : BaseViewModel(moviesRepo) {
 
-    private var _genresMedia: MutableLiveData<Resource<MovieListResponse>> = MutableLiveData()
-    val genresMedia: LiveData<Resource<MovieListResponse>> = _genresMedia
+//    var genresMedia: LiveData<PagingData<MovieResult>> ? = null
 
-    fun getMediaByGenres(genresIds: String, isMovie: Boolean = true) = viewModelScope.launch {
-        _genresMedia.postValue(Resource.Loading())
-        if (isMovie)
-            _genresMedia.postValue(moviesRepo.fetchMoviesByGenres(genresIds = genresIds))
+    fun getMediaByGenres(
+        genresIds: String,
+        isMovie: Boolean = true
+    ): LiveData<PagingData<MovieResult>> {
+        return if (isMovie)
+            moviesRepo.fetchMoviesByGenres(genresIds = genresIds).cachedIn(viewModelScope)
         else
-            _genresMedia.postValue(moviesRepo.fetchTvShowsByGenres(genresIds = genresIds))
+            moviesRepo.fetchTvShowsByGenres(genresIds = genresIds).cachedIn(viewModelScope)
     }
 
 }

@@ -39,17 +39,15 @@
             android:id="@+id/see_all_btn"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_28sdp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_6sdp"
-            android:layout_marginEnd="@dimen/_6sdp"
-            android:translationZ="@dimen/_100sdp"
             android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="See all"
             android:textAllCaps="false"
-            android:textColor="@color/red"
-            android:textColorHint="@color/red"
-            tools:text="See all" />
+            android:textColor="@color/red" />
 
     </RelativeLayout>
 

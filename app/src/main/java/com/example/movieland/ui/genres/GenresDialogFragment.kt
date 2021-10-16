@@ -12,10 +12,12 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.example.datasource.remote.models.responses.Genre
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentGenresBsdBinding
 import com.example.movieland.ui.home.HorizontalAdapter
+import com.example.movieland.ui.home.HorizontalPagerAdapter
 import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
@@ -39,7 +41,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
     private var _isMovie: Boolean = true
     private val binding get() = _binding!!
     private lateinit var genresAdapter: GenresOptionAdapter
-    private lateinit var horizontalAdapter: HorizontalAdapter
+    private lateinit var horizontalAdapter: HorizontalPagerAdapter
     private val viewModel: GenresViewModel by viewModels()
     private var selectedGenresList: ArrayList<Genre> = ArrayList()
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
@@ -69,23 +71,16 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
                 val stringBuilder = StringBuilder()
                 selectedGenresList.forEach { stringBuilder.append("${it.id},") }
                 stringBuilder.removeSuffix(",")
-                viewModel.getMediaByGenres(genresIds = stringBuilder.toString(), isMovie = _isMovie)
+                viewModel.getMediaByGenres(
+                    genresIds = stringBuilder.toString(),
+                    isMovie = _isMovie
+                ).observe(viewLifecycleOwner) {
+                    horizontalAdapter.submitData(lifecycle, it)
+                }
             } else
                 binding.rvGenres.startAnimation(shakeAnim)
         }
 
-        viewModel.genresMedia.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let {
-                binding.progressBar.isGone = !it
-                binding.rvMedia.isGone = it
-            }
-            when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Success -> {
-                    horizontalAdapter.submitList(it.data!!.movieResults)
-                }
-            }
-        }
     }
 
     private fun setUpTabLayout() {
@@ -126,7 +121,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
         genresAdapter.submitList(allMovieGeneresList)
 
 
-        horizontalAdapter = HorizontalAdapter {
+        horizontalAdapter = HorizontalPagerAdapter {
             parentFragmentManager.setFragmentResult(
                 Constants.MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
@@ -142,6 +137,25 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
             )
             findNavController().navigate(R.id.action_selectGenresDialogFragment_to_detailFragment)
         }
+
+        horizontalAdapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.NotLoading -> {
+                    binding.progressBar.isGone = true
+                    binding.rvMedia.isGone = false
+                }
+                LoadState.Loading -> {
+                    binding.progressBar.isGone = false
+                    binding.rvMedia.isGone = true
+                }
+                is LoadState.Error -> {
+//                    showSnackBar()
+                    binding.progressBar.isGone = true
+                    binding.rvMedia.isGone = false
+                }
+            }
+        }
+
         rvMedia.setHasFixedSize(true)
         rvMedia.adapter = horizontalAdapter
     }
