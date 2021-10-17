@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="-96dp"
+            app:cardBackgroundColor="@color/dark_gray"
+            app:cardCornerRadius="@dimen/_62sdp">
+
+            <ImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="@dimen/_124sdp"
+                android:layout_height="@dimen/_124sdp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fast_saga" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bsd_bg"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_4sdp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_56sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat_bold"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/_14ssp"
+                tools:text="Shahrukh Khan" />
+
+
+            <TextView
+                android:id="@+id/know_for_department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/_12ssp"
+                tools:text="Known for department: Action " />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_28sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/_3sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/vertical_show_line" />
+
+                <TextView
+                    android:id="@+id/known_for"
+                    android:layout_width="@dimen/_102sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:maxLines="2"
+                    android:text="Filmography"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/_14ssp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/loading_text"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_136sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
+                android:text="Loading..."
+                android:textColor="@color/red"
+                android:textSize="@dimen/_14ssp"
+                tools:visibility="gone" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_actor_filmography"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_poster"
+                tools:visibility="visible" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

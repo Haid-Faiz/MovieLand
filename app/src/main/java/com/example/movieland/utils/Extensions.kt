@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
@@ -48,8 +49,16 @@ fun TextView.formatUpcomingDate(inputTime: String?) {
     this.text = "Coming on $formattedTime"
 }
 
-fun Fragment.safeFragmentNavigation(navController: NavController, currentFragmentId: Int, actionId: Int) {
+fun Fragment.safeFragmentNavigation(
+    navController: NavController,
+    currentFragmentId: Int,
+    actionId: Int? = null,
+    action: NavDirections? = null
+) {
     if (navController.currentDestination?.id == currentFragmentId) {
-        navController.navigate(actionId)
+        if (actionId != null)
+            navController.navigate(actionId)
+        else
+            navController.navigate(action!!)
     }
 }

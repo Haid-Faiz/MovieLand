@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.datasource.remote.models.responses.Cast
 import com.example.movieland.databinding.ItemCastBinding
-import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W500
+import com.example.movieland.utils.Constants.TMDB_CAST_IMAGE_BASE_URL_W185
 
-class CastListAdapter() : ListAdapter<Cast, CastListAdapter.ViewHolder>(DiffUtilCallback()) {
+class CastListAdapter(
+    val onCastItemClick: (cast: Cast) -> Unit
+) : ListAdapter<Cast, CastListAdapter.ViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         ItemCastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,9 +27,12 @@ class CastListAdapter() : ListAdapter<Cast, CastListAdapter.ViewHolder>(DiffUtil
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(cast: Cast) = binding.apply {
-            crewPicture.load(TMDB_IMAGE_BASE_URL_W500.plus(cast.profilePath?.removePrefix("/")))
+            crewPicture.load(TMDB_CAST_IMAGE_BASE_URL_W185.plus(cast.profilePath))
             crewRealName.text = cast.name
             crewCharacterName.text = cast.character
+            root.setOnClickListener {
+                onCastItemClick(cast)
+            }
         }
     }
 

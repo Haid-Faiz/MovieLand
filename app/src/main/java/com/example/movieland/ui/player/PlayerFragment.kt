@@ -46,6 +46,7 @@ import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.Constants.TV
 import com.google.android.material.tabs.TabLayout
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -175,7 +176,7 @@ class PlayerFragment : Fragment() {
                                             progressBar.isGone = true
                                             rateButton.text = "Rate"
                                             rateButton.isEnabled = true
-                                            showSnackBar(" Something went wrong")
+                                            showSnackBar(it.message!!)
                                         }
 //                                is Resource.Loading -> TODO()
                                         is Resource.Success -> {
@@ -209,13 +210,13 @@ class PlayerFragment : Fragment() {
                         sessionId = sessionId,
                         addToWatchListRequest = AddToWatchListRequest(
                             mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                            mediaType = if (_isItMovie) "movie" else "tv",
+                            mediaType = if (_isItMovie) MOVIE else TV,
                             watchlist = true
                         )
                     ).let { response ->
                         when (response) {
                             is Resource.Error -> showSnackBar(
-                                response.message ?: "Something went wrong"
+                                response.message!!
                             )
 //                        is Resource.Loading -> TODO()
                             is Resource.Success -> {
@@ -248,9 +249,9 @@ class PlayerFragment : Fragment() {
                     ).let { response ->
                         when (response) {
                             is Resource.Error -> showSnackBar(
-                                response.message ?: "Something went wrong"
+                                response.message!!
                             )
-//                        is Resource.Loading -> TODO()
+                            // is Resource.Loading -> TODO()
                             is Resource.Success -> {
                                 showSnackBar("Added to Favourites")
                             }
@@ -269,9 +270,7 @@ class PlayerFragment : Fragment() {
     private fun setUpObservers() {
         viewModel.movieDetail.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> {
-                    TODO()
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Loading -> binding.apply {
                     loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
@@ -312,9 +311,7 @@ class PlayerFragment : Fragment() {
 
         viewModel.tvShowDetail.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> {
-                    TODO()
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Loading -> binding.apply {
                     loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
@@ -342,8 +339,8 @@ class PlayerFragment : Fragment() {
 
         viewModel.mediaCast.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> TODO()
-                is Resource.Loading -> TODO()
+                is Resource.Error -> showSnackBar(it.message!!)
+                // is Resource.Loading -> TODO()
                 is Resource.Success -> {
                     binding.rvCrews.isGone = false
                     binding.castBg.isGone = true
@@ -355,9 +352,7 @@ class PlayerFragment : Fragment() {
         viewModel.recommendedMedia.observe(viewLifecycleOwner) {
 
             when (it) {
-                is Resource.Error -> {
-                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_LONG).show()
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> binding.apply {
@@ -378,11 +373,8 @@ class PlayerFragment : Fragment() {
         viewModel.similarMedia.observe(viewLifecycleOwner) {
             Log.d("LiveObserver2", "setUpObservers: called")
             when (it) {
-                is Resource.Error -> {
-                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_LONG).show()
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
+                // is Resource.Loading -> { }
                 is Resource.Success -> {
                     Log.d("SuccessObserver2", " success ")
                     similarMediaAdapter.submitList(it.data?.movieResults)
@@ -393,11 +385,8 @@ class PlayerFragment : Fragment() {
         viewModel.tvSeasonDetail.observe(viewLifecycleOwner) {
 
             when (it) {
-                is Resource.Error -> {
-                    TODO()
-                }
-                is Resource.Loading -> {
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
+                // is Resource.Loading -> { }
                 is Resource.Success -> {
                     Log.d("SuccessObserver3", " success ")
                     tvShowEpisodesAdapter.submitList(it.data?.episodes)
@@ -527,7 +516,9 @@ class PlayerFragment : Fragment() {
         binding.rvGenres.adapter = genreAdapter
 
         // Setting up Crew Adapter
-        castAdapter = CastListAdapter()
+        castAdapter = CastListAdapter {
+            openCastKnownForDialog(it)
+        }
         binding.rvCrews.setHasFixedSize(true)
         binding.rvCrews.adapter = castAdapter
 
@@ -594,6 +585,23 @@ class PlayerFragment : Fragment() {
         }
         rvEpisodes.setHasFixedSize(true)
         rvEpisodes.adapter = tvShowEpisodesAdapter
+    }
+
+    private fun openCastKnownForDialog(cast: Cast) {
+
+        Log.d("personId", "openCastKnownForDialog: personId = ${cast.id}")
+        val action = PlayerFragmentDirections.actionPlayerFragmentToCastKnownForFragment(
+            personId = cast.id,
+            name = cast.name,
+            profilePath = cast.profilePath,
+            knownForDepartment = cast.knownForDepartment,
+        )
+
+        safeFragmentNavigation(
+            navController = findNavController(),
+            currentFragmentId = R.id.playerFragment,
+            action = action
+        )
     }
 
     private fun initializePlayer(videoKey: String?) = binding.apply {

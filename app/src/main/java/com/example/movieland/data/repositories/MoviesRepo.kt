@@ -9,14 +9,11 @@ import com.example.datasource.remote.api.TMDBApiServiceV3
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.data.paging.*
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.SessionPrefs
-import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(
@@ -190,6 +187,10 @@ class MoviesRepo @Inject constructor(
 
     suspend fun fetchTvShowCast(tvId: Int) = safeApiCall {
         apiV3.fetchTvShowsCast(tvId = tvId)
+    }
+
+    suspend fun fetchActorsMoviesShows(personId: Int) = safeApiCall {
+        apiV3.fetchActorFilmography(personId = personId)
     }
 
     suspend fun rateMovie(

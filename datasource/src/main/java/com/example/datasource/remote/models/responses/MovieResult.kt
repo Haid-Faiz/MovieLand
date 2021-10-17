@@ -46,3 +46,16 @@ data class MovieResult(
     @Json(name = "original_name")
     var tvShowOriginalName: String? = null
 )
+
+//    @Json(name = "order")
+//    var order: Int,
+//    @Json(name = "origin_country")
+//    var originCountry: List<String>,
+//    @Json(name = "original_language")
+//    var originalLanguage: String,
+//    @Json(name = "character")
+//    var character: String,
+//    @Json(name = "credit_id")
+//    var creditId: String,
+//    @Json(name = "episode_count")
+//    var episodeCount: Int,

@@ -187,6 +187,12 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<MediaCastResponse>
 
+    @GET("3/person/{person_id}/combined_credits")
+    suspend fun fetchActorFilmography(
+        @Path("person_id") personId: Int,
+        @Query("language") lang: String? = "en-US"
+    ): Response<ActorFilmography>
+
 
     //-------------------------------These Requests requires SESSION ID-----------------------------
 

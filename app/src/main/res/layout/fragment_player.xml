@@ -28,9 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:translationZ="@dimen/_100sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/back_2" />
+            android:src="@drawable/back_1"
+            android:translationZ="@dimen/_100sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"

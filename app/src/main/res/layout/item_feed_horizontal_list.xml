@@ -16,8 +16,8 @@
             android:id="@+id/decorator"
             android:layout_width="@dimen/_3sdp"
             android:layout_height="@dimen/_14sdp"
-            android:layout_marginStart="@dimen/_8sdp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_8sdp"
             android:background="@drawable/vertical_show_line" />
 
         <TextView
@@ -35,16 +35,18 @@
             android:textSize="@dimen/_16ssp"
             tools:text="Newly Launched" />
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/see_all_btn"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_28sdp"
+            android:layout_height="0dp"
+            android:paddingTop="@dimen/_6sdp"
+            android:layout_alignTop="@id/title"
+            android:layout_alignBottom="@id/title"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_6sdp"
             android:fontFamily="@font/montserrat"
-            android:gravity="center"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:text="See all"
             android:textAllCaps="false"
             android:textColor="@color/red" />
