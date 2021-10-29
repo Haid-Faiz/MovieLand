@@ -1,9 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2109375" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_moviland_text_logo.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable-v24/placeholder.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable-v24/poster_bg.xml" value="0.1703125" />
+        <entry key="app/src/main/res/drawable-v24/video_loader_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/back_1.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/back_2.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/back_3.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/bottom_bar_color.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/bottom_nav_selector.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/bsd_bg.xml" value="0.5" />
+        <entry key="app/src/main/res/drawable/divider.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/gradient_bottom.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable/gradient_bottom_dark_grey.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/gradient_top.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/gradient_top_dark_grey.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/hd_tag.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_add.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_antenna.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_circle_outline_24.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_close.xml" value="0.158984375" />
+        <entry key="app/src/main/res/drawable/ic_go_back.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_movieland_foreground.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/ic_movieland_logo.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_moviland_text_logo.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/ic_nav_search_24.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable/ic_netflix_short_logo.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_outline_24.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/ic_outline_thumb_up.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_play_arrow.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_seasons_close.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/ic_share.xml" value="0.1787037037037037" />
+        <entry key="app/src/main/res/drawable/ic_star.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/intro_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/picker_close_bg.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/placeholder.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/poster_bg.xml" value="0.75" />
+        <entry key="app/src/main/res/drawable/rating_bg.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/rating_dialog_bg.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/round_btn_bg.xml" value="0.158984375" />
+        <entry key="app/src/main/res/drawable/round_dark_grey_bg.xml" value="0.158984375" />
+        <entry key="app/src/main/res/drawable/shimmer_bg.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/vertical_show_line.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/drawable/video_loader_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/font/hind.xml" value="0.20092592592592592" />
+        <entry key="app/src/main/res/font/montserrat.xml" value="0.20092592592592592" />
+        <entry key="app/src/main/res/font/montserrat_bold.xml" value="0.20092592592592592" />
+        <entry key="app/src/main/res/layout/account_not_sign_in.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/banner_item.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/cast_profile_dialog.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/episodes_picker_dialog.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/error_status.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_coming_soon.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_detail_bsd.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_details_bsd.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_genres_bsd.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home_shimmer.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_player.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/fragment_player_shimmer.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.13" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/intro_pager_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/item_cast.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_cast_bg.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_cast_shimmer.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_coming_soon.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/item_crew.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/item_crew_shimmer.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_episode.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_feed_horizontal_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_genre.xml" value="1.5" />
+        <entry key="app/src/main/res/layout/item_genre_dark_grey.xml" value="0.1585144927536232" />
+        <entry key="app/src/main/res/layout/item_genres_options.xml" value="0.9" />
+        <entry key="app/src/main/res/layout/item_media.xml" value="0.1716485507246377" />
+        <entry key="app/src/main/res/layout/item_picker_option.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/item_poster.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_poster_rated.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_thumbnail_container.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_top_movie.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_video.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/movie_header_banner.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/page_error_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/page_state_item.xml" value="0.14549180327868852" />
+        <entry key="app/src/main/res/layout/rating_dialog.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/season_picker_dialog.xml" value="0.33" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.161328125" />
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_movieland.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_movieland_round.xml" value="0.21197916666666666" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.21" />
+      </ProjectState>
+    </option>
   </component>
 </project>

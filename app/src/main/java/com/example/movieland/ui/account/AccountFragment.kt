@@ -2,7 +2,6 @@ package com.example.movieland.ui.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.example.movieland.ui.auth.AuthActivity
 import com.example.movieland.ui.auth.AuthViewModel
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.home.RatedMoviesAdapter
-import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -80,7 +78,7 @@ class AccountFragment : Fragment() {
             }
             when (it) {
                 is Resource.Error -> TODO()
-//                is Resource.Loading -> binding.apply {}
+                // is Resource.Loading -> binding.apply {}
                 is Resource.Success -> binding.apply {
                     _allWatchList = it.data!! as ArrayList
                     if (_allWatchList!!.isNotEmpty()) {
@@ -102,7 +100,7 @@ class AccountFragment : Fragment() {
             }
             when (it) {
                 is Resource.Error -> TODO()
-//                is Resource.Loading -> { }
+                // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
                     _allRatingList = it.data!! as ArrayList
                     if (_allRatingList!!.isNotEmpty()) {
@@ -124,7 +122,7 @@ class AccountFragment : Fragment() {
             }
             when (it) {
                 is Resource.Error -> TODO()
-//                is Resource.Loading -> { }
+                // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
                     _allFavouriteList = it.data!! as ArrayList
 
@@ -159,7 +157,6 @@ class AccountFragment : Fragment() {
         }
 
         watchlistMoviesCard.setOnClickListener {
-            Log.d("Check0", "allWatchList: $_allWatchList")
             // First check if list is null or not
             _allWatchList?.let { allWatchList ->
                 // Check if already shows card is checked or not
@@ -192,8 +189,6 @@ class AccountFragment : Fragment() {
         }
 
         watchlistShowsCard.setOnClickListener {
-
-            Log.d("Check1", "allWatchList: $_allWatchList")
 
             _allWatchList?.let { allWatchList ->
                 // Check if already movie card is checked or not

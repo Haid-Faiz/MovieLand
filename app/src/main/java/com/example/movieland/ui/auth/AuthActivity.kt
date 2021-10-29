@@ -3,7 +3,6 @@ package com.example.movieland.ui.auth
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +12,7 @@ import com.example.datasource.remote.models.responses.RequestTokenResponse
 import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.MainActivity
 import com.example.movieland.databinding.ActivityAuthBinding
+import com.example.movieland.utils.Constants.TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -37,7 +37,6 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         isUserLoggedIn()
 
         val customTab: CustomTabsIntent = CustomTabsIntent.Builder()
@@ -47,9 +46,7 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             viewpagerAuth.adapter = IntroPagerAdapter()
             dotsIndicator.setupWithViewPager(binding.viewpagerAuth)
-            buttonSignIn.setOnClickListener {
-                authViewModel.requestToken()
-            }
+            buttonSignIn.setOnClickListener { authViewModel.requestToken() }
 
             authViewModel.requestToken.observe(this@AuthActivity) { result: Resource<RequestTokenResponse> ->
                 when (result) {
@@ -69,7 +66,7 @@ class AuthActivity : AppCompatActivity() {
                         _requestToken = result.data?.requestToken
                         customTab.launchUrl(
                             this@AuthActivity,
-                            Uri.parse("https://www.themoviedb.org/auth/access?request_token=$_requestToken")
+                            Uri.parse(TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL.plus(_requestToken))
                         )
                     }
                 }
@@ -101,7 +98,6 @@ class AuthActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         isOnNewIntentCalled = true
-        Log.d("WhoCalled", "onNewIntent: called $_requestToken")
 
         intent?.data?.let {
             // Here we have got request token verified by user
@@ -112,7 +108,6 @@ class AuthActivity : AppCompatActivity() {
         }
 
         authViewModel.accessToken.observe(this@AuthActivity) { result ->
-
             when (result) {
                 is Resource.Error -> {
                     binding.buttonSignIn.loadingFailed()
@@ -120,19 +115,14 @@ class AuthActivity : AppCompatActivity() {
                     binding.buttonSkip.isEnabled = true
                     isCustomTabOpened = false
                 }
-//                            is Resource.Loading -> TODO()
+                // is Resource.Loading -> TODO()
                 is Resource.Success -> {
                     // Save AccessToken
                     authViewModel.saveAccessToken(result.data!!.accessToken)
-                    Log.d(
-                        "UserAccessToken",
-                        "accessToken: ${result.data.accessToken} | accountID: ${result.data.accountId}"
-                    )
-
                     /** Now we need to generate SESSION ID */
                     authViewModel.createSessionId(accessToken = result.data.accessToken)
                     authViewModel.sessionId.observe(this@AuthActivity) { sessionResponse: Resource<SessionResponse> ->
-                        // save the sessionToken/UserAccessToken and User Account ID
+                        // Save the sessionToken/UserAccessToken and User Account ID
                         when (sessionResponse) {
                             is Resource.Error -> {
                                 binding.buttonSignIn.loadingFailed()
@@ -140,25 +130,21 @@ class AuthActivity : AppCompatActivity() {
                                 binding.buttonSkip.isEnabled = true
                                 isCustomTabOpened = false
                             }
-//                                is Resource.Loading -> TODO()
+                            // is Resource.Loading -> TODO()
                             is Resource.Success -> {
                                 authViewModel.saveSessionId(sessionId = sessionResponse.data!!.sessionId)
                                 // Fetching user details
                                 authViewModel.getUserDetail(sessionId = sessionResponse.data.sessionId)
                                 authViewModel.userAccount.observe(this@AuthActivity) {
                                     when (it) {
-                                        is Resource.Error -> TODO()
-//                                        is Resource.Loading -> TODO()
+                                        is Resource.Error -> Toast.makeText(
+                                            this, "Something went wrong",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        // is Resource.Loading -> TODO()
                                         is Resource.Success -> {
-                                            Log.d(
-                                                "credentials:", "onNewIntent: " +
-                                                        "accountId: ${it.data!!.id} |" +
-                                                        "userName: ${it.data.username} |" +
-                                                        "name: ${it.data.name}"
-                                            )
                                             authViewModel.saveAccountId(accountId = it.data!!.id)
                                             authViewModel.saveUserName(username = it.data.username)
-
                                             binding.buttonSignIn.loadingSuccessful()
                                             startActivity(
                                                 Intent(this@AuthActivity, MainActivity::class.java)
@@ -177,8 +163,7 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // if user has closed the custom tab
-        Log.d("WhoCalled", "onResume: called $isCustomTabOpened")
+        // If user has closed the custom tab
         if (isCustomTabOpened && !isOnNewIntentCalled) {
             // User has cancelled the approval. hence, onNewIntent hasn't called
             // Dismiss loading & show approval cancelled

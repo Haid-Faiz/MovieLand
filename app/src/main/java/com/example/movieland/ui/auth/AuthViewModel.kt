@@ -2,7 +2,6 @@ package com.example.movieland.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.responses.*
 import com.example.movieland.BaseViewModel
@@ -34,7 +33,7 @@ class AuthViewModel @Inject constructor(
     private var _sessionId: MutableLiveData<Resource<SessionResponse>> = MutableLiveData()
     var sessionId: LiveData<Resource<SessionResponse>> = _sessionId
 
-    // Session ID
+    // User Account
     private var _userAccount: MutableLiveData<Resource<AccountDetailsResponse>> = MutableLiveData()
     var userAccount: LiveData<Resource<AccountDetailsResponse>> = _userAccount
 
@@ -97,13 +96,13 @@ class AuthViewModel @Inject constructor(
                     is HttpException -> {
                         _favouriteList.postValue(
                             Resource.Error(
-                                message = e.message ?: "Something went wrong"
+                                errorMessage = e.message ?: "Something went wrong"
                             )
                         )
                     }
                     is IOException -> _favouriteList.postValue(
                         Resource.Error(
-                            message = e.message ?: "Please check your network"
+                            errorMessage = e.message ?: "Please check your network"
                         )
                     )
 
@@ -138,13 +137,13 @@ class AuthViewModel @Inject constructor(
                 when (e) {
                     is HttpException -> _watchList.postValue(
                         Resource.Error(
-                            message = e.message ?: "Something went wrong"
+                            errorMessage = e.message ?: "Something went wrong"
                         )
                     )
 
                     is IOException -> _watchList.postValue(
                         Resource.Error(
-                            message = e.message ?: "Check your network"
+                            errorMessage = e.message ?: "Check your network"
                         )
                     )
                 }
@@ -172,13 +171,13 @@ class AuthViewModel @Inject constructor(
                 when (e) {
                     is HttpException -> _ratingList.postValue(
                         Resource.Error(
-                            message = e.message ?: "Something went wrong"
+                            errorMessage = e.message ?: "Something went wrong"
                         )
                     )
 
                     is IOException -> _ratingList.postValue(
                         Resource.Error(
-                            message = e.message ?: "Check your network"
+                            errorMessage = e.message ?: "Check your network"
                         )
                     )
                 }

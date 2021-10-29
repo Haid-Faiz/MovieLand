@@ -59,7 +59,7 @@ dependencies {
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okk_http_version"
     // Moshi
-    implementation "com.squareup.moshi:moshi:$moshi_version"
+    api "com.squareup.moshi:moshi:$moshi_version"
     // Moshi Codegen
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     // Testing

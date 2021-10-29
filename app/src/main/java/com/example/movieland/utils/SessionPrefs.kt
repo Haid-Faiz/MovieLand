@@ -6,6 +6,10 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.movieland.utils.Constants.SESSION_DATASTORE
+import com.example.movieland.utils.Constants.SESSION_ID_KEY
+import com.example.movieland.utils.Constants.SIGN_IN_SESSION_KEY
+import com.example.movieland.utils.Constants.USER_ACCOUNT_ID_KEY
+import com.example.movieland.utils.Constants.USER_NAME_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -15,10 +19,10 @@ class SessionPrefs(private val context: Context) {
 
     private val _datastore = context.datastore
 
-    private val accessTokenKey = stringPreferencesKey("sign_in_session_key")
-    private val userNameKey = stringPreferencesKey("user_name_key")
-    private val accountIdKey = intPreferencesKey("user_account_id_key")
-    private val sessionIdKey = stringPreferencesKey("session_id_key")
+    private val accessTokenKey = stringPreferencesKey(SIGN_IN_SESSION_KEY)
+    private val userNameKey = stringPreferencesKey(USER_NAME_KEY)
+    private val accountIdKey = intPreferencesKey(USER_ACCOUNT_ID_KEY)
+    private val sessionIdKey = stringPreferencesKey(SESSION_ID_KEY)
 
     suspend fun clearSessionPrefs() {
         _datastore.edit {

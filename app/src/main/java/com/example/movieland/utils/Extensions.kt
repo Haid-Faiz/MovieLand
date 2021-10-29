@@ -5,10 +5,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 fun View.showSnackBar(message: String, action: (() -> Unit)? = null, actionMsg: String? = null) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).apply {
@@ -23,11 +23,9 @@ fun Fragment.showSnackBar(
     message: String,
     action: (() -> Unit)? = null,
     actionMsg: String? = null
-) {
-    requireView().showSnackBar(message, action, actionMsg)
-}
+) = requireView().showSnackBar(message, action, actionMsg)
 
-fun TextView.formatMediaDate(inputTime: String?) {
+fun TextView.formatMediaDate(inputTime: String?) = if (!inputTime.isNullOrEmpty()) {
     // Making SDF object by giving input time patter
     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())  // inputPatter: yyyy-MM-dd
     // Parsing inputTime
@@ -36,9 +34,9 @@ fun TextView.formatMediaDate(inputTime: String?) {
     val formattedTime = SimpleDateFormat("yyyy", Locale.getDefault()).format(parsedDate)
     // Setting time to this textview
     this.text = formattedTime
-}
+} else text = "Unknown"
 
-fun TextView.formatUpcomingDate(inputTime: String?) {
+fun TextView.formatUpcomingDate(inputTime: String?) = if (!inputTime.isNullOrEmpty()) {
     // Making SDF object by giving input time patter
     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     // Parsing inputTime
@@ -47,7 +45,8 @@ fun TextView.formatUpcomingDate(inputTime: String?) {
     val formattedTime = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(parsedDate)
     // Setting time to this textview
     this.text = "Coming on $formattedTime"
-}
+} else
+    this.text = "Unknown"
 
 fun Fragment.safeFragmentNavigation(
     navController: NavController,

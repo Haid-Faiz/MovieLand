@@ -1,4 +1,4 @@
-package com.example.movieland.ui.home.lists
+package com.example.movieland.ui.media_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

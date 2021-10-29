@@ -56,6 +56,7 @@
                     android:id="@+id/add_to_watchlist"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_28sdp"
+                    android:layout_marginEnd="-10dp"
                     android:layout_alignTop="@id/title"
                     android:layout_alignParentEnd="true"
                     android:backgroundTint="@android:color/transparent"
@@ -82,7 +83,7 @@
                     android:orientation="horizontal"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_below="@id/title"
                     android:paddingVertical="@dimen/_2sdp">
 

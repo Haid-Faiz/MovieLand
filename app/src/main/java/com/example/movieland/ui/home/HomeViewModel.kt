@@ -1,10 +1,12 @@
 package com.example.movieland.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.TmdbErrorResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.data.models.HomeFeedData
@@ -15,10 +17,14 @@ import com.example.movieland.utils.Constants.NEWLY_LAUNCHED
 import com.example.movieland.utils.Constants.POPULAR_MOVIES
 import com.example.movieland.utils.Constants.POPULAR_TV_SHOWS
 import com.example.movieland.utils.Constants.TOP_RATED_MOVIES
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Resource
+import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -84,7 +90,46 @@ class HomeViewModel @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            _allFeedList.postValue(Resource.Error(message = e.message ?: "Something went wrong"))
+            when (e) {
+                is IOException -> {
+                    _allFeedList.postValue(
+                        Resource.Error(
+                            "Please check your network connection",
+                            errorType = ErrorType.NETWORK
+                        )
+                    )
+                }
+                is HttpException -> {
+                    // val code = e.code() HTTP Exception code
+                    val errorResponse: TmdbErrorResponse? = convertErrorBody(e)
+                    Log.d("errorResponse", "fetchAllFeedLists: ${errorResponse?.statusMessage}")
+                    _allFeedList.postValue(
+                        Resource.Error(
+                            errorMessage = errorResponse?.statusMessage ?: "Something went wrong",
+                            errorType = ErrorType.HTTP
+                        )
+                    )
+                }
+                else -> {
+                    _allFeedList.postValue(
+                        Resource.Error(
+                            errorMessage = e.message ?: "Something went wrong",
+                            errorType = ErrorType.UNKNOWN
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun convertErrorBody(throwable: HttpException): TmdbErrorResponse? {
+        return try {
+            throwable.response()?.errorBody()?.source()?.let {
+                val moshiAdapter = Moshi.Builder().build().adapter(TmdbErrorResponse::class.java)
+                moshiAdapter.fromJson(it)
+            }
+        } catch (exception: Exception) {
+            null
         }
     }
 

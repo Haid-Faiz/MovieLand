@@ -10,7 +10,15 @@ import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.MovieResult
-import com.example.movieland.data.paging.*
+import com.example.movieland.data.paging.NowPlayingPagingSource
+import com.example.movieland.data.paging.PopularMoviesPagingSource
+import com.example.movieland.data.paging.PopularTvPagingSource
+import com.example.movieland.data.paging.TopRatedPagingSource
+import com.example.movieland.data.paging.BollywoodPagingSource
+import com.example.movieland.data.paging.AnimePagingSource
+import com.example.movieland.data.paging.GenresMoviesPagingSource
+import com.example.movieland.data.paging.GenresTvShowsPagingSource
+import com.example.movieland.data.paging.TrendingMediaPagingSource
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.SessionPrefs
@@ -20,8 +28,6 @@ class MoviesRepo @Inject constructor(
     private val apiV3: TMDBApiServiceV3,
     private val sessionPrefs: SessionPrefs
 ) : BaseRepo(sessionPrefs) {
-
-//    private val apiV3 = ApiClient().buildApi(TMDBApiServiceV3::class.java)
 
     suspend fun fetchNowPlayingMovies() = safeApiCall { apiV3.fetchNowPlayingMovies() }
 

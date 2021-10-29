@@ -66,7 +66,7 @@
         android:id="@+id/navigation_account"
         android:name="com.example.movieland.ui.account.AccountFragment"
         android:label="@string/title_account"
-        tools:layout="@layout/fragment_account" >
+        tools:layout="@layout/fragment_account">
         <action
             android:id="@+id/action_navigation_account_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -107,7 +107,7 @@
             app:destination="@id/seasonPickerDialogFragment" />
         <action
             android:id="@+id/action_playerFragment_to_castKnownForFragment"
-            app:destination="@id/castKnownForFragment" />
+            app:destination="@id/castDetailsFragment" />
     </fragment>
     <dialog
         android:id="@+id/seasonPickerDialogFragment"
@@ -116,15 +116,15 @@
     <dialog
         android:id="@+id/selectGenresDialogFragment"
         android:name="com.example.movieland.ui.genres.GenresDialogFragment"
-        android:label="SelectGenresDialogFragment" >
+        android:label="SelectGenresDialogFragment">
         <action
             android:id="@+id/action_selectGenresDialogFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </dialog>
-    <fragment
-        android:id="@+id/castKnownForFragment"
+    <dialog
+        android:id="@+id/castDetailsFragment"
         android:name="com.example.movieland.ui.player.CastDetailsFragment"
-        android:label="CastKnownForFragment" >
+        android:label="CastDetailsFragment">
         <action
             android:id="@+id/action_castKnownForFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -140,7 +140,7 @@
         <argument
             android:name="profilePath"
             app:argType="string"
-            app:nullable="true"/>
-    </fragment>
+            app:nullable="true" />
+    </dialog>
 
 </navigation>

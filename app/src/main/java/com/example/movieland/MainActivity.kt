@@ -1,13 +1,10 @@
 package com.example.movieland
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
+import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.movieland.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,24 +13,30 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_search,
-                R.id.navigation_coming_soon
-            )
-        )
-
-//        setupActionBarWithNavController(navController, appBarConfiguration)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
         binding.bottomNavView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { navContrl, destination, _ ->
+
+            if (navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_home) {
+                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment
+                        && destination.id != R.id.movieListFragment
+                        && destination.id != R.id.castDetailsFragment
+            } else {
+                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment
+                        && destination.id != R.id.movieListFragment
+                        && destination.id != R.id.detailFragment
+                        && destination.id != R.id.castDetailsFragment
+            }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

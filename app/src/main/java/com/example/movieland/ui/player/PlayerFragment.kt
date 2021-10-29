@@ -325,10 +325,8 @@ class PlayerFragment : Fragment() {
 //                    binding.mainLayout.isGone = false
 //                    binding.shimmerLayout.stopShimmer()
 
-                    Log.d("CheckSize", "setUpObservers: ${it.data.videos.videosList}")
                     if (it.data.videos.videosList.isNotEmpty()) {
                         val videoKey = it.data.videos.videosList[0].key
-                        Log.d("VideoKey", "onViewCreated: $videoKey")
                         initializePlayer(videoKey)
                     }
                     updateDetails(tvDetails = it.data)
@@ -353,13 +351,11 @@ class PlayerFragment : Fragment() {
 
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
-                is Resource.Loading -> {
-                }
+                is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
-
-                    Log.d("recommendationsSize", "setUpObservers: ${it.data!!.movieResults.size}")
-
+                    recommendationsPlaceholder.isGone = true
                     if (it.data!!.movieResults.isNotEmpty()) {
+                        rvRecommendations.isGone = false
                         recommendationsAdapter.submitList(it.data.movieResults)
                     } else {
                         // Show no recommendations msg
@@ -371,12 +367,10 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.similarMedia.observe(viewLifecycleOwner) {
-            Log.d("LiveObserver2", "setUpObservers: called")
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
                 // is Resource.Loading -> { }
                 is Resource.Success -> {
-                    Log.d("SuccessObserver2", " success ")
                     similarMediaAdapter.submitList(it.data?.movieResults)
                 }
             }
@@ -388,7 +382,6 @@ class PlayerFragment : Fragment() {
                 is Resource.Error -> showSnackBar(it.message!!)
                 // is Resource.Loading -> { }
                 is Resource.Success -> {
-                    Log.d("SuccessObserver3", " success ")
                     tvShowEpisodesAdapter.submitList(it.data?.episodes)
                 }
             }
@@ -588,8 +581,6 @@ class PlayerFragment : Fragment() {
     }
 
     private fun openCastKnownForDialog(cast: Cast) {
-
-        Log.d("personId", "openCastKnownForDialog: personId = ${cast.id}")
         val action = PlayerFragmentDirections.actionPlayerFragmentToCastKnownForFragment(
             personId = cast.id,
             name = cast.name,

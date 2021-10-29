@@ -149,7 +149,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
                     binding.rvMedia.isGone = true
                 }
                 is LoadState.Error -> {
-//                    showSnackBar()
+                    showSnackBar("Something went wrong")
                     binding.progressBar.isGone = true
                     binding.rvMedia.isGone = false
                 }

@@ -3,7 +3,6 @@ package com.example.movieland
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieland.data.repositories.BaseRepo
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 open class BaseViewModel(private val baseRepo: BaseRepo) : ViewModel() {

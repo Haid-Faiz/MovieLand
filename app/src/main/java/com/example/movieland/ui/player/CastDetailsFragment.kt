@@ -60,9 +60,12 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
                 is Resource.Error -> showSnackBar(it.message!!)
                 // is Resource.Loading -> TODO()
                 is Resource.Success -> {
+                    val filteredList = it.data!!.cast.filter { movieResult ->
+                        !movieResult.posterPath.isNullOrEmpty() && !movieResult.backdropPath.isNullOrEmpty()
+                    }
                     binding.rvActorFilmography.isGone = false
-                    binding.loadingText.isGone = true
-                    adapter.submitList(it.data!!.cast)
+                    binding.progressBar.isGone = true
+                    adapter.submitList(filteredList)
                 }
             }
         }
@@ -71,7 +74,7 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
     private fun updateDetail() = binding.apply {
         profilePicture.load(TMDB_CAST_IMAGE_BASE_URL_W342.plus(args.profilePath))
         name.text = args.name
-        knowForDepartment.text = "Known for department: ${args.knownForDepartment}"
+        knowForDepartment.text = "Known for:  ${args.knownForDepartment}"
         closeBtn.setOnClickListener { dismiss() }
     }
 
@@ -100,7 +103,7 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
 
         safeFragmentNavigation(
             navController = findNavController(),
-            currentFragmentId = R.id.castKnownForFragment,
+            currentFragmentId = R.id.castDetailsFragment,
             actionId = R.id.action_castKnownForFragment_to_detailFragment
         )
     }

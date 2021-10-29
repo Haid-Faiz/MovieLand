@@ -31,6 +31,7 @@ import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -67,7 +68,7 @@ class SearchFragment : Fragment() {
         searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
         searchViewModel.trendingMedia.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> TODO()
+                is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
@@ -153,9 +154,7 @@ class SearchFragment : Fragment() {
 
         searchViewModel.searchedMedia.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> {
-                    TODO()
-                }
+                is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Loading -> binding.apply {}
                 is Resource.Success -> binding.apply {
                     horizontalAdapter.submitList(it.data?.movieResults)

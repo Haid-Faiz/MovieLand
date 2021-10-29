@@ -257,6 +257,7 @@
                         android:layout_height="@dimen/_136sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
+
                 </LinearLayout>
 
                 <LinearLayout

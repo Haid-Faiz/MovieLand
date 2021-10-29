@@ -25,7 +25,7 @@ class ComingSoonViewModel @Inject constructor(
         getComingSoonMovies()
     }
 
-    fun getComingSoonMovies() = viewModelScope.launch {
+    private fun getComingSoonMovies() = viewModelScope.launch {
         _comingSoon.postValue(Resource.Loading())
         _comingSoon.postValue(movieRepo.fetchUpcomingMovies())
     }

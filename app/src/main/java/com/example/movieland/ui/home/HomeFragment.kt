@@ -2,7 +2,6 @@ package com.example.movieland.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,29 +10,18 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
-import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
-import androidx.paging.filter
-import androidx.paging.map
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
-import com.example.movieland.data.models.HomeFeed
 import com.example.movieland.databinding.FragmentHomeBinding
-import com.example.movieland.ui.home.lists.MovieListFragment
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
-import com.example.movieland.utils.Constants.MEDIA_CATEGORY_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
@@ -51,7 +39,6 @@ import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlin.math.min
 
@@ -91,6 +78,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.allFeedList.observe(viewLifecycleOwner) {
             when (it) {
+                // is Resource.Loading -> loading done automatically
                 is Resource.Error -> showSnackBar(it.message!!)
                 is Resource.Success -> binding.apply {
 
@@ -146,24 +134,7 @@ class HomeFragment : Fragment() {
         }
 
         bannerInfoButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                MEDIA_SEND_REQUEST_KEY,
-                bundleOf(
-                    MEDIA_ID_KEY to bannerMovie.id,
-                    GENRES_ID_LIST_KEY to bannerMovie.genreIds,
-                    MEDIA_TITLE_KEY to (bannerMovie.title ?: bannerMovie.tvShowName),
-                    MEDIA_OVERVIEW_KEY to bannerMovie.overview,
-                    IS_IT_A_MOVIE_KEY to !bannerMovie.title.isNullOrEmpty(),
-                    MEDIA_IMAGE_KEY to bannerMovie.backdropPath,
-                    MEDIA_YEAR_KEY to (bannerMovie.releaseDate ?: bannerMovie.tvShowFirstAirDate),
-                    MEDIA_RATING_KEY to String.format("%.1f", bannerMovie.voteAverage)
-                )
-            )
-            safeFragmentNavigation(
-                navController = navController,
-                currentFragmentId = R.id.navigation_home,
-                actionId = R.id.action_navigation_home_to_detailFragment
-            )
+            openMediaDetailsBSD(bannerMovie)
         }
 
         addToListButton.setOnClickListener {
@@ -184,7 +155,7 @@ class HomeFragment : Fragment() {
                     ).let { response ->
                         when (response) {
                             is Resource.Error -> showSnackBar(
-                                response.message ?: "Something went wrong"
+                                response.message!!
                             )
 //                        is Resource.Loading -> TODO()
                             is Resource.Success -> showSnackBar("Added to My List")
@@ -214,27 +185,32 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun openMediaDetailsBSD(media: MovieResult) {
+        parentFragmentManager.setFragmentResult(
+            MEDIA_SEND_REQUEST_KEY,
+            bundleOf(
+                MEDIA_ID_KEY to media.id,
+                GENRES_ID_LIST_KEY to media.genreIds,
+                MEDIA_TITLE_KEY to (media.title ?: media.tvShowName),
+                MEDIA_OVERVIEW_KEY to media.overview,
+                IS_IT_A_MOVIE_KEY to !media.title.isNullOrEmpty(),
+                MEDIA_IMAGE_KEY to media.backdropPath,
+                MEDIA_YEAR_KEY to (media.releaseDate ?: media.tvShowFirstAirDate),
+                MEDIA_RATING_KEY to String.format("%.1f", media.voteAverage)
+            )
+        )
+
+        safeFragmentNavigation(
+            navController = navController,
+            currentFragmentId = R.id.navigation_home,
+            actionId = R.id.action_navigation_home_to_detailFragment
+        )
+    }
+
     private fun setUpRecyclerView() {
         homeAdapter = HomeAdapter(
             onPosterClick = {
-                parentFragmentManager.setFragmentResult(
-                    MEDIA_SEND_REQUEST_KEY,
-                    bundleOf(
-                        GENRES_ID_LIST_KEY to it.genreIds,
-                        MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
-                        IS_IT_A_MOVIE_KEY to !it.title.isNullOrEmpty(),
-                        MEDIA_OVERVIEW_KEY to it.overview,
-                        MEDIA_IMAGE_KEY to it.backdropPath,
-                        MEDIA_YEAR_KEY to (it.releaseDate ?: it.tvShowFirstAirDate),
-                        MEDIA_ID_KEY to it.id,
-                        MEDIA_RATING_KEY to String.format("%.1f", it.voteAverage)
-                    )
-                )
-                safeFragmentNavigation(
-                    navController = navController,
-                    currentFragmentId = R.id.navigation_home,
-                    actionId = R.id.action_navigation_home_to_detailFragment
-                )
+                openMediaDetailsBSD(it)
             },
             onSeeAllBtnClick = {
                 val action =

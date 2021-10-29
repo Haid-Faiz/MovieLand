@@ -1,7 +1,10 @@
 package com.example.movieland.data.repositories
 
+import com.example.datasource.remote.models.responses.TmdbErrorResponse
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.SessionPrefs
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -20,25 +23,47 @@ abstract class BaseRepo constructor(
         return withContext(Dispatchers.IO) {
             try {
                 val response: Response<T> = api()
-                if (response.isSuccessful) Resource.Success(data = response.body()!!)
-                else Resource.Error(message = response.message())
-
-            } catch (e: HttpException) {
-                Resource.Error(e.message ?: "Something went wrong")
+                Resource.Success(data = response.body()!!)
             } catch (e: IOException) {
-                Resource.Error(e.message ?: "Please check your network")
+                Resource.Error(
+                    "Please check your network connection",
+                    errorType = ErrorType.NETWORK
+                )
+            } catch (e: HttpException) {
+                // val code = e.code() HTTP Exception code
+                val errorResponse: TmdbErrorResponse? = convertErrorBody(e)
+                Resource.Error(
+                    errorMessage = errorResponse?.statusMessage ?: "Something went wrong",
+                    errorType = ErrorType.HTTP
+                )
             } catch (e: Exception) {
-                Resource.Error(message = e.message ?: "Something went wrong")
+                Resource.Error(
+                    errorMessage = e.message ?: "Something went wrong",
+                    errorType = ErrorType.UNKNOWN
+                )
             }
         }
     }
 
 
-    fun parseJsonError(errorBody: ResponseBody) {
-        val jsonError = JSONObject(errorBody.toString())
-        jsonError.getString("")
-        jsonError.getString("")
+    private fun convertErrorBody(throwable: HttpException): TmdbErrorResponse? {
+        return try {
+            throwable.response()?.errorBody()?.source()?.let {
+                val moshiAdapter = Moshi.Builder().build().adapter(TmdbErrorResponse::class.java)
+                moshiAdapter.fromJson(it)
+            }
+        } catch (exception: Exception) {
+            null
+        }
     }
+
+
+//    private fun parseJsonError(errorBody: ResponseBody) {
+//        val jsonError = JSONObject(errorBody.string())
+//        jsonError.getString("")
+//        jsonError.getString("")
+//    }
+
 
     suspend fun clearSessionPrefs() {
         sessionPrefs.clearSessionPrefs()

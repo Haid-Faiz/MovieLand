@@ -298,7 +298,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_12sdp"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="@dimen/_4sdp"
                             android:visibility="gone"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/item_cast" />
@@ -448,6 +447,40 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/recommendations_placeholder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_8sdp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="@dimen/_94sdp"
+                                android:layout_height="@dimen/_136sdp"
+                                android:layout_marginVertical="@dimen/_4sdp"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                android:background="@drawable/poster_bg" />
+
+                            <View
+                                android:layout_width="@dimen/_94sdp"
+                                android:layout_height="@dimen/_136sdp"
+                                android:layout_margin="@dimen/_4sdp"
+                                android:background="@drawable/poster_bg" />
+
+                            <View
+                                android:layout_width="@dimen/_94sdp"
+                                android:layout_height="@dimen/_136sdp"
+                                android:layout_margin="@dimen/_4sdp"
+                                android:background="@drawable/poster_bg" />
+
+                            <View
+                                android:layout_width="@dimen/_94sdp"
+                                android:layout_height="@dimen/_136sdp"
+                                android:layout_margin="@dimen/_4sdp"
+                                android:background="@drawable/poster_bg" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/recommendations_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -470,6 +503,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_4sdp"
+                                android:visibility="gone"
                                 android:nestedScrollingEnabled="false"
                                 android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

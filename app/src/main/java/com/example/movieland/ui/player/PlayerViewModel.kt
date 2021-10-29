@@ -6,7 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.MediaCastResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -64,7 +68,6 @@ class PlayerViewModel @Inject constructor(
             _recommendedMedia.postValue(movieRepo.fetchRecommendedTvShows(tvID = mediaId))
     }
 
-
     fun getTvSeasonDetail(tvId: Int, seasonNumber: Int) = viewModelScope.launch {
         _tvSeasonDetail.postValue(Resource.Loading())
         _tvSeasonDetail.postValue(
@@ -78,6 +81,7 @@ class PlayerViewModel @Inject constructor(
         else
             _mediaCast.postValue(movieRepo.fetchTvShowCast(tvId = mediaId))
     }
+
 
     //---------------------------Session Id is required in these requests-----------------------
 

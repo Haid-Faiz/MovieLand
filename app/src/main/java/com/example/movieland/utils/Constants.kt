@@ -3,6 +3,7 @@ package com.example.movieland.utils
 object Constants {
 
     const val MOVIE_LAND_URL = "android://com.example.movieland/ui/auth/AuthActivity"
+    const val TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL = "https://www.themoviedb.org/auth/access?request_token="
     const val TMDB_IMAGE_BASE_URL_W500 =
         "https://image.tmdb.org/t/p/w500/"  // poster_path = 8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg   || w342
     const val TMDB_IMAGE_BASE_URL_W780 = "https://image.tmdb.org/t/p/w780/"
@@ -29,6 +30,10 @@ object Constants {
     const val MEDIA_SEND_REQUEST_KEY = "media_set_fragment_result_request_key"
     const val MEDIA_CATEGORY_SEND_REQUEST_KEY = "media_category_set_fragment_result_request_key"
     const val SEASONS_LIST_REQUEST_KEY = "seasons_list_request_key"
+    const val SIGN_IN_SESSION_KEY = "sign_in_session_key"
+    const val USER_NAME_KEY = "user_name_key"
+    const val USER_ACCOUNT_ID_KEY = "user_account_id_key"
+    const val SESSION_ID_KEY = "session_id_key"
 
 
     const val TRENDING_MOVIES = "Trending Movies"

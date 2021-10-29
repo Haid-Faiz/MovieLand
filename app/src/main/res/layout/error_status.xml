@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <ImageView
+        android:id="@+id/status_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:src="@drawable/ic_antenna" />
+
+    <TextView
+        android:id="@+id/status_text_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_24sdp"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="center_horizontal"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/_16ssp"
+        tools:text="Connection Error" />
+
+    <TextView
+        android:id="@+id/status_text_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/hind"
+        android:gravity="center_horizontal"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/_14ssp"
+        tools:text="Please check your internet/wifi connection" />
+
+    <Button
+        android:id="@+id/retry_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_36sdp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Retry"
+        android:textAllCaps="false"
+        android:textColor="@color/red"
+        android:textSize="@dimen/_14ssp" />
+</LinearLayout>
