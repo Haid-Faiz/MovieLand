@@ -42,22 +42,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlin.math.min
 
-// Multi clicks on dialog crash handling
-//
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navController: NavController
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var homeAdapter: HomeAdapter
-
-    private lateinit var bannerMovie: MovieResult
+    private var _bannerMovie: MovieResult? = null
     private lateinit var popingAnim: Animation
 
     override fun onCreateView(
@@ -84,10 +79,10 @@ class HomeFragment : Fragment() {
 
                     homeAdapter.submitList(it.data!!.homeFeedList)
                     // Setup movie banner
-                    bannerMovie = it.data.bannerMovie
-                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${bannerMovie.posterPath}")
+                    _bannerMovie = it.data.bannerMovie
+                    binding.bannerImage.load("${TMDB_IMAGE_BASE_URL_W780}${_bannerMovie!!.posterPath}")
                     binding.bannerGenres.text = Helpers.getMovieGenreListFromIds(
-                        bannerMovie.genreIds
+                        _bannerMovie!!.genreIds
                     ).joinToString(" • ") { it.name }
 
                     // Show RV
@@ -112,11 +107,6 @@ class HomeFragment : Fragment() {
             val action =
                 HomeFragmentDirections.actionNavigationHomeToMovieListFragment(mediaCategory = TRENDING_MOVIES)
             navController.navigate(action)
-            // Assisted Injection
-            // When we have to pass the arguments by ourself not by DI framework
-            // then we can use Assisted Injection
-            // It comes with a but that we have to create a Factory for it
-            // then we have to pass that argument (assisted) in a factory
         }
 
         tvShowsText.setOnClickListener {
@@ -134,54 +124,60 @@ class HomeFragment : Fragment() {
         }
 
         bannerInfoButton.setOnClickListener {
-            openMediaDetailsBSD(bannerMovie)
+            _bannerMovie?.let { movie ->
+                openMediaDetailsBSD(movie)
+            }
         }
 
         addToListButton.setOnClickListener {
-            addToListButton.startAnimation(popingAnim)
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            _bannerMovie?.let { movie ->
+                addToListButton.startAnimation(popingAnim)
+                viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                    val sessionId = homeViewModel.getSessionId().first()
+                    val accountId = homeViewModel.getAccountId().first()
 
-                val sessionId = homeViewModel.getSessionId().first()
-                val accountId = homeViewModel.getAccountId().first()
-                if (sessionId != null && accountId != null) {
-                    homeViewModel.addToWatchList(
-                        accountId = accountId,
-                        sessionId = sessionId,
-                        addToWatchListRequest = AddToWatchListRequest(
-                            mediaId = bannerMovie.id,
-                            mediaType = MOVIE,
-                            watchlist = true
-                        )
-                    ).let { response ->
-                        when (response) {
-                            is Resource.Error -> showSnackBar(
-                                response.message!!
+                    if (sessionId != null && accountId != null) {
+                        homeViewModel.addToWatchList(
+                            accountId = accountId,
+                            sessionId = sessionId,
+                            addToWatchListRequest = AddToWatchListRequest(
+                                mediaId = movie.id,
+                                mediaType = MOVIE,
+                                watchlist = true
                             )
-//                        is Resource.Loading -> TODO()
-                            is Resource.Success -> showSnackBar("Added to My List")
+                        ).let { response ->
+                            when (response) {
+                                is Resource.Error -> showSnackBar(
+                                    response.message!!
+                                )
+                                // is Resource.Loading -> TODO()
+                                is Resource.Success -> showSnackBar("Added to My List")
+                            }
                         }
-                    }
 
-                } else
-                    showSnackBar(
-                        "Please login to avail this feature",
-                        action = {
-                            navController.navigate(R.id.action_navigation_home_to_navigation_account)
-                        },
-                        actionMsg = "Login"
-                    )
+                    } else
+                        showSnackBar(
+                            "Please login to avail this feature",
+                            action = {
+                                navController.navigate(R.id.action_navigation_home_to_navigation_account)
+                            },
+                            actionMsg = "Login"
+                        )
+                }
             }
         }
 
         playButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                MEDIA_PLAY_REQUEST_KEY,
-                bundleOf(
-                    MEDIA_ID_KEY to bannerMovie.id,
-                    IS_IT_A_MOVIE_KEY to true
+            _bannerMovie?.let { movie ->
+                parentFragmentManager.setFragmentResult(
+                    MEDIA_PLAY_REQUEST_KEY,
+                    bundleOf(
+                        MEDIA_ID_KEY to movie.id,
+                        IS_IT_A_MOVIE_KEY to true
+                    )
                 )
-            )
-            navController.navigate(R.id.action_navigation_home_to_playerFragment)
+                navController.navigate(R.id.action_navigation_home_to_playerFragment)
+            }
         }
     }
 

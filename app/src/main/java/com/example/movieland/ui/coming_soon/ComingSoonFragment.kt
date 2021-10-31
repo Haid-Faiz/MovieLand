@@ -19,6 +19,7 @@ import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
 import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.utils.*
+import com.example.movieland.utils.Constants.MOVIE
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -123,7 +124,7 @@ class ComingSoonFragment : Fragment() {
                     overview.text = movieResult.overview
                     ratingText.text = String.format("%.1f", movieResult.voteAverage)
                     releaseDate.formatUpcomingDate(movieResult.releaseDate)
-                    rvGenres.scrollTo(0,0)
+                    rvGenres.scrollTo(0, 0)
                     setUpWatchListClick(movieResult)
                 }
             })
@@ -131,30 +132,33 @@ class ComingSoonFragment : Fragment() {
     }
 
     private fun setUpWatchListClick(movieResult: MovieResult) = binding.apply {
-
         addToWatchlist.setOnClickListener {
             addToWatchlist.startAnimation(popInAnim)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                val sessionId = viewModel.getSessionId().first()
+                val accountId = viewModel.getAccountId().first()
 
-                viewModel.addToWatchList(
-                    accountId = viewModel.getAccountId().first()!!,
-                    sessionId = viewModel.getSessionId().first()!!,
-                    addToWatchListRequest = AddToWatchListRequest(
-                        mediaId = movieResult.id,
-                        mediaType = "movie",
-                        watchlist = true
-                    )
-                ).let {
-                    when (it) {
-                        is Resource.Error -> withContext(Dispatchers.Main) {
-                            showSnackBar(it.message ?: "Something went wrong")
-                        }
-//                        is Resource.Loading -> { }
-                        is Resource.Success -> withContext(Dispatchers.Main) {
-                            showSnackBar("${movieResult.title} added to watchlist")
+                if (sessionId != null && accountId != null) {
+                    viewModel.addToWatchList(
+                        accountId = accountId,
+                        sessionId = sessionId,
+                        addToWatchListRequest = AddToWatchListRequest(
+                            mediaId = movieResult.id,
+                            mediaType = MOVIE,
+                            watchlist = true
+                        )
+                    ).let {
+                        when (it) {
+                            is Resource.Error -> withContext(Dispatchers.Main) {
+                                showSnackBar(it.message ?: "Something went wrong")
+                            }
+                            // is Resource.Loading -> { }
+                            is Resource.Success -> withContext(Dispatchers.Main) {
+                                showSnackBar("${movieResult.title} added to watchlist")
+                            }
                         }
                     }
-                }
+                } else showSnackBar("Please login to avail this feature")
             }
         }
     }

@@ -123,7 +123,7 @@
     </dialog>
     <dialog
         android:id="@+id/castDetailsFragment"
-        android:name="com.example.movieland.ui.player.CastDetailsFragment"
+        android:name="com.example.movieland.ui.cast.CastDetailsFragment"
         android:label="CastDetailsFragment">
         <action
             android:id="@+id/action_castKnownForFragment_to_detailFragment"
@@ -133,7 +133,8 @@
             app:argType="integer" />
         <argument
             android:name="knownForDepartment"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true"/>
         <argument
             android:name="name"
             app:argType="string" />

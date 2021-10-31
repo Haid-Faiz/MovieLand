@@ -29,17 +29,16 @@ class PagingStateAdapter(val retry: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(loadState: LoadState) = binding.apply {
-
             retryButton.setOnClickListener { retry() }
             when (loadState) {
                 LoadState.Loading -> {
-                    loadMsg.text = "Hang on... loading content"
+//                    loadMsg.text = "Hang on... loading content"
                     progressBar.isGone = false
                     retryButton.isGone = true
                 }
-//                    is LoadState.NotLoading -> TODO()
+                // is LoadState.NotLoading -> TODO()
                 is LoadState.Error -> {
-                    loadMsg.text = "Oops... Could not load content"
+//                    loadMsg.text = "Oops... Could not load content"
                     progressBar.isGone = true
                     retryButton.isGone = false
                 }

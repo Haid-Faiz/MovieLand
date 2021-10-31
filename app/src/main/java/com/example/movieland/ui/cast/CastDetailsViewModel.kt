@@ -1,4 +1,4 @@
-package com.example.movieland.ui.player
+package com.example.movieland.ui.cast
 
 import androidx.lifecycle.*
 import com.example.datasource.remote.models.responses.*

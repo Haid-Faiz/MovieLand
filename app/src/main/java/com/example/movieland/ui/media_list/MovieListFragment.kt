@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import com.example.movieland.R
+import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentMovieListBinding
 import com.example.movieland.ui.home.HorizontalPagerAdapter
 import com.example.movieland.utils.Constants
@@ -120,10 +121,11 @@ class MovieListFragment : Fragment() {
 
             },
         )
-//        horizontalAdapter.withLoadStateHeaderAndFooter(
-//            footer = PagingStateAdapter { horizontalAdapter },
-//            header = PagingStateAdapter { horizontalAdapter }
-//        )
+
+        binding.listRecyclerview.adapter = horizontalAdapter.withLoadStateHeaderAndFooter(
+            footer = PagingStateAdapter { horizontalAdapter.retry() },
+            header = PagingStateAdapter { horizontalAdapter.retry() }
+        )
 
         horizontalAdapter.addLoadStateListener {
             when (it.refresh) {
@@ -147,6 +149,5 @@ class MovieListFragment : Fragment() {
         }
 
         binding.listRecyclerview.setHasFixedSize(true)
-        binding.listRecyclerview.adapter = horizontalAdapter
     }
 }

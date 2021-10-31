@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.datasource.remote.models.responses.Genre
 import com.example.movieland.R
+import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentGenresBsdBinding
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.home.HorizontalPagerAdapter
@@ -106,6 +107,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setUpRecyclerView() = binding.apply {
+        // Setting up genres option list Recyclerview
         genresAdapter = GenresOptionAdapter(
             selectedStrokeColor = ContextCompat.getColor(requireContext(), R.color.red),
             unSelectedStrokeColor = ContextCompat.getColor(requireContext(), R.color.divider),
@@ -120,7 +122,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
         rvGenres.adapter = genresAdapter
         genresAdapter.submitList(allMovieGeneresList)
 
-
+        // Setting up genres option list Recyclerview
         horizontalAdapter = HorizontalPagerAdapter {
             parentFragmentManager.setFragmentResult(
                 Constants.MEDIA_SEND_REQUEST_KEY,
@@ -137,6 +139,11 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
             )
             findNavController().navigate(R.id.action_selectGenresDialogFragment_to_detailFragment)
         }
+
+        rvMedia.adapter = horizontalAdapter.withLoadStateHeaderAndFooter(
+            footer = PagingStateAdapter { horizontalAdapter.retry() },
+            header = PagingStateAdapter { horizontalAdapter.retry() }
+        )
 
         horizontalAdapter.addLoadStateListener {
             when (it.refresh) {
@@ -155,9 +162,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-
         rvMedia.setHasFixedSize(true)
-        rvMedia.adapter = horizontalAdapter
     }
 
     override fun onDestroyView() {

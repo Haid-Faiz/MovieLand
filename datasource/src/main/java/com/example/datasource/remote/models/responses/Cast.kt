@@ -19,7 +19,7 @@ data class Cast(
     @Json(name = "id")
     var id: Int,
     @Json(name = "known_for_department")
-    var knownForDepartment: String,
+    var knownForDepartment: String?,
     @Json(name = "name")
     var name: String,
     @Json(name = "order")

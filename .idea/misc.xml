@@ -55,7 +55,7 @@
         <entry key="app/src/main/res/font/montserrat.xml" value="0.20092592592592592" />
         <entry key="app/src/main/res/font/montserrat_bold.xml" value="0.20092592592592592" />
         <entry key="app/src/main/res/layout/account_not_sign_in.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/banner_item.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/cast_profile_dialog.xml" value="0.21" />
@@ -67,14 +67,14 @@
         <entry key="app/src/main/res/layout/fragment_detail_bsd.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_details_bsd.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_genres_bsd.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_home_shimmer.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.21" />
         <entry key="app/src/main/res/layout/fragment_player_shimmer.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.13" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/intro_pager_item.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/intro_pager_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/item_cast.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_cast_bg.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_cast_shimmer.xml" value="0.33" />
@@ -95,7 +95,7 @@
         <entry key="app/src/main/res/layout/item_video.xml" value="0.33" />
         <entry key="app/src/main/res/layout/movie_header_banner.xml" value="0.18" />
         <entry key="app/src/main/res/layout/page_error_item.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/page_state_item.xml" value="0.14549180327868852" />
+        <entry key="app/src/main/res/layout/page_state_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rating_dialog.xml" value="0.22" />
         <entry key="app/src/main/res/layout/season_picker_dialog.xml" value="0.33" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.161328125" />

@@ -77,7 +77,9 @@ class AccountFragment : Fragment() {
                 binding.rvWatchlist.isGone = isLoading
             }
             when (it) {
-                is Resource.Error -> TODO()
+                is Resource.Error -> {
+                    showSnackBar(it.message!!)
+                }
                 // is Resource.Loading -> binding.apply {}
                 is Resource.Success -> binding.apply {
                     _allWatchList = it.data!! as ArrayList
@@ -99,7 +101,9 @@ class AccountFragment : Fragment() {
                 binding.rvRatings.isGone = isLoading
             }
             when (it) {
-                is Resource.Error -> TODO()
+                is Resource.Error -> {
+                    showSnackBar(it.message!!)
+                }
                 // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
                     _allRatingList = it.data!! as ArrayList
@@ -121,7 +125,9 @@ class AccountFragment : Fragment() {
                 binding.rvFavourites.isGone = isLoading
             }
             when (it) {
-                is Resource.Error -> TODO()
+                is Resource.Error -> {
+                    showSnackBar(it.message!!)
+                }
                 // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
                     _allFavouriteList = it.data!! as ArrayList

@@ -1,4 +1,4 @@
-package com.example.movieland.ui.player
+package com.example.movieland.ui.cast
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -74,7 +74,7 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
     private fun updateDetail() = binding.apply {
         profilePicture.load(TMDB_CAST_IMAGE_BASE_URL_W342.plus(args.profilePath))
         name.text = args.name
-        knowForDepartment.text = "Known for:  ${args.knownForDepartment}"
+        knowForDepartment.text = "Known for:  ${args.knownForDepartment ?: "NA"}"
         closeBtn.setOnClickListener { dismiss() }
     }
 

@@ -2,7 +2,6 @@ package com.example.movieland.ui.player
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +23,18 @@ import coil.load
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.Season
+import com.example.datasource.remote.models.responses.VideoResult
+import com.example.datasource.remote.models.responses.Cast
 import com.example.movieland.R
 import com.example.movieland.databinding.RatingDialogBinding
-import com.example.movieland.ui.CastListAdapter
+import com.example.movieland.ui.cast.CastListAdapter
 import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
-import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -45,10 +47,19 @@ import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
+import com.example.movieland.utils.Constants.SEASON_LIST
+import com.example.movieland.utils.Constants.SEASON_NUMBER
+import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
+import com.example.movieland.utils.Constants.SELECTED_SEASON_POSITION
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
+import com.example.movieland.utils.Constants.TRAILER
 import com.example.movieland.utils.Constants.TV
+import com.example.movieland.utils.Constants.YOUTUBE
+import com.example.movieland.utils.Resource
+import com.example.movieland.utils.formatMediaDate
+import com.example.movieland.utils.safeFragmentNavigation
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
-
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -65,6 +76,7 @@ class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModels()
+    private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
 
     // Adapters
     private lateinit var similarMediaAdapter: HorizontalAdapter
@@ -74,20 +86,20 @@ class PlayerFragment : Fragment() {
     private lateinit var genreAdapter: GenreAdapter
     private lateinit var castAdapter: CastListAdapter
 
+    // Global variables
     private var _isItMovie: Boolean = true
     private var _id: Int? = null
-    private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
     private var _seasonList: List<Season>? = null
     private var _currentSeasonNumber: Int = 1
     private var _currentMovie: MovieDetailResponse? = null
     private var _currentTvShow: TvShowDetailsResponse? = null
     private lateinit var popingAnim: Animation
 
-//    private var videoKey: String? = null
+    // private var videoKey: String? = null
     // Player state helper variables
-//    private var playWhenReady = true
-//    private var currentWindow = 0
-//    private var playbackPosition = 0L
+    // private var playWhenReady = true
+    // private var currentWindow = 0
+    // private var playbackPosition = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,17 +122,15 @@ class PlayerFragment : Fragment() {
 
     private fun setUpClickListeners() = binding.apply {
 
-        backArrow.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        backArrow.setOnClickListener { findNavController().popBackStack() }
 
         pickSeasonBtn.setOnClickListener {
             _seasonList?.let { seasonList ->
                 parentFragmentManager.setFragmentResult(
                     SEASONS_LIST_REQUEST_KEY,
                     bundleOf(
-                        "season_list" to seasonList,
-                        "selected_item_position" to _currentSeasonNumber
+                        SEASON_LIST to seasonList,
+                        CURRENT_SEASON_POSITION to _currentSeasonNumber
                     )
                 )
                 safeFragmentNavigation(
@@ -141,7 +151,6 @@ class PlayerFragment : Fragment() {
                     // Now user can rate
                     val ratingDialog = RatingDialogBinding.inflate(layoutInflater)
                     val dialog = Dialog(requireContext(), R.style.RatingDialog).apply {
-//                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                         setContentView(ratingDialog.root)
                         setCancelable(true)
                     }
@@ -218,14 +227,12 @@ class PlayerFragment : Fragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message!!
                             )
-//                        is Resource.Loading -> TODO()
+                            // is Resource.Loading -> TODO()
                             is Resource.Success -> {
                                 showSnackBar("Added to My List")
                             }
                         }
                     }
-
-
                 } else showSnackBar("Please login to avail this feature")
             }
         }
@@ -243,7 +250,7 @@ class PlayerFragment : Fragment() {
                         sessionId = sessionId,
                         addToFavouriteRequest = AddToFavouriteRequest(
                             mediaId = (_currentMovie?.id ?: _currentTvShow?.id)!!,
-                            mediaType = if (_isItMovie) MOVIE else "tv",
+                            mediaType = if (_isItMovie) MOVIE else TV,
                             favorite = true
                         )
                     ).let { response ->
@@ -276,34 +283,28 @@ class PlayerFragment : Fragment() {
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> binding.apply {
-
                     _currentMovie = it.data!!
                     val totalVideos = it.data.videos.videosList as ArrayList
-
-//                    binding.shimmerLayout.isGone = true
-//                    binding.mainLayout.isGone = false
-//                    binding.shimmerLayout.stopShimmer()
-
                     val trailers: List<VideoResult> = totalVideos.filter { toFilter ->
-                        toFilter.type == "Trailer" && toFilter.site == "YouTube"
+                        toFilter.type == TRAILER && toFilter.site == YOUTUBE
                     }
-
                     if (totalVideos.isEmpty()) {
-                        // No video to play
-                        // initializePlayer(key)
+                        // No video to play, not initialing youtube player
                         emptyMoreVideosMsg.isGone = false
                         rvMoreVideosList.isGone = true
                     } else {
-
-                        val videoKey =
-                            if (trailers.isEmpty()) totalVideos[0].key else trailers[0].key
-                        Log.d("VideoKey", "onViewCreated: $videoKey   | a: $trailers")
-                        initializePlayer(videoKey)
+                        val trailer = if (trailers.isEmpty()) totalVideos[0] else trailers[0]
+                        initializePlayer(trailer.key)
                         // removing already played trailer from totalVideos
-                        if (trailers.isNotEmpty())
-                            totalVideos.remove(trailers[0])
-                        moreVideosAdapter.submitList(totalVideos)
+                        totalVideos.remove(trailer)
+                        if (totalVideos.isNotEmpty()) {
+                            moreVideosAdapter.submitList(totalVideos)
+                        } else {
+                            emptyMoreVideosMsg.isGone = false
+                            rvMoreVideosList.isGone = true
+                        }
                     }
+                    // Hiding loading bg code in updateDetails method
                     updateDetails(movieDetails = it.data)
                 }
             }
@@ -316,21 +317,31 @@ class PlayerFragment : Fragment() {
                     loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
                 }
-                is Resource.Success -> {
-
+                is Resource.Success -> binding.apply {
                     _currentTvShow = it.data!!
                     _seasonList = it.data.seasons
 
-//                    binding.shimmerLayout.isGone = true
-//                    binding.mainLayout.isGone = false
-//                    binding.shimmerLayout.stopShimmer()
-
-                    if (it.data.videos.videosList.isNotEmpty()) {
-                        val videoKey = it.data.videos.videosList[0].key
-                        initializePlayer(videoKey)
+                    val totalVideos = it.data.videos.videosList as ArrayList
+                    val trailers: List<VideoResult> = totalVideos.filter { toFilter ->
+                        toFilter.type == TRAILER && toFilter.site == YOUTUBE
+                    }
+                    if (totalVideos.isEmpty()) {
+                        // No video to play, not initialing youtube player
+                        emptyMoreVideosMsg.isGone = false
+                        rvMoreVideosList.isGone = true
+                    } else {
+                        val trailer = if (trailers.isEmpty()) totalVideos[0] else trailers[0]
+                        initializePlayer(trailer.key)
+                        // removing already played trailer from totalVideos
+                        totalVideos.remove(trailer)
+                        if (totalVideos.isNotEmpty()) {
+                            moreVideosAdapter.submitList(totalVideos)
+                        } else {
+                            emptyMoreVideosMsg.isGone = false
+                            rvMoreVideosList.isGone = true
+                        }
                     }
                     updateDetails(tvDetails = it.data)
-                    moreVideosAdapter.submitList(it.data.videos.videosList)
                 }
             }
         }
@@ -348,10 +359,10 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.recommendedMedia.observe(viewLifecycleOwner) {
-
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
-                is Resource.Loading -> { }
+                is Resource.Loading -> {
+                }
                 is Resource.Success -> binding.apply {
                     recommendationsPlaceholder.isGone = true
                     if (it.data!!.movieResults.isNotEmpty()) {
@@ -377,12 +388,19 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.tvSeasonDetail.observe(viewLifecycleOwner) {
-
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
                 // is Resource.Loading -> { }
-                is Resource.Success -> {
-                    tvShowEpisodesAdapter.submitList(it.data?.episodes)
+                is Resource.Success -> binding.apply {
+                    tvEpisodesStatusMsg.isGone = true
+                    if (it.data!!.episodes.isNotEmpty()) {
+                        rvEpisodes.isGone = false
+                        tvShowEpisodesAdapter.submitList(it.data.episodes)
+                    } else {
+                        rvEpisodes.isGone = true
+                        tvEpisodesStatusMsg.isGone = false
+                        tvEpisodesStatusMsg.text = "Oops, no episodes are present currently."
+                    }
                 }
             }
         }
@@ -417,20 +435,15 @@ class PlayerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         if (!_isItMovie) {
             parentFragmentManager.setFragmentResultListener(
-                "options_selected_item_position",
+                SELECTED_SEASON_POSITION,
                 viewLifecycleOwner
             ) { _, bundle ->
-                _currentSeasonNumber = bundle.getInt("season_number", 1)
+                _currentSeasonNumber = bundle.getInt(SEASON_NUMBER, 1)
                 binding.pickSeasonBtn.text = "Season $_currentSeasonNumber"
-
                 _id?.let {
-                    viewModel.getTvSeasonDetail(
-                        tvId = it,
-                        seasonNumber = _currentSeasonNumber
-                    )
+                    viewModel.getTvSeasonDetail(tvId = it, seasonNumber = _currentSeasonNumber)
                 }
             }
         }
@@ -440,7 +453,7 @@ class PlayerFragment : Fragment() {
         movieDetails: MovieDetailResponse? = null,
         tvDetails: TvShowDetailsResponse? = null
     ) = binding.apply {
-
+        // Now, making loading state gone & main layout visible
         loadingBg.loadingStateLayout.isGone = true
         binding.mainLayout.isGone = false
 
@@ -462,22 +475,16 @@ class PlayerFragment : Fragment() {
             titleText.text = tvDetails.name
             overviewText.text = tvDetails.overview
             yearText.formatMediaDate(tvDetails.firstAirDate)
-//            runtimeText.text = tvDetails.episodeRunTime
+            // runtimeText.text = tvDetails.episodeRunTime
             ratingText.text = String.format("%.1f", tvDetails.voteAverage)
             // Setting up Genre Adapter
             genreAdapter.submitList(tvDetails.genres)
         }
-
-//        binding.shimmerLayout.isGone = true
-//        binding.mainLayout.isGone = false
-//        binding.shimmerLayout.stopShimmer()
     }
 
     private fun setUpTabLayout() = binding.apply {
-
         onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
                 when (tab?.position) {
                     0 -> {
                         // Recommendations Tab
@@ -596,7 +603,6 @@ class PlayerFragment : Fragment() {
     }
 
     private fun initializePlayer(videoKey: String?) = binding.apply {
-
         youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 videoKey?.let {

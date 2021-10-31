@@ -21,7 +21,7 @@ class TrendingMediaPagingSource(
         return try {
 
             val response: Response<MovieListResponse> =
-                api.fetchTrending(mediaType = mediaType, timeWindow = "week", page = currentPage)
+                api.fetchTrending(mediaType = mediaType, timeWindow = "day", page = currentPage)
 
             val moviesList: List<MovieResult> = response.body()!!.movieResults
 

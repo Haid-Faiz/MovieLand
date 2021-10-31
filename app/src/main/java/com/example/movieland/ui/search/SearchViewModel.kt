@@ -27,6 +27,7 @@ class SearchViewModel @Inject constructor(
     val searchedMedia: LiveData<Resource<MovieListResponse>> = _searchedMedia
 
     fun trendingMovies(isMovie: Boolean) = viewModelScope.launch {
+        // This will fetch weekly trending data
         _trendingMedia.postValue(Resource.Loading())
         if (isMovie)
             _trendingMedia.postValue(moviesRepo.fetchTrendingMovies())

@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_1sdp"
             android:src="@drawable/back_1"
             android:translationZ="@dimen/_100sdp" />
 
@@ -385,6 +386,17 @@
                             app:icon="@drawable/ic_arrow_drop_down"
                             app:iconGravity="textEnd" />
 
+                        <TextView
+                            android:id="@+id/tv_episodes_status_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_148sdp"
+                            android:layout_below="@id/pick_season_btn"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="center"
+                            android:textColor="@color/text_secondary"
+                            tools:visibility="gone" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_episodes"
                             android:layout_width="match_parent"
@@ -393,8 +405,10 @@
                             android:layout_marginTop="@dimen/_8sdp"
                             android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_episode" />
+                            tools:listitem="@layout/item_episode"
+                            tools:visibility="visible" />
 
                     </RelativeLayout>
 
@@ -450,8 +464,8 @@
                             android:id="@+id/recommendations_placeholder"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/_8sdp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/_8sdp">
 
                             <View
                                 android:layout_width="@dimen/_94sdp"
@@ -503,9 +517,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_4sdp"
-                                android:visibility="gone"
                                 android:nestedScrollingEnabled="false"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 tools:itemCount="10"
                                 tools:listitem="@layout/item_poster" />

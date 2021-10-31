@@ -23,7 +23,10 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { navContrl, destination, _ ->
 
-            if (navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_home) {
+            if (navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_home ||
+                navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_search ||
+                navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_account
+            ) {
                 binding.bottomNavView.isVisible = destination.id != R.id.playerFragment
                         && destination.id != R.id.movieListFragment
                         && destination.id != R.id.castDetailsFragment

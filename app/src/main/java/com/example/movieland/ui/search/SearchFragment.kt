@@ -65,6 +65,10 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerViewAndNav()
+        binding.toolbar.setNavigationOnClickListener {
+            hideKeyboard()
+            navController.popBackStack()
+        }
         searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
         searchViewModel.trendingMedia.observe(viewLifecycleOwner) {
             when (it) {
@@ -168,6 +172,7 @@ class SearchFragment : Fragment() {
             binding.searchQueryEt.text.clear()
             hideKeyboard()
         }
+
     }
 
     private fun performSearch(searchQuery: String) {

@@ -1,4 +1,4 @@
-package com.example.movieland.ui
+package com.example.movieland.ui.cast
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
