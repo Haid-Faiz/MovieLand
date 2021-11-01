@@ -90,5 +90,4 @@ class TrendingViewModel @AssistedInject constructor(
     private fun getBollywoodMovies() {
         categoryMedia = movieRepo.fetchBollywoodMoviesPaging().cachedIn(viewModelScope)
     }
-
 }
