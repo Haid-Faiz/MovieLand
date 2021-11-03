@@ -35,7 +35,6 @@ class CastListAdapter(
             }
         }
     }
-
 }
 
 class DiffUtilCallback : DiffUtil.ItemCallback<Cast>() {

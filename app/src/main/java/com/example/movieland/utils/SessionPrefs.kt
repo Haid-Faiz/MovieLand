@@ -36,7 +36,7 @@ class SessionPrefs(private val context: Context) {
 
     fun getSessionId(): Flow<String?> = _datastore.data.map {
         it[sessionIdKey]
-    }  // again we are returning flow of string
+    } // again we are returning flow of string
 
     suspend fun saveAccessToken(accessToken: String) = _datastore.edit {
         it[accessTokenKey] = accessToken
@@ -44,7 +44,7 @@ class SessionPrefs(private val context: Context) {
 
     fun getAccessToken(): Flow<String?> = _datastore.data.map {
         it[accessTokenKey]
-    }  // again we are returning flow of string
+    } // again we are returning flow of string
 
     suspend fun saveAccountId(accountId: Int) = _datastore.edit {
         it[accountIdKey] = accountId
@@ -52,7 +52,7 @@ class SessionPrefs(private val context: Context) {
 
     fun getAccountId(): Flow<Int?> = _datastore.data.map {
         it[accountIdKey]
-    }  // again we are returning flow of string
+    } // again we are returning flow of string
 
     suspend fun saveUserName(username: String) = _datastore.edit {
         it[userNameKey] = username
@@ -60,5 +60,5 @@ class SessionPrefs(private val context: Context) {
 
     fun getUserName(): Flow<String?> = _datastore.data.map {
         it[userNameKey]
-    }  // again we are returning flow of string
+    } // again we are returning flow of string
 }

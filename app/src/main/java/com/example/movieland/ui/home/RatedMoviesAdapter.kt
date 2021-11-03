@@ -1,15 +1,14 @@
 package com.example.movieland.ui.home
 
-import com.example.datasource.remote.models.responses.MovieResult
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.movieland.databinding.ItemPosterBinding
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.databinding.ItemPosterRatedBinding
-import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W500
+import com.example.movieland.utils.Constants.TMDB_POSTER_IMAGE_BASE_URL_W342
 
 class RatedMoviesAdapter(
     private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null
@@ -28,7 +27,7 @@ class RatedMoviesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult: MovieResult) = binding.apply {
-            posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
+            posterImage.load(TMDB_POSTER_IMAGE_BASE_URL_W342.plus(movieResult.posterPath))
             posterImage.setOnClickListener {
                 onPosterClick?.invoke(movieResult)
             }

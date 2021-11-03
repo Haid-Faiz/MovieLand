@@ -1,6 +1,5 @@
 package com.example.datasource.remote.models.responses
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -47,5 +46,3 @@ data class Tmdb(
 
 // If you wanted to use the TMDb avatar, you could build a URL like this:
 // https://image.tmdb.org/t/p/w200/xy44UvpbTgzs9kWmp4C3fEaCl5h.png
-
-

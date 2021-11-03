@@ -56,7 +56,6 @@ class GenresOptionAdapter(
             }
         }
     }
-
 }
 
 class GenresDiffUtilCallback : DiffUtil.ItemCallback<Genre>() {

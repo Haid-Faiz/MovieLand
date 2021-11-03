@@ -3,13 +3,21 @@ package com.example.movieland.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.AccessTokenResponse
+import com.example.datasource.remote.models.responses.AccountDetailsResponse
+import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.MovieResult
+import com.example.datasource.remote.models.responses.RequestTokenResponse
+import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.AuthRepo
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
@@ -89,31 +97,27 @@ class AuthViewModel @Inject constructor(
             favouriteMediaList.addAll(favouriteMoviesResponse.body()!!.movieResults)
             favouriteMediaList.addAll(favouriteShowsResponse.body()!!.movieResults)
             return@zip favouriteMediaList
-
         }.flowOn(Dispatchers.Default)
-            .catch { e ->
-                when (e) {
+            .catch { throwable ->
+                when (throwable) {
                     is HttpException -> {
                         _favouriteList.postValue(
                             Resource.Error(
-                                errorMessage = e.message ?: "Something went wrong"
+                                errorMessage = throwable.message ?: "Something went wrong"
                             )
                         )
                     }
                     is IOException -> _favouriteList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Please check your network"
+                            errorMessage = "Please check your inernet connection"
                         )
                     )
-
                 }
             }
             .collect {
                 _favouriteList.postValue(Resource.Success(data = it))
             }
-
     }
-
 
     fun getWatchList(accountId: Int, sessionId: String) = viewModelScope.launch {
         _watchList.postValue(Resource.Loading())
@@ -133,17 +137,17 @@ class AuthViewModel @Inject constructor(
             watchList.addAll(tvShowWatchList.body()!!.movieResults)
             watchList
         }.flowOn(Dispatchers.Default)
-            .catch { e ->
-                when (e) {
+            .catch { throwable ->
+                when (throwable) {
                     is HttpException -> _watchList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Something went wrong"
+                            errorMessage = "Something went wrong"
                         )
                     )
 
                     is IOException -> _watchList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Check your network"
+                            errorMessage = "Please check your internet connection"
                         )
                     )
                 }
@@ -165,19 +169,18 @@ class AuthViewModel @Inject constructor(
             ratingList.addAll(rM.body()!!.movieResults)
             ratingList.addAll(rTv.body()!!.movieResults)
             ratingList
-
         }.flowOn(Dispatchers.Default)
-            .catch { e ->
-                when (e) {
+            .catch { throwable ->
+                when (throwable) {
                     is HttpException -> _ratingList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Something went wrong"
+                            errorMessage = throwable.message ?: "Something went wrong"
                         )
                     )
 
                     is IOException -> _ratingList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Check your network"
+                            errorMessage = "Please check your internet connection"
                         )
                     )
                 }
@@ -186,5 +189,4 @@ class AuthViewModel @Inject constructor(
                 _ratingList.postValue(Resource.Success(data = it))
             }
     }
-
 }

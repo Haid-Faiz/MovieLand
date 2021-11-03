@@ -101,12 +101,47 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/empty_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/_72sdp"
+        android:visibility="gone"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:src="@drawable/ic_bubble_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_horizontal"
+            android:text="Oops... no results found !!"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_14ssp" />
+
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/searching_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_72sdp"
+        android:layout_marginTop="@dimen/_96sdp"
         android:indeterminateTint="@color/red"
         android:visibility="gone" />
 

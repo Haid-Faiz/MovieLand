@@ -22,13 +22,14 @@ class ApiClient {
             .baseUrl(TMDB_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .client(
-                okHttpBuilder.addInterceptor(Interceptor { chain: Interceptor.Chain ->
-                    val request = chain.request()
-                        .newBuilder()
-                        .header("Authorization", "Bearer ${BuildConfig.READ_ACCESS_TOKEN}")
-                        .build()
-                    chain.proceed(request)
-                }
+                okHttpBuilder.addInterceptor(
+                    Interceptor { chain: Interceptor.Chain ->
+                        val request = chain.request()
+                            .newBuilder()
+                            .header("Authorization", "Bearer ${BuildConfig.READ_ACCESS_TOKEN}")
+                            .build()
+                        chain.proceed(request)
+                    }
                 ).build()
             ).build()
     }

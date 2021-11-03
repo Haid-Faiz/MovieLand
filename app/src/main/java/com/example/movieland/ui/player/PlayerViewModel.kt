@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
+import com.example.datasource.remote.models.responses.MediaCastResponse
 import com.example.datasource.remote.models.responses.MovieDetailResponse
 import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
 import com.example.datasource.remote.models.responses.TvShowDetailsResponse
-import com.example.datasource.remote.models.responses.MediaCastResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -82,8 +82,7 @@ class PlayerViewModel @Inject constructor(
             _mediaCast.postValue(movieRepo.fetchTvShowCast(tvId = mediaId))
     }
 
-
-    //---------------------------Session Id is required in these requests-----------------------
+    // ---------------------------Session Id is required in these requests-----------------------
 
     suspend fun rateMedia(
         mediaId: Int,
@@ -94,7 +93,6 @@ class PlayerViewModel @Inject constructor(
         movieRepo.rateMovie(movieId = mediaId, sessionId, mediaRatingRequest)
     else
         movieRepo.rateTvShow(tvId = mediaId, sessionId, mediaRatingRequest)
-
 
     suspend fun addToWatchList(
         accountId: Int,
@@ -111,6 +109,4 @@ class PlayerViewModel @Inject constructor(
     ): Resource<ResponseBody> {
         return movieRepo.addToFavourites(accountId, sessionId, addToFavouriteRequest)
     }
-
-
 }

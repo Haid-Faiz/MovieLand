@@ -41,7 +41,6 @@ class ComingSoonAdapter(
         }
     }
 
-
     class DiffUtilCallback : DiffUtil.ItemCallback<MovieResult>() {
 
         override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean =

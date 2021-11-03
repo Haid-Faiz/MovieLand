@@ -16,6 +16,12 @@
         app:titleTextAppearance="@style/MonteserratFontStyle"
         app:titleTextColor="@color/text_primary" />
 
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recyclerview"

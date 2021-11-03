@@ -34,5 +34,4 @@ open class BaseViewModel(private val baseRepo: BaseRepo) : ViewModel() {
     }
 
     fun getUserName() = baseRepo.getUserName()
-
 }

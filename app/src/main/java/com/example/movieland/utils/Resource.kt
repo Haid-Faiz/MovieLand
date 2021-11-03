@@ -10,7 +10,7 @@ sealed class Resource<T>(
 
     class Error<T>(
         errorMessage: String,
-        errorType: ErrorType?=null
+        errorType: ErrorType? = null
     ) : Resource<T>(message = errorMessage, status = Status.ERROR)
 
     class Loading<T>() : Resource<T>(status = Status.LOADING)

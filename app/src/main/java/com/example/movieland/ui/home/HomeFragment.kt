@@ -20,6 +20,7 @@ import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentHomeBinding
+import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -34,10 +35,7 @@ import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TRENDING_MOVIES
 import com.example.movieland.utils.Constants.TRENDING_TV_SHOWS
-import com.example.movieland.utils.Helpers
-import com.example.movieland.utils.Resource
-import com.example.movieland.utils.safeFragmentNavigation
-import com.example.movieland.utils.showSnackBar
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlin.math.min
@@ -45,9 +43,10 @@ import kotlin.math.min
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
     private lateinit var navController: NavController
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -71,10 +70,16 @@ class HomeFragment : Fragment() {
         setUpRecyclerView()
         setUpClickListeners()
 
-        homeViewModel.allFeedList.observe(viewLifecycleOwner) {
+        viewModel.allFeedList.observe(viewLifecycleOwner) {
             when (it) {
                 // is Resource.Loading -> loading done automatically
-                is Resource.Error -> showSnackBar(it.message!!)
+                is Resource.Error -> {
+                    showSnackBar(
+                        message = it.message!!,
+                        length = Snackbar.LENGTH_INDEFINITE,
+                        actionMsg = "Retry"
+                    ) { viewModel.retry() }
+                }
                 is Resource.Success -> binding.apply {
 
                     homeAdapter.submitList(it.data!!.homeFeedList)
@@ -91,7 +96,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
 
         binding.nestedScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val color = changeAppBarAlpha(
@@ -133,11 +137,11 @@ class HomeFragment : Fragment() {
             _bannerMovie?.let { movie ->
                 addToListButton.startAnimation(popingAnim)
                 viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                    val sessionId = homeViewModel.getSessionId().first()
-                    val accountId = homeViewModel.getAccountId().first()
+                    val sessionId = viewModel.getSessionId().first()
+                    val accountId = viewModel.getAccountId().first()
 
                     if (sessionId != null && accountId != null) {
-                        homeViewModel.addToWatchList(
+                        viewModel.addToWatchList(
                             accountId = accountId,
                             sessionId = sessionId,
                             addToWatchListRequest = AddToWatchListRequest(
@@ -154,7 +158,6 @@ class HomeFragment : Fragment() {
                                 is Resource.Success -> showSnackBar("Added to My List")
                             }
                         }
-
                     } else
                         showSnackBar(
                             "Please login to avail this feature",

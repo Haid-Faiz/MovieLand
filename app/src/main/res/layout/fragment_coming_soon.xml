@@ -14,22 +14,29 @@
         app:title="Coming Soon"
         app:titleTextColor="@color/white" />
 
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_centerInParent="true"
-        android:indeterminateTint="@color/red" />
+        android:indeterminateTint="@color/red"
+        android:visibility="visible" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"
+        android:layout_below="@id/toolbar"
         android:fillViewport="true"
-        android:layout_below="@id/toolbar">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,18 +54,18 @@
                 android:id="@+id/description_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_10sdp"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingTop="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_4sdp">
 
                 <ImageButton
                     android:id="@+id/add_to_watchlist"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_28sdp"
-                    android:layout_marginEnd="-10dp"
                     android:layout_alignTop="@id/title"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="-10dp"
                     android:backgroundTint="@android:color/transparent"
                     android:src="@drawable/ic_add"
                     app:tint="@color/text_primary" />
@@ -80,11 +87,11 @@
                     android:id="@+id/ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_below="@id/title"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:orientation="horizontal"
                     android:paddingVertical="@dimen/_2sdp">
 
                     <ImageView
@@ -100,9 +107,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/montserrat"
                         android:gravity="center"
                         android:text="7.8"
-                        android:fontFamily="@font/montserrat"
                         android:textColor="@color/text_primary" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -110,9 +117,9 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_18sdp"
                         android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_weight="1"
                         android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
-                        android:layout_weight="1"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:ignore="RtlSymmetry"
                         tools:listitem="@layout/item_genre" />
@@ -138,9 +145,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/hind"
-                    android:textAlignment="textStart"
                     android:paddingTop="@dimen/_6sdp"
                     android:text="It is a ninth installment of FF series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series. It is a ninth installment of Fast and Furious series."
+                    android:textAlignment="textStart"
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/_14ssp" />
 

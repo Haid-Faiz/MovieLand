@@ -33,6 +33,7 @@ import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -68,20 +69,25 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-        checkLoginStatus()
+        checkLoginStatus() // This method will also fetch the data
         setUpClickListeners()
 
         authViewModel.watchList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.watchlistPlaceholder.isGone = !isLoading
-                binding.rvWatchlist.isGone = isLoading
-            }
             when (it) {
                 is Resource.Error -> {
-                    showSnackBar(it.message!!)
+                    showSnackBar(
+                        message = it.message!!,
+                        length = Snackbar.LENGTH_INDEFINITE,
+                        actionMsg = "Retry"
+                    ) { fetchLists(accountId = _accountId!!, sessionId = _sessionId!!) }
                 }
-                // is Resource.Loading -> binding.apply {}
+                is Resource.Loading -> binding.apply {
+                    watchlistPlaceholder.isGone = false
+                    rvWatchlist.isGone = true
+                    emptyWatchlistMsg.isGone = true
+                }
                 is Resource.Success -> binding.apply {
+                    binding.watchlistPlaceholder.isGone = true
                     _allWatchList = it.data!! as ArrayList
                     if (_allWatchList!!.isNotEmpty()) {
                         rvWatchlist.isGone = false
@@ -96,16 +102,15 @@ class AccountFragment : Fragment() {
         }
 
         authViewModel.ratingList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.ratingsPlaceholder.isGone = !isLoading
-                binding.rvRatings.isGone = isLoading
-            }
             when (it) {
-                is Resource.Error -> {
-                    showSnackBar(it.message!!)
+                // is Resource.Error -> { showSnackBar(it.message!!) }
+                is Resource.Loading -> binding.apply {
+                    ratingsPlaceholder.isGone = false
+                    rvRatings.isGone = true
+                    emptyRatingsMsg.isGone = true
                 }
-                // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
+                    binding.ratingsPlaceholder.isGone = true
                     _allRatingList = it.data!! as ArrayList
                     if (_allRatingList!!.isNotEmpty()) {
                         rvRatings.isGone = false
@@ -120,16 +125,15 @@ class AccountFragment : Fragment() {
         }
 
         authViewModel.favouriteList.observe(viewLifecycleOwner) {
-            (it is Resource.Loading).let { isLoading ->
-                binding.favouritePlaceholder.isGone = !isLoading
-                binding.rvFavourites.isGone = isLoading
-            }
             when (it) {
-                is Resource.Error -> {
-                    showSnackBar(it.message!!)
+                // is Resource.Error -> { showSnackBar(it.message!!) }
+                is Resource.Loading -> binding.apply {
+                    favouritePlaceholder.isGone = false
+                    rvFavourites.isGone = true
+                    emptyFavouritesMsg.isGone = true
                 }
-                // is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
+                    binding.favouritePlaceholder.isGone = true
                     _allFavouriteList = it.data!! as ArrayList
 
                     if (_allFavouriteList!!.isNotEmpty()) {
@@ -354,7 +358,6 @@ class AccountFragment : Fragment() {
                         favouritesAdapter.submitList(_allFavouriteList)
                 }
             }
-
         }
     }
 

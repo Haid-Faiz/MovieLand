@@ -1,6 +1,7 @@
 package com.example.movieland.ui.media_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ import com.example.movieland.R
 import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentMovieListBinding
 import com.example.movieland.ui.home.HorizontalPagerAdapter
-import com.example.movieland.utils.Constants
+import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.BOLLYWOOD_MOVIES
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
@@ -27,8 +28,6 @@ import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
-import com.example.movieland.utils.safeFragmentNavigation
-import com.example.movieland.utils.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -41,11 +40,11 @@ class MovieListFragment : Fragment() {
     private val args: MovieListFragmentArgs by navArgs()
 
     @Inject
-    lateinit var trendingViewModelFactory: TrendingViewModel.TrendingViewModelFactory
+    lateinit var movieListViewModelFactory: MovieListViewModel.TrendingViewModelFactory
 
-    private val trendingViewModel: TrendingViewModel by viewModels {
-        TrendingViewModel.providesFactory(
-            assistedFactory = trendingViewModelFactory,
+    private val viewModel: MovieListViewModel by viewModels {
+        MovieListViewModel.providesFactory(
+            assistedFactory = movieListViewModelFactory,
             mediaCategory = args.mediaCategory
         )
     }
@@ -67,9 +66,11 @@ class MovieListFragment : Fragment() {
         binding.toolbar.title = args.mediaCategory
         setUpRecyclerViewAndNav()
 
-        trendingViewModel.categoryMedia.observe(viewLifecycleOwner) {
+        viewModel.categoryWiseMediaList.observe(viewLifecycleOwner) {
             horizontalAdapter.submitData(lifecycle, it)
         }
+
+        binding.errorLayout.retryButton.setOnClickListener { horizontalAdapter.retry() }
     }
 
     private fun setUpRecyclerViewAndNav() {
@@ -118,7 +119,6 @@ class MovieListFragment : Fragment() {
                         actionId = R.id.action_movieListFragment_to_playerFragment
                     )
                 }
-
             },
         )
 
@@ -126,6 +126,7 @@ class MovieListFragment : Fragment() {
             footer = PagingStateAdapter { horizontalAdapter.retry() },
             header = PagingStateAdapter { horizontalAdapter.retry() }
         )
+        binding.listRecyclerview.setHasFixedSize(true)
 
         horizontalAdapter.addLoadStateListener {
             when (it.refresh) {
@@ -135,19 +136,28 @@ class MovieListFragment : Fragment() {
                 }
 
                 LoadState.Loading -> binding.apply {
+                    errorLayout.root.isGone = true
                     progressBar.isGone = false
                     listRecyclerview.isGone = true
                 }
 
                 is LoadState.Error -> binding.apply {
                     progressBar.isGone = true
-                    listRecyclerview.isGone = false
-//                    handleExceptions((it.refresh as LoadState.Error).error)
-                    showSnackBar("Something went wrong")
+                    errorLayout.root.isGone = false
+                    listRecyclerview.isGone = true
+                    val errorType: ErrorType =
+                        handleExceptions((it.refresh as LoadState.Error).error)
+                    if (errorType == ErrorType.NETWORK) {
+                        // Network problem
+                        errorLayout.statusTextTitle.text = "Connection Error"
+                        errorLayout.statusTextDesc.text = "Please check your internet connection"
+                    } else {
+                        // Http error or unknown
+                        errorLayout.statusTextTitle.text = "Oops.. Something went wrong"
+                        errorLayout.statusTextDesc.text = "Please try again"
+                    }
                 }
             }
         }
-
-        binding.listRecyclerview.setHasFixedSize(true)
     }
 }

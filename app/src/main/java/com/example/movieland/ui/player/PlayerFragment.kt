@@ -10,46 +10,44 @@ import android.view.animation.AnimationUtils
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.example.movieland.databinding.FragmentPlayerBinding
-import dagger.hilt.android.AndroidEntryPoint
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.MovieDetailResponse
-import com.example.datasource.remote.models.responses.TvShowDetailsResponse
-import com.example.datasource.remote.models.responses.Season
-import com.example.datasource.remote.models.responses.VideoResult
 import com.example.datasource.remote.models.responses.Cast
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.Season
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.VideoResult
 import com.example.movieland.R
+import com.example.movieland.databinding.FragmentPlayerBinding
 import com.example.movieland.databinding.RatingDialogBinding
 import com.example.movieland.ui.cast.CastListAdapter
 import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
+import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
+import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
+import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
-import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
-import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.SEASON_LIST
 import com.example.movieland.utils.Constants.SEASON_NUMBER
-import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
 import com.example.movieland.utils.Constants.SELECTED_SEASON_POSITION
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TRAILER
@@ -60,7 +58,9 @@ import com.example.movieland.utils.formatMediaDate
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
 import com.google.android.material.tabs.TabLayout
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -123,6 +123,8 @@ class PlayerFragment : Fragment() {
     private fun setUpClickListeners() = binding.apply {
 
         backArrow.setOnClickListener { findNavController().popBackStack() }
+
+        errorLayout.retryButton.setOnClickListener { fetchData() }
 
         pickSeasonBtn.setOnClickListener {
             _seasonList?.let { seasonList ->
@@ -201,7 +203,6 @@ class PlayerFragment : Fragment() {
 
                     dialog.show()
                 } else showSnackBar("Please login to avail this feature")
-
             }
         }
 
@@ -264,7 +265,6 @@ class PlayerFragment : Fragment() {
                             }
                         }
                     }
-
                 } else showSnackBar("Please login to avail this feature")
             }
         }
@@ -277,8 +277,14 @@ class PlayerFragment : Fragment() {
     private fun setUpObservers() {
         viewModel.movieDetail.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> showSnackBar(it.message!!)
+                is Resource.Error -> binding.apply {
+                    showSnackBar(it.message!!)
+                    loadingBg.loadingStateLayout.isGone = true
+                    errorLayout.root.isGone = false
+                    mainLayout.isGone = true
+                }
                 is Resource.Loading -> binding.apply {
+                    errorLayout.root.isGone = true
                     loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
                 }
@@ -312,8 +318,14 @@ class PlayerFragment : Fragment() {
 
         viewModel.tvShowDetail.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> showSnackBar(it.message!!)
+                is Resource.Error -> binding.apply {
+                    showSnackBar(it.message!!)
+                    loadingBg.loadingStateLayout.isGone = true
+                    errorLayout.root.isGone = false
+                    mainLayout.isGone = true
+                }
                 is Resource.Loading -> binding.apply {
+                    errorLayout.root.isGone = true
                     loadingBg.loadingStateLayout.isGone = false
                     mainLayout.isGone = true
                 }
@@ -416,21 +428,24 @@ class PlayerFragment : Fragment() {
             setUpTabLayout()
             bundle.getInt(MEDIA_ID_KEY).let { mediaId: Int ->
                 _id = mediaId
-
-                if (!_isItMovie) {
-                    viewModel.getTvShowDetail(tvId = mediaId)
-                    viewModel.getTvSeasonDetail(
-                        tvId = mediaId,
-                        seasonNumber = _currentSeasonNumber
-                    )
-                } else {
-                    viewModel.getMovieDetail(movieId = mediaId)
-                }
-                viewModel.getMediaCast(mediaId, _isItMovie)
-                viewModel.getRecommendationsMedia(mediaId = mediaId, _isItMovie)
-                viewModel.getSimilarMedia(mediaId = mediaId, _isItMovie)
+                fetchData()
             }
         }
+    }
+
+    private fun fetchData() {
+        if (!_isItMovie) {
+            viewModel.getTvShowDetail(tvId = _id!!)
+            viewModel.getTvSeasonDetail(
+                tvId = _id!!,
+                seasonNumber = _currentSeasonNumber
+            )
+        } else {
+            viewModel.getMovieDetail(movieId = _id!!)
+        }
+        viewModel.getMediaCast(_id!!, _isItMovie)
+        viewModel.getRecommendationsMedia(mediaId = _id!!, _isItMovie)
+        viewModel.getSimilarMedia(mediaId = _id!!, _isItMovie)
     }
 
     override fun onResume() {

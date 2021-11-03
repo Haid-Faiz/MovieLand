@@ -3,10 +3,24 @@ package com.example.datasource.remote.api
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.AccountDetailsResponse
+import com.example.datasource.remote.models.responses.ActorFilmography
+import com.example.datasource.remote.models.responses.MediaCastResponse
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.SessionResponse
+import com.example.datasource.remote.models.responses.TvEpisodeDetailResponse
+import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 // TMDB API Version - 3
 interface TMDBApiServiceV3 {
@@ -29,7 +43,6 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
-
 
     @GET("3/tv/popular")
     suspend fun fetchPopularTvShows(
@@ -58,11 +71,10 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<TvShowDetailsResponse>
 
-
     @GET("3/trending/{media_type}/{time_window}")
     suspend fun fetchTrending(
-        @Path("media_type") mediaType: String = "movie",   // movie, tv, person, all
-        @Path("time_window") timeWindow: String = "day",        // day, week                       // day, week
+        @Path("media_type") mediaType: String = "movie", // movie, tv, person, all
+        @Path("time_window") timeWindow: String = "day", // day, week                       // day, week
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
@@ -73,7 +85,6 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
-
 
     @GET("3/tv/{tv_id}/similar")
     suspend fun fetchSimilarShows(
@@ -96,7 +107,6 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
 
-
     @GET("3/search/movie")
     suspend fun fetchMovieSearchedResults(
         @Query("language") lang: String? = "en-US",
@@ -113,7 +123,6 @@ interface TMDBApiServiceV3 {
         @Query("query") searchQuery: String
     ): Response<MovieListResponse>
 
-
     @GET("3/tv/{tv_id}/season/{season_number}")
     suspend fun fetchTvSeasonDetails(
         @Path("tv_id") tvId: Int,
@@ -121,7 +130,6 @@ interface TMDBApiServiceV3 {
         @Query("append_to_response") appendToResponse: String = "videos",
         @Query("language") lang: String? = "en-US"
     ): Response<TvSeasonDetailResponse>
-
 
     @GET("3/tv/{tv_id}/season/{season_number}/episode/{episode_number}")
     suspend fun fetchTvEpisodeDetails(
@@ -134,7 +142,7 @@ interface TMDBApiServiceV3 {
 
     @GET("3/discover/movie")
     suspend fun fetchMoviesByGenres(
-        @Query("with_genres") genres: String,  // It will require comma separated string of genres ids
+        @Query("with_genres") genres: String, // It will require comma separated string of genres ids
         // @Query("include_video") includeVideo: Boolean = false,
         @Query("sort_by") sortBy: String? = "popularity.desc",
         @Query("page") page: Int = 1,
@@ -193,8 +201,7 @@ interface TMDBApiServiceV3 {
         @Query("language") lang: String? = "en-US"
     ): Response<ActorFilmography>
 
-
-    //-------------------------------These Requests requires SESSION ID-----------------------------
+    // -------------------------------These Requests requires SESSION ID-----------------------------
 
     @GET("3/account")
     suspend fun getAccountDetails(
@@ -235,14 +242,13 @@ interface TMDBApiServiceV3 {
         @Field("access_token") v4AccessToken: String
     ): Response<SessionResponse>
 
-
     @GET("3/account/{account_id}/favorite/movies")
     suspend fun getFavouriteMovies(
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/favorite/tv")
@@ -251,7 +257,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/rated/movies")
@@ -260,7 +266,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/rated/tv")
@@ -269,7 +275,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/watchlist/movies")
@@ -278,7 +284,7 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
 
     @GET("3/account/{account_id}/watchlist/tv")
@@ -287,28 +293,25 @@ interface TMDBApiServiceV3 {
         @Query("session_id") sessionId: String,
         @Query("language") lang: String? = "en-US",
         @Query("page") page: Int = 1,
-        @Query("sort_by") sortBy: String = "created_at.desc"   // created_at.asc
+        @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
-
 
 //    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(
 //        @Query("language") lang: String? = "en-US",
 //        @Query("page") page: Int = 1
 //    ) : Response<>
-
 }
 
-
-//@GET("movie/{id}?append_to_response=similar,videos")
-//suspend fun fetchMovieDetails(@Path("id") movieId: Int): MovieDetailsResponse
+// @GET("movie/{id}?append_to_response=similar,videos")
+// suspend fun fetchMovieDetails(@Path("id") movieId: Int): MovieDetailsResponse
 //
-//@GET("tv/{id}?append_to_response=similar,videos")
-//suspend fun fetchTvDetails(@Path("id") tvId: Int): TvDetailsResponse
+// @GET("tv/{id}?append_to_response=similar,videos")
+// suspend fun fetchTvDetails(@Path("id") tvId: Int): TvDetailsResponse
 //
-//***************************************************************************8
-//@GET("search/multi") // Multi endpoint searches Movies, Tv Shows, Persons
-//suspend fun fetchSearchResults(
+// ***************************************************************************8
+// @GET("search/multi") // Multi endpoint searches Movies, Tv Shows, Persons
+// suspend fun fetchSearchResults(
 //    @Query("query") query: String,
 //    @Query("page") page: Int
-//): MediaResponse
+// ): MediaResponse

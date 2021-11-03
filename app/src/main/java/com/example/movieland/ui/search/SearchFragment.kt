@@ -2,7 +2,6 @@ package com.example.movieland.ui.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentSearchBinding
 import com.example.movieland.ui.home.HorizontalAdapter
@@ -36,15 +34,12 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    private var _isMovieInEmptyState = true
     private var _query: String? = null
     private val searchViewModel: SearchViewModel by viewModels()
-
     private var _binding: FragmentSearchBinding? = null
     private lateinit var navController: NavController
     private lateinit var horizontalAdapter: HorizontalAdapter
@@ -65,17 +60,25 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerViewAndNav()
-        binding.toolbar.setNavigationOnClickListener {
-            hideKeyboard()
-            navController.popBackStack()
-        }
+        setUpClickListeners()
+
         searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
         searchViewModel.trendingMedia.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> showSnackBar(it.message!!)
-                is Resource.Loading -> {
+                is Resource.Error -> binding.apply {
+                    showSnackBar(it.message!!)
+                    searchedResultRv.isGone = true
+                    topSearchesRv.isGone = true
+                    errorLayout.root.isGone = false
+                    emptySearch.isGone = true
                 }
-                is Resource.Success -> {
+                // is Resource.Loading -> { }
+                is Resource.Success -> binding.apply {
+                    searchingProgressBar.isGone = true
+                    errorLayout.root.isGone = true
+                    emptySearch.isGone = true
+                    topSearchesRv.isGone = false
+                    searchedResultRv.isGone = true
                     topSearchesAdapter.submitList(it.data!!.movieResults)
                 }
             }
@@ -87,7 +90,6 @@ class SearchFragment : Fragment() {
                     0 -> binding.apply {
                         searchViewModel.isMovie = true
                         if (_query.isNullOrEmpty()) {
-                            _isMovieInEmptyState = true
                             searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
                         }
                         _query?.let {
@@ -98,13 +100,14 @@ class SearchFragment : Fragment() {
                                 )
                                 searchingProgressBar.isGone = false
                                 searchedResultRv.isGone = true
+                                errorLayout.root.isGone = true
+                                emptySearch.isGone = true
                             }
                         }
                     }
                     1 -> binding.apply {
                         searchViewModel.isMovie = false
                         if (_query.isNullOrEmpty()) {
-                            _isMovieInEmptyState = false
                             searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
                         }
                         _query?.let {
@@ -115,6 +118,8 @@ class SearchFragment : Fragment() {
                                 )
                                 searchingProgressBar.isGone = false
                                 searchedResultRv.isGone = true
+                                errorLayout.root.isGone = true
+                                emptySearch.isGone = true
                             }
                         }
                     }
@@ -128,42 +133,55 @@ class SearchFragment : Fragment() {
 
         binding.tabLayout.addOnTabSelectedListener(onTabSelectedListener!!)
 
-        binding.searchQueryEt.doOnTextChanged { text, start, before, count ->
+        binding.searchQueryEt.doOnTextChanged { text, _, _, _ ->
             text?.let {
                 _query = it.trim().toString()
-                if (it.isNotEmpty() && it.isNotBlank()) {
-                    binding.eraseQueryBtn.isGone = false
-                    binding.querySearchIcon.isVisible = false
-                    binding.topSearchesRv.isGone = true
-                    // Show searching progress bar
-                    binding.searchText.text = "Searched Results"
-                    binding.searchingProgressBar.isGone = false
-                    binding.searchedResultRv.isGone = true // Make it visible on getting results
-                    performSearch(it.trim().toString())
-                } else {
-                    binding.eraseQueryBtn.isGone = true
-                    binding.querySearchIcon.isVisible = true
-                    binding.searchText.text = "Top Searches"
-                    binding.topSearchesRv.isGone = false
-                    binding.searchedResultRv.isGone = true
-                    //
-                    if (_isMovieInEmptyState && !searchViewModel.isMovie) {
-                        searchViewModel.trendingMovies(isMovie = false)
+                binding.apply {
+                    if (it.isNotEmpty() && it.isNotBlank()) {
+                        eraseQueryBtn.isGone = false
+                        querySearchIcon.isVisible = false
+                        // Show searching progress bar
+                        searchText.text = "Searched Results"
+                        searchingProgressBar.isGone = false
+                        emptySearch.isGone = true
+                        errorLayout.root.isGone = true
+                        topSearchesRv.isGone = true
+                        searchedResultRv.isGone = true // Make it visible on getting results
+                        performSearch(it.trim().toString())
+                    } else {
+                        searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
+                        eraseQueryBtn.isGone = true
+                        querySearchIcon.isVisible = true
+                        searchText.text = "Top Searches"
+                        topSearchesRv.isGone = false
+                        searchedResultRv.isGone = true
+                        searchingProgressBar.isGone = true
+                        emptySearch.isGone = true
+                        // also cancel the job
+                        job?.cancel()
                     }
-                    if (!_isMovieInEmptyState && searchViewModel.isMovie)
-                        searchViewModel.trendingMovies(isMovie = true)
                 }
             }
         }
 
         searchViewModel.searchedMedia.observe(viewLifecycleOwner) {
             when (it) {
-                is Resource.Error -> showSnackBar(it.message!!)
-                is Resource.Loading -> binding.apply {}
+                is Resource.Error -> binding.apply {
+                    showSnackBar(it.message!!)
+                    searchedResultRv.isGone = true
+                    topSearchesRv.isGone = true
+                    errorLayout.root.isGone = false
+                }
+                // is Resource.Loading -> binding.apply { }
                 is Resource.Success -> binding.apply {
-                    horizontalAdapter.submitList(it.data?.movieResults)
                     searchingProgressBar.isGone = true
-                    searchedResultRv.isGone = false
+                    if (it.data!!.movieResults.isNotEmpty()) {
+                        horizontalAdapter.submitList(it.data.movieResults)
+                        searchedResultRv.isGone = false
+                    } else {
+                        emptySearch.isGone = false
+                        searchedResultRv.isGone = true
+                    }
                 }
             }
         }
@@ -172,7 +190,27 @@ class SearchFragment : Fragment() {
             binding.searchQueryEt.text.clear()
             hideKeyboard()
         }
+    }
 
+    private fun setUpClickListeners() = binding.apply {
+        toolbar.setNavigationOnClickListener {
+            hideKeyboard()
+            navController.popBackStack()
+        }
+
+        errorLayout.retryButton.setOnClickListener {
+            binding.searchingProgressBar.isGone = false
+            binding.emptySearch.isGone = true
+            binding.errorLayout.root.isGone = true
+            binding.searchedResultRv.isGone = true
+            binding.topSearchesRv.isGone = true
+            if (searchQueryEt.text.trim().toString().isNotEmpty()) {
+                searchViewModel.searchMedia(
+                    isMovie = searchViewModel.isMovie,
+                    searchQuery = searchQueryEt.text.trim().toString()
+                )
+            } else searchViewModel.trendingMovies(isMovie = searchViewModel.isMovie)
+        }
     }
 
     private fun performSearch(searchQuery: String) {
@@ -221,7 +259,6 @@ class SearchFragment : Fragment() {
                 actionId = R.id.action_navigation_search_to_detailFragment
             )
         }
-
         binding.topSearchesRv.setHasFixedSize(true)
         binding.topSearchesRv.adapter = topSearchesAdapter
 

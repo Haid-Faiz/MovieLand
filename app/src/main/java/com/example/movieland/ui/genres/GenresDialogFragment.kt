@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -17,20 +16,21 @@ import com.example.datasource.remote.models.responses.Genre
 import com.example.movieland.R
 import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentGenresBsdBinding
-import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.home.HorizontalPagerAdapter
-import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
 import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
+import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Helpers
-import com.example.movieland.utils.Resource
+import com.example.movieland.utils.doVibrate
 import com.example.movieland.utils.showSnackBar
+import com.example.movieland.utils.handleExceptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class GenresDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentGenresBsdBinding? = null
-    private var _isMovie: Boolean = true
     private val binding get() = _binding!!
     private lateinit var genresAdapter: GenresOptionAdapter
     private lateinit var horizontalAdapter: HorizontalPagerAdapter
@@ -49,6 +48,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
     private val allMovieGeneresList get() = Helpers.getAllMovieGenreList()
     private val allTvGeneresList get() = Helpers.getAllTvGenreList()
     private lateinit var shakeAnim: Animation
+    private var _isMovie: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,10 +78,11 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
                 ).observe(viewLifecycleOwner) {
                     horizontalAdapter.submitData(lifecycle, it)
                 }
-            } else
+            } else {
                 binding.rvGenres.startAnimation(shakeAnim)
+                doVibrate(duration = 300)
+            }
         }
-
     }
 
     private fun setUpTabLayout() {
@@ -125,7 +126,7 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
         // Setting up genres option list Recyclerview
         horizontalAdapter = HorizontalPagerAdapter {
             parentFragmentManager.setFragmentResult(
-                Constants.MEDIA_SEND_REQUEST_KEY,
+                MEDIA_SEND_REQUEST_KEY,
                 bundleOf(
                     GENRES_ID_LIST_KEY to it.genreIds,
                     MEDIA_TITLE_KEY to (it.title ?: it.tvShowName),
@@ -156,9 +157,15 @@ class GenresDialogFragment : BottomSheetDialogFragment() {
                     binding.rvMedia.isGone = true
                 }
                 is LoadState.Error -> {
-                    showSnackBar("Something went wrong")
                     binding.progressBar.isGone = true
                     binding.rvMedia.isGone = false
+                    val errorType = handleExceptions((it.refresh as LoadState.Error).error)
+                    requireView().showSnackBar(
+                        message = if (errorType == ErrorType.NETWORK)
+                            "Please check your internet connection"
+                        else "Oops.. Something went wrong",
+                        actionMsg = "Retry"
+                    ) { horizontalAdapter.retry() }
                 }
             }
         }

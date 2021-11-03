@@ -1,7 +1,11 @@
 package com.example.movieland.ui.cast
 
-import androidx.lifecycle.*
-import com.example.datasource.remote.models.responses.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.datasource.remote.models.responses.ActorFilmography
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -10,7 +14,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
-//@HiltViewModel
+// @HiltViewModel
 class CastDetailsViewModel @AssistedInject constructor(
     private val movieRepo: MoviesRepo,
     @Assisted private val personId: Int
@@ -27,7 +31,7 @@ class CastDetailsViewModel @AssistedInject constructor(
             assistedFactory: Factory,
             personId: Int
         ) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return assistedFactory.create(personId = personId) as T
             }
         }
@@ -40,10 +44,8 @@ class CastDetailsViewModel @AssistedInject constructor(
         getActorsMoviesShows(personId)
     }
 
-
     private fun getActorsMoviesShows(personId: Int) = viewModelScope.launch {
         _actorMoviesShows.postValue(Resource.Loading())
         _actorMoviesShows.postValue(movieRepo.fetchActorsMoviesShows(personId = personId))
     }
-
 }

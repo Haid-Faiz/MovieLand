@@ -24,12 +24,14 @@ class MoreVideosAdapter :
     inner class ViewHolder(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(videoResult: VideoResult?) = binding.apply {
             titleText.text = videoResult?.name
-            youtubePlayerView.getYouTubePlayerWhenReady(youTubePlayerCallback = object :
-                YouTubePlayerCallback {
-                override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.cueVideo(videoId = videoResult!!.key,0f)
+            youtubePlayerView.getYouTubePlayerWhenReady(
+                youTubePlayerCallback = object :
+                    YouTubePlayerCallback {
+                    override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
+                        youTubePlayer.cueVideo(videoId = videoResult!!.key, 0f)
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -41,6 +43,5 @@ class MoreVideosAdapter :
         override fun areContentsTheSame(oldItem: VideoResult, newItem: VideoResult): Boolean {
             return oldItem.equals(newItem)
         }
-
     }
 }

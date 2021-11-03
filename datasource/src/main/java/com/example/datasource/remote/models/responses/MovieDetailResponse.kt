@@ -1,6 +1,5 @@
 package com.example.datasource.remote.models.responses
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -35,7 +34,7 @@ data class MovieDetailResponse(
     @Json(name = "release_date")
     var releaseDate: String,
     @Json(name = "revenue")
-    var revenue: Int,
+    var revenue: Long,
     @Json(name = "runtime")
     var runtime: Int,
 //    @Json(name = "spoken_languages")
@@ -64,13 +63,12 @@ data class Genre(
     var name: String
 )
 
-
-//@JsonClass(generateAdapter = true)
-//data class SpokenLanguage(
+// @JsonClass(generateAdapter = true)
+// data class SpokenLanguage(
 //    @Json(name = "english_name")
 //    var englishName: String,
 //    @Json(name = "iso_639_1")
 //    var iso6391: String,
 //    @Json(name = "name")
 //    var name: String
-//)
+// )

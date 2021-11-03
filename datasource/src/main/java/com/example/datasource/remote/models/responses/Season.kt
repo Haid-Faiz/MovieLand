@@ -1,6 +1,5 @@
 package com.example.datasource.remote.models.responses
 
-
 import android.os.Parcel
 import android.os.Parcelable
 import com.squareup.moshi.Json

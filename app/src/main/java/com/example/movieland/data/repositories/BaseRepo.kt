@@ -8,8 +8,6 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -38,13 +36,12 @@ abstract class BaseRepo constructor(
                 )
             } catch (e: Exception) {
                 Resource.Error(
-                    errorMessage = e.message ?: "Something went wrong",
+                    errorMessage = "Something went wrong",
                     errorType = ErrorType.UNKNOWN
                 )
             }
         }
     }
-
 
     private fun convertErrorBody(throwable: HttpException): TmdbErrorResponse? {
         return try {
@@ -57,13 +54,11 @@ abstract class BaseRepo constructor(
         }
     }
 
-
 //    private fun parseJsonError(errorBody: ResponseBody) {
 //        val jsonError = JSONObject(errorBody.string())
 //        jsonError.getString("")
 //        jsonError.getString("")
 //    }
-
 
     suspend fun clearSessionPrefs() {
         sessionPrefs.clearSessionPrefs()

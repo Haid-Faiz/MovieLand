@@ -86,7 +86,6 @@ object Helpers {
         37 to "Western",
     )
 
-
     private
     val tvShowsGenresMap: HashMap<Int, String> = hashMapOf(
         10759 to "Action & Adventure",

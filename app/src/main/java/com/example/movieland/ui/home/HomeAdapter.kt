@@ -2,8 +2,6 @@ package com.example.movieland.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.paging.map
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -54,5 +52,4 @@ class HomeAdapter(
         override fun areContentsTheSame(oldItem: HomeFeed, newItem: HomeFeed): Boolean =
             oldItem.equals(newItem)
     }
-
 }

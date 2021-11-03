@@ -42,7 +42,8 @@ class AuthRepo @Inject constructor(
     }
 
     fun getFavouriteMovies(
-        accountId: Int, sessionId: String
+        accountId: Int,
+        sessionId: String
     ): Flow<Response<MovieListResponse>> = flow<Response<MovieListResponse>> {
         emit(apiV3.getFavouriteMovies(accountId, sessionId))
     }
@@ -81,5 +82,4 @@ class AuthRepo @Inject constructor(
     ): Flow<Response<MovieListResponse>> = flow {
         emit(apiV3.getRatedTvShows(accountId = accountId, sessionId = sessionId))
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.datasource.remote.models.responses
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

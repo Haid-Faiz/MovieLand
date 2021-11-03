@@ -25,6 +25,8 @@ class ComingSoonViewModel @Inject constructor(
         getComingSoonMovies()
     }
 
+    fun retry() = getComingSoonMovies()
+
     private fun getComingSoonMovies() = viewModelScope.launch {
         _comingSoon.postValue(Resource.Loading())
         _comingSoon.postValue(movieRepo.fetchUpcomingMovies())
@@ -37,5 +39,4 @@ class ComingSoonViewModel @Inject constructor(
     ): Resource<ResponseBody> {
         return movieRepo.addToWatchList(accountId, sessionId, addToWatchListRequest)
     }
-
 }

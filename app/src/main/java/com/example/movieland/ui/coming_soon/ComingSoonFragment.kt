@@ -18,8 +18,13 @@ import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
 import com.example.movieland.ui.genres.GenreAdapter
-import com.example.movieland.utils.*
+import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.MOVIE
+import com.example.movieland.utils.Helpers
+import com.example.movieland.utils.Resource
+import com.example.movieland.utils.formatUpcomingDate
+import com.example.movieland.utils.showSnackBar
+import com.google.android.material.snackbar.Snackbar
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -56,18 +61,26 @@ class ComingSoonFragment : Fragment() {
         viewModel.comingSoon.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
-                    showSnackBar(it.message!!)
+                    errorLayout.root.isGone = false
+                    progressBar.isGone = true
+                    mainLayout.isGone = true
                 }
                 is Resource.Loading -> binding.apply {
+                    errorLayout.root.isGone = true
                     progressBar.isGone = false
                     mainLayout.isGone = true
                 }
                 is Resource.Success -> binding.apply {
+                    errorLayout.root.isGone = true
                     progressBar.isGone = true
                     mainLayout.isGone = false
                     adapter.submitList(it.data?.movieResults)
                 }
             }
+        }
+
+        binding.errorLayout.retryButton.setOnClickListener {
+            viewModel.retry()
         }
     }
 
@@ -100,7 +113,8 @@ class ComingSoonFragment : Fragment() {
                         setUpWatchListClick(it)
                     }
                 }
-            })
+            }
+        )
         binding.apply {
 
             comingSoonRv.setHasFixedSize(true)

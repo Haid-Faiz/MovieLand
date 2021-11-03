@@ -13,13 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-        <!--    <View-->
-        <!--        android:layout_width="@dimen/_56sdp"-->
-        <!--        android:layout_height="@dimen/_2sdp"-->
-        <!--        android:layout_gravity="center_horizontal"-->
-        <!--        android:background="@drawable/vertical_show_line" />-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

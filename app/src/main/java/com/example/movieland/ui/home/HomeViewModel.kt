@@ -21,7 +21,10 @@ import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Resource
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
@@ -39,6 +42,8 @@ class HomeViewModel @Inject constructor(
     init {
         fetchAllFeedLists()
     }
+
+    fun retry() = fetchAllFeedLists()
 
     private fun fetchAllFeedLists() = viewModelScope.launch {
         _allFeedList.postValue(Resource.Loading())
@@ -69,7 +74,6 @@ class HomeViewModel @Inject constructor(
                 // Bollywood
                 val bollywoodList = bollywoodDef.await()
 
-
                 wholeList.add(HomeFeed(NEWLY_LAUNCHED, nowPlayingMoviesList.data!!.movieResults))
                 wholeList.add(HomeFeed(POPULAR_MOVIES, popularMoviesList.data!!.movieResults))
                 wholeList.add(HomeFeed(POPULAR_TV_SHOWS, popularTvList.data!!.movieResults))
@@ -80,29 +84,22 @@ class HomeViewModel @Inject constructor(
                 _allFeedList.postValue(
                     Resource.Success(
                         data = HomeFeedData(
-                            bannerMovie = nowPlayingMoviesList.data.movieResults[Random.nextInt(
-                                0,
-                                9
-                            )],
+                            bannerMovie = nowPlayingMoviesList.data.movieResults[
+                                    Random.nextInt(
+                                        0,
+                                        9
+                                    )
+                            ],
                             homeFeedList = wholeList
                         )
                     )
                 )
             }
-        } catch (e: Exception) {
-            when (e) {
-                is IOException -> {
-                    _allFeedList.postValue(
-                        Resource.Error(
-                            "Please check your network connection",
-                            errorType = ErrorType.NETWORK
-                        )
-                    )
-                }
+        } catch (throwable: Throwable) {
+            when (throwable) {
                 is HttpException -> {
                     // val code = e.code() HTTP Exception code
-                    val errorResponse: TmdbErrorResponse? = convertErrorBody(e)
-                    Log.d("errorResponse", "fetchAllFeedLists: ${errorResponse?.statusMessage}")
+                    val errorResponse: TmdbErrorResponse? = convertErrorBody(throwable)
                     _allFeedList.postValue(
                         Resource.Error(
                             errorMessage = errorResponse?.statusMessage ?: "Something went wrong",
@@ -110,10 +107,18 @@ class HomeViewModel @Inject constructor(
                         )
                     )
                 }
+                is IOException -> {
+                    _allFeedList.postValue(
+                        Resource.Error(
+                            "Please check your internet connection",
+                            errorType = ErrorType.NETWORK
+                        )
+                    )
+                }
                 else -> {
                     _allFeedList.postValue(
                         Resource.Error(
-                            errorMessage = e.message ?: "Something went wrong",
+                            errorMessage = throwable.message ?: "Something went wrong",
                             errorType = ErrorType.UNKNOWN
                         )
                     )
@@ -122,9 +127,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun convertErrorBody(throwable: HttpException): TmdbErrorResponse? {
+    private fun convertErrorBody(throwable: Throwable): TmdbErrorResponse? {
         return try {
-            throwable.response()?.errorBody()?.source()?.let {
+            (throwable as HttpException).response()?.errorBody()?.source()?.let {
                 val moshiAdapter = Moshi.Builder().build().adapter(TmdbErrorResponse::class.java)
                 moshiAdapter.fromJson(it)
             }
@@ -140,41 +145,40 @@ class HomeViewModel @Inject constructor(
     ): Resource<ResponseBody> {
         return movieRepo.addToWatchList(accountId, sessionId, addToWatchListRequest)
     }
-
 }
 
 //
-//package com.example.movieland.ui.home
+// package com.example.movieland.ui.home
 //
-//import androidx.lifecycle.LiveData
-//import androidx.lifecycle.MutableLiveData
-//import androidx.lifecycle.viewModelScope
-//import androidx.paging.PagingData
-//import androidx.paging.cachedIn
-//import com.example.datasource.remote.models.requests.AddToWatchListRequest
-//import com.example.datasource.remote.models.responses.MovieListResponse
-//import com.example.datasource.remote.models.responses.MovieResult
-//import com.example.movieland.BaseViewModel
-//import com.example.movieland.data.models.HomeFeed
-//import com.example.movieland.data.models.HomeFeedData
-//import com.example.movieland.data.repositories.MoviesRepo
-//import com.example.movieland.utils.Resource
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import kotlinx.coroutines.*
-//import kotlinx.coroutines.flow.Flow
-//import kotlinx.coroutines.flow.flowOf
-//import okhttp3.ResponseBody
-//import retrofit2.Response
-//import javax.inject.Inject
-//import kotlin.random.Random
+// import androidx.lifecycle.LiveData
+// import androidx.lifecycle.MutableLiveData
+// import androidx.lifecycle.viewModelScope
+// import androidx.paging.PagingData
+// import androidx.paging.cachedIn
+// import com.example.datasource.remote.models.requests.AddToWatchListRequest
+// import com.example.datasource.remote.models.responses.MovieListResponse
+// import com.example.datasource.remote.models.responses.MovieResult
+// import com.example.movieland.BaseViewModel
+// import com.example.movieland.data.models.HomeFeed
+// import com.example.movieland.data.models.HomeFeedData
+// import com.example.movieland.data.repositories.MoviesRepo
+// import com.example.movieland.utils.Resource
+// import dagger.hilt.android.lifecycle.HiltViewModel
+// import kotlinx.coroutines.*
+// import kotlinx.coroutines.flow.Flow
+// import kotlinx.coroutines.flow.flowOf
+// import okhttp3.ResponseBody
+// import retrofit2.Response
+// import javax.inject.Inject
+// import kotlin.random.Random
 //
-//@HiltViewModel
-//class HomeViewModel @Inject constructor(
+// @HiltViewModel
+// class HomeViewModel @Inject constructor(
 //    private val movieRepo: MoviesRepo
-//) : BaseViewModel(movieRepo) {
+// ) : BaseViewModel(movieRepo) {
 //
-////    private var _allFeedList: MutableLiveData<Resource<List<HomeFeed>>> = MutableLiveData()
-////    var allFeedList: LiveData<Resource<List<HomeFeed>>> = _allFeedList
+// //    private var _allFeedList: MutableLiveData<Resource<List<HomeFeed>>> = MutableLiveData()
+// //    var allFeedList: LiveData<Resource<List<HomeFeed>>> = _allFeedList
 //
 //    private var _allFeedList: MutableLiveData<Resource<HomeFeedData>> = MutableLiveData()
 //    var allFeedList: LiveData<Resource<HomeFeedData>> = _allFeedList
@@ -231,7 +235,7 @@ class HomeViewModel @Inject constructor(
 //                val randomBannerMovie: MovieResult =
 //                    bannerMovieResponse.body()!!.movieResults[Random.nextInt(0, 9)]
 //
-////                _allFeedList.postValue(Resource.Success(data = wholeList))
+// //                _allFeedList.postValue(Resource.Success(data = wholeList))
 //                _allFeedList.postValue(
 //                    Resource.Success(
 //                        data = HomeFeedData(
@@ -254,4 +258,4 @@ class HomeViewModel @Inject constructor(
 //        return movieRepo.addToWatchList(accountId, sessionId, addToWatchListRequest)
 //    }
 //
-//}
+// }

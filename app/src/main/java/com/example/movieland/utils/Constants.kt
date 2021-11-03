@@ -5,8 +5,10 @@ object Constants {
     const val MOVIE_LAND_URL = "android://com.example.movieland/ui/auth/AuthActivity"
     const val TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL =
         "https://www.themoviedb.org/auth/access?request_token="
+    const val TMDB_POSTER_IMAGE_BASE_URL_W342 =
+        "https://image.tmdb.org/t/p/w342/"
     const val TMDB_IMAGE_BASE_URL_W500 =
-        "https://image.tmdb.org/t/p/w500/"  // poster_path = 8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg   || w342
+        "https://image.tmdb.org/t/p/w500/" // poster_path = 8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg   || w342
     const val TMDB_IMAGE_BASE_URL_W780 = "https://image.tmdb.org/t/p/w780/"
     const val TMDB_CAST_IMAGE_BASE_URL_W185 = "https://image.tmdb.org/t/p/w185"
     const val TMDB_CAST_IMAGE_BASE_URL_W342 = "https://image.tmdb.org/t/p/w342"

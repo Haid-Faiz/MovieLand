@@ -1,5 +1,6 @@
 package com.example.movieland.ui.media_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +22,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class TrendingViewModel @AssistedInject constructor(
+class MovieListViewModel @AssistedInject constructor(
     private val movieRepo: MoviesRepo,
     @Assisted
     private val mediaCategory: String
@@ -29,7 +30,7 @@ class TrendingViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface TrendingViewModelFactory {
-        fun create(mediaCategory: String): TrendingViewModel
+        fun create(mediaCategory: String): MovieListViewModel
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -38,13 +39,13 @@ class TrendingViewModel @AssistedInject constructor(
             assistedFactory: TrendingViewModelFactory,
             mediaCategory: String
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return assistedFactory.create(mediaCategory) as T
             }
         }
     }
 
-    lateinit var categoryMedia: LiveData<PagingData<MovieResult>>
+    lateinit var categoryWiseMediaList: LiveData<PagingData<MovieResult>>
 
     init {
         when (mediaCategory) {
@@ -60,34 +61,34 @@ class TrendingViewModel @AssistedInject constructor(
     }
 
     private fun getTrendingMovies() {
-        categoryMedia = movieRepo.fetchTrendingMoviesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchTrendingMoviesPaging().cachedIn(viewModelScope)
     }
 
     private fun getTrendingTvShows() {
-        categoryMedia = movieRepo.fetchTrendingTvShowsPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchTrendingTvShowsPaging().cachedIn(viewModelScope)
     }
 
     private fun getNewlyLaunchedMovies() {
-        categoryMedia = movieRepo.fetchNowPlayingMoviesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchNowPlayingMoviesPaging().cachedIn(viewModelScope)
     }
 
     private fun getPopularMovies() {
-        categoryMedia = movieRepo.fetchPopularMoviesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchPopularMoviesPaging().cachedIn(viewModelScope)
     }
 
     private fun getPopularTvShows() {
-        categoryMedia = movieRepo.fetchPopularTvShowsPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchPopularTvShowsPaging().cachedIn(viewModelScope)
     }
 
     private fun getTopRatedMovies() {
-        categoryMedia = movieRepo.fetchTopRatedMoviesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchTopRatedMoviesPaging().cachedIn(viewModelScope)
     }
 
     private fun getAnimeSeries() {
-        categoryMedia = movieRepo.fetchAnimeSeriesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchAnimeSeriesPaging().cachedIn(viewModelScope)
     }
 
     private fun getBollywoodMovies() {
-        categoryMedia = movieRepo.fetchBollywoodMoviesPaging().cachedIn(viewModelScope)
+        categoryWiseMediaList = movieRepo.fetchBollywoodMoviesPaging().cachedIn(viewModelScope)
     }
 }

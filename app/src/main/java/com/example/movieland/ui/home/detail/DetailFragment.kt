@@ -18,20 +18,23 @@ import com.example.movieland.R
 import com.example.movieland.databinding.FragmentDetailBsdBinding
 import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HomeViewModel
-import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
+import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
+import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
-import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
-import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TV
+import com.example.movieland.utils.Helpers
+import com.example.movieland.utils.Resource
+import com.example.movieland.utils.formatMediaDate
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -66,7 +69,6 @@ class DetailFragment : BottomSheetDialogFragment() {
 //        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
 //        return dialog
 //    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -120,7 +122,7 @@ class DetailFragment : BottomSheetDialogFragment() {
             parentFragmentManager.setFragmentResult(
                 MEDIA_PLAY_REQUEST_KEY,
                 bundleOf(
-                    MEDIA_ID_KEY to _mediaId,    // id & isItMovie working
+                    MEDIA_ID_KEY to _mediaId, // id & isItMovie working
                     IS_IT_A_MOVIE_KEY to _isItMovie
                 )
             )
@@ -147,13 +149,11 @@ class DetailFragment : BottomSheetDialogFragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message ?: "Something went wrong"
                             )
-//                        is Resource.Loading -> TODO()
+                            // is Resource.Loading -> TODO()
                             is Resource.Success -> showSnackBar("Added to My List")
                         }
                     }
-
                 } else showSnackBar("Please login to avail this feature")
-
             }
         }
     }

@@ -10,10 +10,10 @@ import com.example.datasource.remote.models.responses.Season
 import com.example.movieland.R
 import com.example.movieland.databinding.SeasonPickerDialogBinding
 import com.example.movieland.ui.player.adapters.SeasonPickerAdapter
+import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
 import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.SEASON_LIST
 import com.example.movieland.utils.Constants.SEASON_NUMBER
-import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
 import com.example.movieland.utils.Constants.SELECTED_SEASON_POSITION
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

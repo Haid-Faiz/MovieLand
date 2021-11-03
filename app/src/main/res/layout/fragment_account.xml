@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -158,8 +158,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
-                    android:visibility="gone"
                     android:paddingHorizontal="@dimen/_2sdp"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster" />
 
@@ -169,12 +169,11 @@
                     android:layout_height="@dimen/_124sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center"
                     android:text="You haven't added any movie/show in watchlist."
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/watchlist_placeholder"
@@ -182,8 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_2sdp"
-                    android:visibility="gone">
+                    android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
@@ -307,6 +305,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster_rated" />
 
@@ -316,11 +315,11 @@
                     android:layout_height="@dimen/_124sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:visibility="gone"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center"
                     android:text="You haven't rated any movie/show yet."
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/ratings_placeholder"
@@ -328,8 +327,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_2sdp"
-                    android:visibility="gone">
+                    android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
@@ -454,6 +452,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_poster" />
 
@@ -463,11 +462,11 @@
                     android:layout_height="@dimen/_124sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:visibility="gone"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center"
                     android:text="You haven't marked any movie/show as favourite."
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/favourite_placeholder"
@@ -475,8 +474,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_2sdp"
-                    android:visibility="gone">
+                    android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
                         android:layout_width="@dimen/_92sdp"
@@ -503,11 +501,10 @@
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
-
             </LinearLayout>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

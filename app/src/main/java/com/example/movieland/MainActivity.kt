@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity() {
                 navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_search ||
                 navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_account
             ) {
-                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment
-                        && destination.id != R.id.movieListFragment
-                        && destination.id != R.id.castDetailsFragment
+                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
+                    destination.id != R.id.movieListFragment &&
+                    destination.id != R.id.castDetailsFragment
             } else {
-                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment
-                        && destination.id != R.id.movieListFragment
-                        && destination.id != R.id.detailFragment
-                        && destination.id != R.id.castDetailsFragment
+                binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
+                    destination.id != R.id.movieListFragment &&
+                    destination.id != R.id.detailFragment &&
+                    destination.id != R.id.castDetailsFragment
             }
         }
     }

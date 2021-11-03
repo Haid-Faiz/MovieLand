@@ -1,19 +1,17 @@
 package com.example.movieland.ui.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.responses.MovieListResponse
 import com.example.movieland.data.repositories.MoviesRepo
-import com.example.movieland.utils.Constants.MOVIE
-import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.Resource
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel  // We need to remove this annotation if we want to use Assisted Injection
+@HiltViewModel // We need to remove this annotation if we want to use Assisted Injection
 class SearchViewModel @Inject constructor(
     private val moviesRepo: MoviesRepo,
 ) : ViewModel() {

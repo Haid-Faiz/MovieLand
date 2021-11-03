@@ -1,16 +1,15 @@
 package com.example.movieland.ui.home
 
-import com.example.datasource.remote.models.responses.MovieResult
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import coil.load
+import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.databinding.ItemPosterBinding
-import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W500
+import com.example.movieland.utils.Constants.TMDB_POSTER_IMAGE_BASE_URL_W342
 
 class HorizontalAdapter(
     private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null
@@ -29,7 +28,7 @@ class HorizontalAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult: MovieResult) = binding.apply {
-            posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
+            posterImage.load(TMDB_POSTER_IMAGE_BASE_URL_W342.plus(movieResult.posterPath))
             ratingText.text = String.format("%.1f", movieResult.voteAverage)
             posterImage.setOnClickListener { onPosterClick?.invoke(movieResult) }
         }
@@ -44,7 +43,6 @@ class HorizontalAdapter(
             oldItem.equals(newItem)
     }
 }
-
 
 class HorizontalPagerAdapter(
     private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null,
@@ -63,7 +61,7 @@ class HorizontalPagerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult: MovieResult) = binding.apply {
-            posterImage.load(TMDB_IMAGE_BASE_URL_W500.plus(movieResult.posterPath))
+            posterImage.load(TMDB_POSTER_IMAGE_BASE_URL_W342.plus(movieResult.posterPath))
             ratingText.text = String.format("%.1f", movieResult.voteAverage)
             posterImage.setOnClickListener {
                 onPosterClick?.invoke(movieResult)
