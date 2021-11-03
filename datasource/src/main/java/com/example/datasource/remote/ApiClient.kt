@@ -13,8 +13,8 @@ class ApiClient {
 
     private val okHttpBuilder: OkHttpClient.Builder by lazy {
         OkHttpClient.Builder()
-            .callTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(5, TimeUnit.SECONDS)
+            .callTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
     }
 
     val retrofit: Retrofit by lazy {
@@ -34,5 +34,5 @@ class ApiClient {
             ).build()
     }
 
-//    fun <T> buildApi(api: Class<T>): T = retrofit.create(api)
+    // fun <T> buildApi(api: Class<T>): T = retrofit.create(api)
 }

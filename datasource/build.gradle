@@ -4,6 +4,15 @@ plugins {
     id 'kotlin-kapt'
 }
 
+// This fun will return read access token while building on CI
+String getReadAccessToken() {
+    // Read credentials
+    def credentialFile = rootProject.file("./credentials.properties")
+    def credentialProperty = new Properties()
+    credentialProperty.load(new FileInputStream(credentialFile))
+    return credentialProperty['read_access_token']
+}
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
@@ -18,12 +27,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', 'API_KEY', api_key
-            buildConfigField 'String', 'READ_ACCESS_TOKEN', read_access_token
+            buildConfigField 'String', 'READ_ACCESS_TOKEN', getReadAccessToken()
         }
         release {
-            buildConfigField 'String', 'API_KEY', api_key
-            buildConfigField 'String', 'READ_ACCESS_TOKEN', read_access_token
+            buildConfigField 'String', 'READ_ACCESS_TOKEN', getReadAccessToken()
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

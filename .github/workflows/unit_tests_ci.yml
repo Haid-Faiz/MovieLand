@@ -1,0 +1,28 @@
+name: Build
+
+on: push
+
+jobs:
+  build_job:
+    name: Assemble Gradle
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the latest commit
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Setup Java JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      # Access READ ACCESS TOKEN
+      - name: Decode credentials.properties
+        env:
+          API_KEY: ${{ secrets.READ_ACCESS_TOKEN }}
+        run: echo read_access_token=\"$READ_ACCESS_TOKEN\" > ./credentials.properties
+
+      # Run Unit Test
+      - name: Run Unit Test
+        run: ./gradlew testDebugUnitTest
