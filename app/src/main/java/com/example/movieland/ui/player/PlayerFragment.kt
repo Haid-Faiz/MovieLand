@@ -127,12 +127,14 @@ class PlayerFragment : Fragment() {
         errorLayout.retryButton.setOnClickListener { fetchData() }
 
         pickSeasonBtn.setOnClickListener {
+
             _seasonList?.let { seasonList ->
                 parentFragmentManager.setFragmentResult(
                     SEASONS_LIST_REQUEST_KEY,
                     bundleOf(
                         SEASON_LIST to seasonList,
-                        CURRENT_SEASON_POSITION to _currentSeasonNumber
+                        // Sometimes, We are getting one extra season as 'Spacials' with season number 0
+                        CURRENT_SEASON_POSITION to if (seasonList[0].seasonNumber == 0) _currentSeasonNumber else _currentSeasonNumber - 1
                     )
                 )
                 safeFragmentNavigation(

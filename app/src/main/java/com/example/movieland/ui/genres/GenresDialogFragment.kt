@@ -29,8 +29,8 @@ import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.doVibrate
-import com.example.movieland.utils.showSnackBar
 import com.example.movieland.utils.handleExceptions
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint

@@ -24,7 +24,6 @@ import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.formatUpcomingDate
 import com.example.movieland.utils.showSnackBar
-import com.google.android.material.snackbar.Snackbar
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

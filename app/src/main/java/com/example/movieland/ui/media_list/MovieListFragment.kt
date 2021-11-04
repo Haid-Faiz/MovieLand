@@ -1,7 +1,6 @@
 package com.example.movieland.ui.media_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,17 +16,20 @@ import com.example.movieland.R
 import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentMovieListBinding
 import com.example.movieland.ui.home.HorizontalPagerAdapter
-import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.BOLLYWOOD_MOVIES
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
+import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
+import com.example.movieland.utils.ErrorType
+import com.example.movieland.utils.handleExceptions
+import com.example.movieland.utils.safeFragmentNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -107,7 +109,7 @@ class MovieListFragment : Fragment() {
                 // BollyWood item click
                 {
                     parentFragmentManager.setFragmentResult(
-                        Constants.MEDIA_PLAY_REQUEST_KEY,
+                        MEDIA_PLAY_REQUEST_KEY,
                         bundleOf(
                             MEDIA_ID_KEY to it.id,
                             IS_IT_A_MOVIE_KEY to true

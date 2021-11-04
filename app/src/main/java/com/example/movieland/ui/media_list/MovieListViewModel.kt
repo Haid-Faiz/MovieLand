@@ -1,6 +1,5 @@
 package com.example.movieland.ui.media_list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

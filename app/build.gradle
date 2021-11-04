@@ -15,7 +15,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -63,11 +63,6 @@ dependencies {
     // Carousel Recyclerview
     implementation 'com.github.sparrow007:carouselrecyclerview:1.2.1'
 
-//    // ExoPlayer for streaming videos
-//    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-//    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
-//    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-
     // Dagger-Hilt for Dependency Injection
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
@@ -85,14 +80,8 @@ dependencies {
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
-//    // Lottie Animation Library
-//    implementation "com.airbnb.android:lottie:$lottie_version"
-
     // Chrome Custom Tab
     implementation "androidx.browser:browser:$chrome_custom_tab_version"
-
-    // Facebook shimmer effect
-    // implementation "com.facebook.shimmer:shimmer:$facebook_shimmer"
 
     // Material Dot viewpager indicator library
     implementation "com.github.zhpanvip:viewpagerindicator:$dot_indicator"

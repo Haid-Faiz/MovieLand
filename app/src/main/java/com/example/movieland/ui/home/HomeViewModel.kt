@@ -1,6 +1,5 @@
 package com.example.movieland.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -85,10 +84,10 @@ class HomeViewModel @Inject constructor(
                     Resource.Success(
                         data = HomeFeedData(
                             bannerMovie = nowPlayingMoviesList.data.movieResults[
-                                    Random.nextInt(
-                                        0,
-                                        9
-                                    )
+                                Random.nextInt(
+                                    0,
+                                    9
+                                )
                             ],
                             homeFeedList = wholeList
                         )

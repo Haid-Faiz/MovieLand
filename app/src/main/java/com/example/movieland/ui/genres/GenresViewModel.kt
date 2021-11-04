@@ -1,10 +1,7 @@
 package com.example.movieland.ui.genres
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import dagger.hilt.android.lifecycle.HiltViewModel

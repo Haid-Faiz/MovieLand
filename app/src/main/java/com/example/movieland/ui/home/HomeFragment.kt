@@ -20,7 +20,6 @@ import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentHomeBinding
-import com.example.movieland.utils.*
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -35,6 +34,10 @@ import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TRENDING_MOVIES
 import com.example.movieland.utils.Constants.TRENDING_TV_SHOWS
+import com.example.movieland.utils.Helpers
+import com.example.movieland.utils.Resource
+import com.example.movieland.utils.safeFragmentNavigation
+import com.example.movieland.utils.showSnackBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -97,7 +100,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.nestedScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        binding.nestedScrollview.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             val color = changeAppBarAlpha(
                 ContextCompat.getColor(requireContext(), R.color.black_transparent),
                 (min(255, scrollY).toFloat() / 255.0f).toDouble()
