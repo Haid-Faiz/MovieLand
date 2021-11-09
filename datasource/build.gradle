@@ -10,7 +10,7 @@ String getReadAccessToken() {
     def credentialFile = rootProject.file("./credentials.properties")
     def credentialProperty = new Properties()
     credentialProperty.load(new FileInputStream(credentialFile))
-    return credentialProperty['read_access_token']
+    return credentialProperty['READ_ACCESS_TOKEN']
 }
 
 android {
@@ -57,8 +57,6 @@ dependencies {
 
     // Retrofit 2
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    // api add krne se app level ke andr eccesss aa jaega retrpfit ka
-    // but isse building thodi slow ho jati hai
 
     // Moshi converter factory
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"

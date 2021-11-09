@@ -15,7 +15,7 @@ jobs:
       - name: Decode credentials.properties
         env:
           API_KEY: ${{ secrets.READ_ACCESS_TOKEN }}
-        run: echo read_access_token=\"$READ_ACCESS_TOKEN\" > ./credentials.properties
+        run: echo READ_ACCESS_TOKEN=\"$READ_ACCESS_TOKEN\" > ./credentials.properties
 
       # Kotlin Lint Check
       - name: Ktlint check
