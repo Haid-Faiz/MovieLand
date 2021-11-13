@@ -22,7 +22,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -66,6 +67,9 @@ dependencies {
     // Dagger-Hilt for Dependency Injection
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // Jetpack paging 3
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Android Youtube Player
     implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$youtube_version"
