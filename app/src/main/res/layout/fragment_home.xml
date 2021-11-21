@@ -106,7 +106,7 @@
                     android:layout_height="@dimen/_382sdp"
                     android:background="@color/dark_gray"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/avengers_blue" />
+                    tools:src="@drawable/fast_saga" />
                 <!--tools:src="@tools:sample/backgrounds/scenic[6]"-->
 
                 <View

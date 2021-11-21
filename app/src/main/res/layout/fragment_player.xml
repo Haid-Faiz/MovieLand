@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/loading_bg"
-        layout="@layout/fragment_player_shimmer"
+        layout="@layout/fragment_player_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:padding="@dimen/_1sdp"
-            android:src="@drawable/back_1"
+            android:src="@drawable/back_arrow_transparent"
             android:translationZ="@dimen/_100sdp" />
 
         <LinearLayout

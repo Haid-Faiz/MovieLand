@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -21,31 +22,42 @@ abstract class BaseRepo constructor(
         return withContext(Dispatchers.IO) {
             try {
                 val response: Response<T> = api()
-                Resource.Success(data = response.body()!!)
-            } catch (e: IOException) {
-                Resource.Error(
-                    "Please check your network connection",
-                    errorType = ErrorType.NETWORK
-                )
-            } catch (e: HttpException) {
-                // val code = e.code() HTTP Exception code
-                val errorResponse: TmdbErrorResponse? = convertErrorBody(e)
-                Resource.Error(
-                    errorMessage = errorResponse?.statusMessage ?: "Something went wrong",
-                    errorType = ErrorType.HTTP
-                )
-            } catch (e: Exception) {
-                Resource.Error(
-                    errorMessage = "Something went wrong",
-                    errorType = ErrorType.UNKNOWN
-                )
+                if (response.isSuccessful) {
+                    Resource.Success(data = response.body()!!)
+                } else {
+                    // val code = e.code() HTTP Exception code
+                    val errorResponse: TmdbErrorResponse? = convertErrorBody(response.errorBody())
+                    Resource.Error(
+                        errorMessage = errorResponse?.statusMessage ?: "Something went wrong",
+                        errorType = ErrorType.HTTP
+                    )
+                }
+            } catch (throwable: Throwable) {
+                when (throwable) {
+                    is IOException -> Resource.Error(
+                        "Please check your network connection",
+                        errorType = ErrorType.NETWORK
+                    )
+
+                    is HttpException ->
+                        // val code = e.code() HTTP Exception code
+                        Resource.Error(
+                            errorMessage = throwable.message ?: "Something went wrong",
+                            errorType = ErrorType.HTTP
+                        )
+
+                    else -> Resource.Error(
+                        errorMessage = "Something went wrong",
+                        errorType = ErrorType.UNKNOWN
+                    )
+                }
             }
         }
     }
 
-    private fun convertErrorBody(throwable: HttpException): TmdbErrorResponse? {
+    private fun convertErrorBody(errorBody: ResponseBody?): TmdbErrorResponse? {
         return try {
-            throwable.response()?.errorBody()?.source()?.let {
+            errorBody?.source()?.let {
                 val moshiAdapter = Moshi.Builder().build().adapter(TmdbErrorResponse::class.java)
                 moshiAdapter.fromJson(it)
             }

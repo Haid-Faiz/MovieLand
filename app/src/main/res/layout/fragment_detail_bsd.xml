@@ -37,7 +37,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/poster_bg"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/avengers_blue" />
+                        android:src="@drawable/avengers_red" />
 
                     <ImageView
                         android:id="@+id/close_detail_btn"
