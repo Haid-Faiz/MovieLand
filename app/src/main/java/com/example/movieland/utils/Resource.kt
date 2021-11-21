@@ -13,7 +13,7 @@ sealed class Resource<T>(
         errorType: ErrorType? = null
     ) : Resource<T>(message = errorMessage, status = Status.ERROR)
 
-    class Loading<T>() : Resource<T>(status = Status.LOADING)
+    class Loading<T> : Resource<T>(status = Status.LOADING)
 }
 
 enum class Status {

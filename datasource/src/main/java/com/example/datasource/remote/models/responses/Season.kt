@@ -30,8 +30,7 @@ data class Season(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(airDate)

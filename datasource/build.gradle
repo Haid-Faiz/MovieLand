@@ -30,7 +30,7 @@ android {
         }
         release {
             buildConfigField 'String', 'READ_ACCESS_TOKEN', getReadAccessToken()
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
