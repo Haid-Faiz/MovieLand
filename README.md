@@ -18,7 +18,7 @@
 <table>
    <ul>
       <li>
-         <h4>App Intro & Search feature<h4>
+         <h4>Authentication Screen || Home screen || Player screen<h4>
       </li>
    </ul>
    <tr>
@@ -32,12 +32,14 @@
 <table>
       <ul>
       <li>
-         <h4>Screen orientation changes & Pagination, etc<h4>
+         <h4>Discover by Genres & Search screen || Coming Soon screen || My Account screen<h4>
           </li>
    </ul>
   <tr>
 <td><img src = "https://user-images.githubusercontent.com/56159740/142738051-4f237728-43ab-4ac7-a7bc-9722f65df8d5.gif" height = "380" width="200"></td>
-<td><img src = "https://user-images.githubusercontent.com/56159740/141646430-811625ea-10b5-49a9-a115-a37a03a5e8e2.gif" height = "380" width="200"></td>
+<td><img src = "https://user-images.githubusercontent.com/56159740/142755415-647f548c-f76d-4a7c-b581-c2a6f1d64de8.gif" height = "380" width="200"></td>
+<td><img src = "https://user-images.githubusercontent.com/56159740/142755836-29b77a14-2449-4d27-b414-0a227004d912.gif" height = "380" width="200"></td>
+<td><img src = "https://user-images.githubusercontent.com/56159740/142755631-68e7f055-0458-437f-8b5b-6e0787be1e52.gif" height = "380" width="200"></td>     
   </tr>
 </table>
 
