@@ -14,13 +14,7 @@ import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
 import com.example.datasource.remote.models.responses.TvShowDetailsResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 // TMDB API Version - 3
 interface TMDBApiServiceV3 {
@@ -234,6 +228,18 @@ interface TMDBApiServiceV3 {
         @Path("account_id") accountId: Int,
         @Query("session_id") sessionId: String,
         @Body addToFavouriteRequest: AddToFavouriteRequest
+    ): Response<ResponseBody>
+
+    @DELETE("3/movie/{movie_id}/rating")
+    suspend fun deleteMovieRating(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String,
+    ): Response<ResponseBody>
+
+    @DELETE("3/tv/{tv_id}/rating")
+    suspend fun deleteTvRating(
+        @Path("tv_id") tvId: Int,
+        @Query("session_id") sessionId: String,
     ): Response<ResponseBody>
 
     @POST("3/authentication/session/convert/4")

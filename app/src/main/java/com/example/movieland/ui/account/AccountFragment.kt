@@ -2,6 +2,7 @@ package com.example.movieland.ui.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,18 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenStarted
 import androidx.navigation.fragment.findNavController
+import com.example.datasource.remote.models.requests.AddToFavouriteRequest
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentAccountBinding
 import com.example.movieland.ui.auth.AuthActivity
 import com.example.movieland.ui.auth.AuthViewModel
 import com.example.movieland.ui.home.HorizontalAdapter
-import com.example.movieland.ui.home.RatedMoviesAdapter
+import com.example.movieland.ui.home.AccountMediaAdapter
+import com.example.movieland.ui.home.DeletedState
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -29,6 +34,8 @@ import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
+import com.example.movieland.utils.Constants.MOVIE
+import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
@@ -36,9 +43,12 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
@@ -48,9 +58,9 @@ class AccountFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()
     private var _sessionId: String? = null
     private var _accountId: Int? = null
-    private lateinit var watchListAdapter: HorizontalAdapter
-    private lateinit var ratingsAdapter: RatedMoviesAdapter
-    private lateinit var favouritesAdapter: HorizontalAdapter
+    private lateinit var watchListAdapter: AccountMediaAdapter
+    private lateinit var ratingsAdapter: AccountMediaAdapter
+    private lateinit var favouritesAdapter: AccountMediaAdapter
 
     // Lists
     private var _allWatchList: ArrayList<MovieResult>? = null
@@ -392,23 +402,137 @@ class AccountFragment : Fragment() {
     private fun setUpRecyclerView() = binding.apply {
 
         // Setting WatchList RV
-        watchListAdapter = HorizontalAdapter {
-            openDetailBottomSheet(it)
-        }
+        watchListAdapter = AccountMediaAdapter(
+            onPosterClick = {
+                openDetailBottomSheet(it)
+            },
+            onDeleteClick = { item: MovieResult, deleteCallback ->
+                // Delete a media from watchlist
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    authViewModel.removeFromWatchList(
+                        accountId = _accountId!!,
+                        sessionId = _sessionId!!,
+                        addToWatchListRequest = AddToWatchListRequest(
+                            mediaId = item.id,
+                            mediaType = if (item.tvShowName.isNullOrEmpty()) MOVIE else TV,
+                            watchlist = false
+                        )
+                    ).collectLatest {
+                        when (it) {
+                            is Resource.Loading -> {
+                                deleteCallback(DeletedState(isLoading = true))
+                            }
+                            is Resource.Success -> {
+                                _allWatchList?.remove(item)
+                                watchListAdapter.submitList(_allWatchList)
+                                watchListAdapter.notifyDataSetChanged()
+                                deleteCallback(DeletedState(isSuccess = true))
+                                if (_allWatchList!!.isEmpty()) {
+                                    rvWatchlist.isGone = true
+                                    emptyWatchlistMsg.isGone = false
+                                }
+                            }
+                            is Resource.Error -> {
+                                deleteCallback(
+                                    DeletedState(
+                                        errorMessage = it.message ?: "Something went wrong"
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        )
         rvWatchlist.setHasFixedSize(true)
         rvWatchlist.adapter = watchListAdapter
 
         // Setting Rating RV
-        ratingsAdapter = RatedMoviesAdapter {
-            openDetailBottomSheet(it)
-        }
+        ratingsAdapter = AccountMediaAdapter(
+            onPosterClick = {
+                openDetailBottomSheet(it)
+            },
+            onDeleteClick = { item: MovieResult, deleteCallback ->
+                // Delete a media from ratings
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    authViewModel.deleteRating(
+                        mediaId = item.id,
+                        isMovie = if (item.tvShowName.isNullOrEmpty()) true else false,
+                        sessionId = _sessionId!!
+                    ).collectLatest {
+                        when (it) {
+                            is Resource.Loading -> {
+                                deleteCallback(DeletedState(isLoading = true))
+                            }
+                            is Resource.Success -> {
+                                _allRatingList?.remove(item)
+                                ratingsAdapter.submitList(_allRatingList)
+                                ratingsAdapter.notifyDataSetChanged()
+                                deleteCallback(DeletedState(isSuccess = true))
+                                if (_allRatingList!!.isEmpty()) {
+                                    rvRatings.isGone = true
+                                    emptyRatingsMsg.isGone = false
+                                }
+                            }
+                            is Resource.Error -> {
+                                deleteCallback(
+                                    DeletedState(
+                                        errorMessage = it.message ?: "Something went wrong"
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            showRated = true
+        )
         rvRatings.setHasFixedSize(true)
         rvRatings.adapter = ratingsAdapter
 
         // Setting Favourites RV
-        favouritesAdapter = HorizontalAdapter {
-            openDetailBottomSheet(it)
-        }
+        favouritesAdapter = AccountMediaAdapter(
+            onPosterClick = {
+                openDetailBottomSheet(it)
+            },
+            onDeleteClick = { item: MovieResult, deleteCallback ->
+                // Delete a media from favourite list
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    authViewModel.removeFromFavourites(
+                        accountId = _accountId!!,
+                        sessionId = _sessionId!!,
+                        addToFavouriteRequest = AddToFavouriteRequest(
+                            mediaId = item.id,
+                            mediaType = if (item.tvShowName.isNullOrEmpty()) MOVIE else TV,
+                            favorite = false
+                        )
+                    ).collectLatest {
+                        when (it) {
+                            is Resource.Loading -> {
+                                deleteCallback(DeletedState(isLoading = true))
+                            }
+                            is Resource.Success -> {
+                                _allFavouriteList?.remove(item)
+                                favouritesAdapter.submitList(_allFavouriteList)
+                                favouritesAdapter.notifyDataSetChanged()
+                                deleteCallback(DeletedState(isSuccess = true))
+                                if (_allFavouriteList!!.isEmpty()) {
+                                    rvFavourites.isGone = true
+                                    emptyFavouritesMsg.isGone = false
+                                }
+                            }
+                            is Resource.Error -> {
+                                deleteCallback(
+                                    DeletedState(
+                                        errorMessage = it.message ?: "Something went wrong"
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        )
         rvFavourites.setHasFixedSize(true)
         rvFavourites.adapter = favouritesAdapter
     }

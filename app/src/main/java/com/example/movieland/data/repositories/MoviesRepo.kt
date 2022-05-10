@@ -238,4 +238,15 @@ class MoviesRepo @Inject constructor(
     ) = safeApiCall {
         apiV3.addToFavourites(accountId, sessionId, addToFavouriteRequest)
     }
+
+    suspend fun deleteRating(
+        mediaId: Int,
+        isMovie: Boolean,
+        sessionId: String
+    ) = safeApiCall {
+        if (isMovie)
+            apiV3.deleteMovieRating(movieId = mediaId, sessionId = sessionId)
+        else
+            apiV3.deleteTvRating(tvId = mediaId, sessionId = sessionId)
+    }
 }

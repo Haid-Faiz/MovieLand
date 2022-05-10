@@ -18,7 +18,7 @@ interface TMDBApiServiceV4 {
         @Field("redirect_to") redirectTo: String
     ): Response<RequestTokenResponse>
 
-    // Create access token (successfully returns access token iff user has approved request token)
+    // Create access token (successfully returns access token if and only if user has approved request token)
     @POST("4/auth/access_token")
     suspend fun requestAccessToken(
         @Body requestToken: RequestToken

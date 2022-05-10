@@ -3,6 +3,8 @@ package com.example.movieland.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.datasource.remote.models.requests.AddToFavouriteRequest
+import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.AccessTokenResponse
 import com.example.datasource.remote.models.responses.AccountDetailsResponse
 import com.example.datasource.remote.models.responses.MovieListResponse
@@ -11,14 +13,13 @@ import com.example.datasource.remote.models.responses.RequestTokenResponse
 import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.AuthRepo
+import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -26,7 +27,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepo: AuthRepo
+    private val authRepo: AuthRepo,
+    private val moviesRepo: MoviesRepo
 ) : BaseViewModel(authRepo) {
 
     // Request Token
@@ -188,5 +190,32 @@ class AuthViewModel @Inject constructor(
             .collect {
                 _ratingList.postValue(Resource.Success(data = it))
             }
+    }
+
+    suspend fun removeFromWatchList(
+        accountId: Int,
+        sessionId: String,
+        addToWatchListRequest: AddToWatchListRequest
+    ) = flow<Resource<ResponseBody>> {
+        emit(Resource.Loading())
+        emit(moviesRepo.addToWatchList(accountId, sessionId, addToWatchListRequest))
+    }
+
+    suspend fun removeFromFavourites(
+        accountId: Int,
+        sessionId: String,
+        addToFavouriteRequest: AddToFavouriteRequest
+    ) = flow {
+        emit(Resource.Loading())
+        emit(moviesRepo.addToFavourites(accountId, sessionId, addToFavouriteRequest))
+    }
+
+    suspend fun deleteRating(
+        mediaId: Int,
+        isMovie: Boolean,
+        sessionId: String
+    ) = flow {
+        emit(Resource.Loading())
+        emit(moviesRepo.deleteRating(mediaId = mediaId, isMovie = isMovie, sessionId = sessionId))
     }
 }

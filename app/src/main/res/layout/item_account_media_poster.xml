@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_4sdp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:alpha=".5">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/poster_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_6sdp">
+
+            <ImageView
+                android:id="@+id/poster_image"
+                android:layout_width="@dimen/_94sdp"
+                android:layout_height="@dimen/_136sdp"
+                android:background="@drawable/poster_bg"
+                android:scaleType="fitXY"
+                tools:src="@tools:sample/backgrounds/scenic[1]" />
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:layout_margin="@dimen/_4sdp"
+                android:background="@drawable/rating_bg"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_1sdp"
+                android:text="7.8"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/_10ssp" />
+
+            <ImageView
+                android:id="@+id/imgDelete"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="start|top"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:src="@drawable/ic_close" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/linRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/poster_card"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:src="@drawable/ic_rated_star"
+                app:tint="@color/red" />
+
+            <TextView
+                android:id="@+id/your_rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/_12ssp"
+                tools:text="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text=" /10  by you"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/_10ssp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/red"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+</FrameLayout>

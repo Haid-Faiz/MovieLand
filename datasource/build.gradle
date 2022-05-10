@@ -14,12 +14,12 @@ String getReadAccessToken() {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -41,12 +41,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.example.datasource'
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     // Retrofit 2

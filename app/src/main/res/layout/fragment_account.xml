@@ -307,7 +307,7 @@
                     android:paddingHorizontal="@dimen/_2sdp"
                     android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_poster_rated" />
+                    tools:listitem="@layout/item_account_media_poster" />
 
                 <TextView
                     android:id="@+id/empty_ratings_msg"
