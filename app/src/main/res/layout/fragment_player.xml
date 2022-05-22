@@ -26,6 +26,7 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -34,9 +35,10 @@
             android:id="@+id/back_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:padding="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:paddingVertical="@dimen/_4sdp"
+            android:paddingHorizontal="@dimen/_4sdp"
             android:src="@drawable/back_arrow_transparent"
             android:translationZ="@dimen/_100sdp" />
 
@@ -56,9 +58,10 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:autoPlay="false"
-                app:showFullScreenButton="true" />
+                app:handleNetworkEvents="true" />
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true"
@@ -165,9 +168,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_genres"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
-                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/_6sdp"
@@ -180,7 +183,7 @@
                             android:id="@+id/overview_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:ellipsize="end"
                             android:fontFamily="@font/hind"
                             android:maxLines="4"
@@ -204,6 +207,8 @@
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
                                 android:text="My List"
+                                android:fontFamily="@font/hind"
+                                android:maxLines="1"
                                 android:textAllCaps="false"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_10ssp"
@@ -219,7 +224,9 @@
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
                                 android:text="Favourite"
+                                android:maxLines="1"
                                 android:textAllCaps="false"
+                                android:fontFamily="@font/hind"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_favorite_outline"
@@ -234,7 +241,9 @@
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
                                 android:text="Rate"
+                                android:maxLines="1"
                                 android:textAllCaps="false"
+                                android:fontFamily="@font/hind"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_star_outline"
@@ -244,16 +253,18 @@
 
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/share_button"
+                                android:id="@+id/open_with_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
-                                android:text="Share"
+                                android:text="Open with"
+                                android:fontFamily="@font/hind"
                                 android:textAllCaps="false"
                                 android:textColor="@color/white"
+                                android:maxLines="1"
                                 android:textSize="@dimen/_10ssp"
-                                app:icon="@drawable/ic_share"
+                                app:icon="@drawable/ic_open_with"
                                 app:iconGravity="top"
                                 app:iconSize="@dimen/_16sdp"
                                 app:iconTint="@color/white" />

@@ -4,4 +4,6 @@
     <string name="title_search">Search</string>
     <string name="title_coming_soon">Coming Soon</string>
     <string name="title_account">Account</string>
+    <string name="title_imdb">IMDB</string>
+    <string name="title_youtube">YouTube</string>
 </resources>

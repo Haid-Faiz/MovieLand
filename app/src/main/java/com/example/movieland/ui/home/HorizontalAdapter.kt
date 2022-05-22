@@ -44,6 +44,40 @@ class HorizontalAdapter(
     }
 }
 
+class RecommendationsAdapter(
+    private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null
+) : RecyclerView.Adapter<RecommendationsAdapter.ViewHolder>() {
+
+    private var _list: MutableList<MovieResult> = mutableListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(_list.get(position))
+    }
+
+    override fun getItemCount(): Int = _list.size
+
+    inner class ViewHolder(
+        private val binding: ItemPosterBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(movieResult: MovieResult) = binding.apply {
+            posterImage.load(TMDB_POSTER_IMAGE_BASE_URL_W342.plus(movieResult.posterPath))
+            ratingText.text = String.format("%.1f", movieResult.voteAverage)
+            posterImage.setOnClickListener { onPosterClick?.invoke(movieResult) }
+        }
+    }
+
+    fun submitList(list: List<MovieResult>) {
+        _list = list as MutableList<MovieResult>
+        notifyDataSetChanged()
+    }
+}
+
+
 class HorizontalPagerAdapter(
     private var onPosterClick: ((movieResult: MovieResult) -> Unit)? = null,
 ) : PagingDataAdapter<MovieResult, HorizontalPagerAdapter.ViewHolder>(DiffUtilCallback()) {

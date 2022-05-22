@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:paddingHorizontal="@dimen/_6sdp"
     android:orientation="vertical"
+    android:paddingHorizontal="@dimen/_6sdp"
     android:paddingVertical="@dimen/_6sdp">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -15,14 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:autoPlay="false"
-        app:showFullScreenButton="false" />
+        app:enableAutomaticInitialization="true" />
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_6sdp"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/hind"
         android:paddingHorizontal="@dimen/_6sdp"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/_12ssp"
