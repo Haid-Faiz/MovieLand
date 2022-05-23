@@ -6,11 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.MediaCastResponse
-import com.example.datasource.remote.models.responses.MovieDetailResponse
-import com.example.datasource.remote.models.responses.MovieListResponse
-import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
-import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.*
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -80,6 +76,13 @@ class PlayerViewModel @Inject constructor(
             _mediaCast.postValue(movieRepo.fetchMovieCast(movieId = mediaId))
         else
             _mediaCast.postValue(movieRepo.fetchTvShowCast(tvId = mediaId))
+
+    }
+
+    suspend fun getTvShowExternalIds(
+        tvId: Int
+    ): Resource<TvShowExternalIdsResponse> {
+        return movieRepo.getTvShowExternalIds(tvId)
     }
 
     // ---------------------------Session Id is required in these requests-----------------------

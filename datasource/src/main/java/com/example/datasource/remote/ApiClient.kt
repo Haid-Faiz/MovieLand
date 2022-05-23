@@ -13,8 +13,8 @@ class ApiClient {
 
     private val okHttpBuilder: OkHttpClient.Builder by lazy {
         OkHttpClient.Builder()
-            .callTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
+            .callTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
     }
 
     val retrofit: Retrofit by lazy {

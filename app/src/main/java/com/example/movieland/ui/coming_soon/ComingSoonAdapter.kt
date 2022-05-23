@@ -25,9 +25,7 @@ class ComingSoonAdapter(
         holder.bind(getItem(position))
     }
 
-    fun getSelectedItem(position: Int): MovieResult {
-        return getItem(position)
-    }
+    fun getSelectedItem(position: Int): MovieResult = getItem(position)
 
     inner class ViewHolder(
         private val binding: ItemComingSoonBinding
@@ -42,7 +40,6 @@ class ComingSoonAdapter(
     }
 
     class DiffUtilCallback : DiffUtil.ItemCallback<MovieResult>() {
-
         override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean =
             oldItem == newItem
 

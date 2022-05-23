@@ -7,7 +7,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_172sdp"
+        android:layout_height="@dimen/_188sdp"
         android:background="@color/dark_gray" />
 
     <View
@@ -167,7 +167,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/_16sdp"
-        android:background="@color/divider" />
+        android:background="@color/dark_gray" />
 
     <View
         android:layout_width="@dimen/_116sdp"
@@ -179,7 +179,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_18sdp"
-        android:layout_marginBottom="@dimen/_6sdp"
         android:orientation="horizontal">
 
         <include

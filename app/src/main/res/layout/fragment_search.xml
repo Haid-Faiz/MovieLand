@@ -1,172 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="ui.search.SearchFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:alpha="0.4">
 
-        <RelativeLayout
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/search_query_et"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_36sdp"
+                    android:autofillHints="name"
+                    android:backgroundTint="@color/divider"
+                    android:hint="Search..."
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="@dimen/_14ssp" />
+
+                <ImageButton
+                    android:id="@+id/erase_query_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@color/black"
+                    android:src="@drawable/ic_close"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/query_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:src="@drawable/ic_nav_search_24" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/search_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:layout_weight="2"
+                android:fontFamily="@font/montserrat"
+                android:text="Top Searches"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                app:tabBackground="@color/black"
+                app:tabIndicatorColor="@color/red"
+                app:tabSelectedTextColor="@color/red"
+                app:tabTextAppearance="@style/GenreTabText"
+                app:tabTextColor="@color/text_secondary">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Movies" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tv Shows" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/search_query_et"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/_36sdp"
-                android:autofillHints="name"
-                android:backgroundTint="@color/divider"
-                android:hint="Search..."
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="@dimen/_14ssp" />
-
-            <ImageButton
-                android:id="@+id/erase_query_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/ic_close"
-                android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/empty_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/_72sdp"
+            android:visibility="gone"
+            android:weightSum="5">
 
             <ImageView
-                android:id="@+id/query_search_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:paddingHorizontal="@dimen/_8sdp"
-                android:src="@drawable/ic_nav_search_24" />
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_bubble_24" />
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_horizontal"
+                android:text="Oops... no results found !!"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/_14ssp" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/search_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_8sdp"
-            android:layout_weight="2"
-            android:fontFamily="@font/montserrat"
-            android:text="Top Searches"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+        <ProgressBar
+            android:id="@+id/searching_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            app:tabBackground="@color/black"
-            app:tabIndicatorColor="@color/red"
-            app:tabSelectedTextColor="@color/red"
-            app:tabTextAppearance="@style/GenreTabText"
-            app:tabTextColor="@color/text_secondary">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_96sdp"
+            android:indeterminateTint="@color/red"
+            android:visibility="gone" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Movies" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tv Shows" />
-
-        </com.google.android.material.tabs.TabLayout>
-
-    </LinearLayout>
-
-    <include
-        android:id="@+id/error_layout"
-        layout="@layout/error_status"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/empty_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/_72sdp"
-        android:visibility="gone"
-        android:weightSum="5">
-
-        <ImageView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_searches_rv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:src="@drawable/ic_bubble_24" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:paddingHorizontal="@dimen/_6sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_top_movie" />
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searched_result_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:fontFamily="@font/montserrat_bold"
-            android:gravity="center_horizontal"
-            android:text="Oops... no results found !!"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/_14ssp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_poster" />
 
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/searching_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_96sdp"
-        android:indeterminateTint="@color/red"
-        android:visibility="gone" />
+        android:id="@+id/progressBarOuter"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/red" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/top_searches_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:paddingHorizontal="@dimen/_6sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_top_movie" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searched_result_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:paddingStart="@dimen/_2sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_poster" />
-
-</LinearLayout>
+</FrameLayout>

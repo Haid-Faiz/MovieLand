@@ -1,6 +1,7 @@
 package com.example.movieland.ui.home.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
@@ -24,6 +26,7 @@ import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
 import com.example.movieland.utils.Constants.MEDIA_OVERVIEW_KEY
 import com.example.movieland.utils.Constants.MEDIA_PLAY_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
+import com.example.movieland.utils.Constants.MEDIA_RE_PLAY_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
@@ -49,6 +52,7 @@ class DetailFragment : BottomSheetDialogFragment() {
     private var _mediaId: Int? = null
     private var _isItMovie = false
     private lateinit var popingAnim: Animation
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +76,7 @@ class DetailFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         popingAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
+        navController = findNavController()
         setUpGenreRecyclerView()
         setUpFragmentResultListeners()
         setUpClickListeners()
@@ -118,14 +123,22 @@ class DetailFragment : BottomSheetDialogFragment() {
         closeDetailBtn.setOnClickListener { dismiss() }
 
         playButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                MEDIA_PLAY_REQUEST_KEY,
-                bundleOf(
-                    MEDIA_ID_KEY to _mediaId, // id & isItMovie working
-                    IS_IT_A_MOVIE_KEY to _isItMovie
+
+            if (navController.previousBackStackEntry?.destination?.id?.toString() == R.id.playerFragment.toString() ||
+                navController.previousBackStackEntry?.destination?.id?.toString() == R.id.castDetailsFragment.toString()
+            ) {
+                // Popup backstack up till PlayerFragment & reload data in player fragment
+                sendReloadCallbackToPlayerFragment(_mediaId, _isItMovie)
+            } else {
+                parentFragmentManager.setFragmentResult(
+                    MEDIA_PLAY_REQUEST_KEY,
+                    bundleOf(
+                        MEDIA_ID_KEY to _mediaId, // id & isItMovie working
+                        IS_IT_A_MOVIE_KEY to _isItMovie
+                    )
                 )
-            )
-            findNavController().navigate(R.id.action_detailFragment_to_playerFragment)
+                navController.navigate(R.id.action_detailFragment_to_playerFragment)
+            }
         }
 
         addToWatchlistBtn.setOnClickListener {
@@ -155,6 +168,17 @@ class DetailFragment : BottomSheetDialogFragment() {
                 } else showSnackBar("Please login to avail this feature")
             }
         }
+    }
+
+    private fun sendReloadCallbackToPlayerFragment(_mediaId: Int?, _isItMovie: Boolean) {
+        parentFragmentManager.setFragmentResult(
+            MEDIA_RE_PLAY_REQUEST_KEY,
+            bundleOf(
+                MEDIA_ID_KEY to _mediaId, // id & isItMovie working
+                IS_IT_A_MOVIE_KEY to _isItMovie
+            )
+        )
+        navController.popBackStack(R.id.playerFragment, false)
     }
 
     override fun onDestroyView() {

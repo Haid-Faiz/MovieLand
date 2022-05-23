@@ -66,14 +66,22 @@ class SearchFragment : Fragment() {
         searchViewModel.trendingMedia.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
+                    mainLayout.alpha = 1F
+                    progressBarOuter.isGone = true
+                    searchingProgressBar.isGone = true
                     showSnackBar(it.message!!)
                     searchedResultRv.isGone = true
                     topSearchesRv.isGone = true
                     errorLayout.root.isGone = false
                     emptySearch.isGone = true
                 }
-                // is Resource.Loading -> { }
+                is Resource.Loading -> binding.apply {
+                    progressBarOuter.isGone = false
+                    mainLayout.alpha = 0.4F
+                }
                 is Resource.Success -> binding.apply {
+                    mainLayout.alpha = 1F
+                    progressBarOuter.isGone = true
                     searchingProgressBar.isGone = true
                     errorLayout.root.isGone = true
                     emptySearch.isGone = true

@@ -27,6 +27,7 @@ object Constants {
     const val YOUTUBE = "YouTube"
     const val TV = "tv"
     const val MEDIA_PLAY_REQUEST_KEY = "media_play_request_key"
+    const val MEDIA_RE_PLAY_REQUEST_KEY = "media_re_play_request_key"
     const val MEDIA_SEND_REQUEST_KEY = "media_set_fragment_result_request_key"
     const val SEASONS_LIST_REQUEST_KEY = "seasons_list_request_key"
     const val SEASON_NUMBER = "season_number"

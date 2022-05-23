@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +28,13 @@ class MainActivity : AppCompatActivity() {
                 navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_account
             ) {
                 binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
-                    destination.id != R.id.movieListFragment &&
-                    destination.id != R.id.castDetailsFragment
+                        destination.id != R.id.movieListFragment &&
+                        destination.id != R.id.castDetailsFragment
             } else {
                 binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
-                    destination.id != R.id.movieListFragment &&
-                    destination.id != R.id.detailFragment &&
-                    destination.id != R.id.castDetailsFragment
+                        destination.id != R.id.movieListFragment &&
+                        destination.id != R.id.detailFragment &&
+                        destination.id != R.id.castDetailsFragment
             }
         }
     }

@@ -31,13 +31,13 @@
             app:indicatorSize="@dimen/_44sdp"
             app:trackThickness="@dimen/_2sdp" />
 
-        <ImageView
-            android:id="@+id/thumbnail_play_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_pause"
-            app:tint="@color/white"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/thumbnail_play_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/ic_pause"-->
+<!--            app:tint="@color/white"/>-->
 
     </FrameLayout>
 

@@ -107,11 +107,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:layout_marginBottom="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            tools:visibility="visible"
+            android:layout_marginBottom="@dimen/_28sdp"
             android:indeterminateTint="@color/red"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:visibility="gone" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_media"
@@ -120,14 +121,14 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingStart="@dimen/_2sdp"
             android:paddingVertical="@dimen/_6sdp"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_10sdp"
             android:visibility="gone"
+            tools:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/item_poster"
-            tools:visibility="visible" />
+            tools:listitem="@layout/item_poster" />
 
     </LinearLayout>
 

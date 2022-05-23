@@ -38,7 +38,6 @@ class AccountMediaAdapter(
                 onPosterClick?.invoke(movieResult)
             }
             imgDelete.setOnClickListener {
-
                 onDeleteClick?.invoke(movieResult) { state ->
                     // Deleted callback
                     if (state.isLoading) {

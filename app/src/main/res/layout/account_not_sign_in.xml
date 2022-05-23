@@ -34,7 +34,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:translationZ="@dimen/_90sdp"
-        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_6sdp"
         app:layout_constraintBottom_toBottomOf="@id/intro_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

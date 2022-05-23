@@ -11,6 +11,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:translationZ="@dimen/_100sdp">
 
@@ -36,8 +37,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:clickable="true"
-                android:fontFamily="@font/montserrat"
                 android:focusable="true"
+                android:fontFamily="@font/montserrat"
                 android:paddingTop="@dimen/_4sdp"
                 android:paddingBottom="@dimen/_4sdp"
                 android:text="TVprogrammes"
@@ -65,11 +66,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_6sdp"
-                android:fontFamily="@font/montserrat"
                 android:layout_weight="1"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="@font/montserrat"
                 android:paddingTop="@dimen/_4sdp"
                 android:paddingBottom="@dimen/_4sdp"
                 android:text="Genres"
@@ -103,7 +104,7 @@
                 <ImageView
                     android:id="@+id/banner_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_382sdp"
+                    android:layout_height="@dimen/_398sdp"
                     android:background="@color/dark_gray"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/fast_saga" />
@@ -155,9 +156,9 @@
                         android:backgroundTint="@android:color/transparent"
                         android:fontFamily="@font/montserrat"
                         android:text="My List"
-                        android:translationZ="@dimen/_100sdp"
                         android:textAllCaps="false"
                         android:textSize="@dimen/_9ssp"
+                        android:translationZ="@dimen/_100sdp"
                         app:icon="@drawable/ic_add"
                         app:iconGravity="top"
                         app:iconPadding="-1dp" />
@@ -185,9 +186,9 @@
                         android:backgroundTint="@android:color/transparent"
                         android:fontFamily="@font/montserrat"
                         android:text="Info"
-                        android:translationZ="@dimen/_100sdp"
                         android:textAllCaps="false"
                         android:textSize="@dimen/_9ssp"
+                        android:translationZ="@dimen/_100sdp"
                         app:icon="@drawable/ic_info"
                         app:iconGravity="top"
                         app:iconPadding="-1dp" />
@@ -199,16 +200,16 @@
             <LinearLayout
                 android:id="@+id/rv_placeholder"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:paddingStart="@dimen/_4sdp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_4sdp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <View
                         android:layout_width="@dimen/_3sdp"
@@ -223,9 +224,9 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:fontFamily="@font/montserrat_bold"
+                        android:text="Newly Launched"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/_16ssp"
-                        android:text="Newly Launched" />
+                        android:textSize="@dimen/_16ssp" />
 
                 </LinearLayout>
 
@@ -263,8 +264,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <View
                         android:layout_width="@dimen/_3sdp"
@@ -280,9 +281,9 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:fontFamily="@font/montserrat_bold"
+                        android:text="Top Rated Movies"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/_16ssp"
-                        android:text="Top Rated Movies" />
+                        android:textSize="@dimen/_16ssp" />
 
                 </LinearLayout>
 
@@ -323,10 +324,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                tools:itemCount="2"
-                android:visibility="gone"
                 android:nestedScrollingEnabled="false"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
                 tools:listitem="@layout/item_feed_horizontal_list" />
 
         </LinearLayout>

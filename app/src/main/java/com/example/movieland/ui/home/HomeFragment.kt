@@ -102,7 +102,7 @@ class HomeFragment : Fragment() {
 
         binding.nestedScrollview.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             val color = changeAppBarAlpha(
-                ContextCompat.getColor(requireContext(), R.color.black_transparent),
+                ContextCompat.getColor(requireContext(), R.color.black_transparent_1),
                 (min(255, scrollY).toFloat() / 255.0f).toDouble()
             )
             binding.appBarLayout.setBackgroundColor(color)

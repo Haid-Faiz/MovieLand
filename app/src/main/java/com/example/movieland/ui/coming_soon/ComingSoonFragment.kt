@@ -1,5 +1,8 @@
 package com.example.movieland.ui.coming_soon
 
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +16,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
+import com.example.movieland.MainActivity
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentComingSoonBinding
 import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.MOVIE
+import com.example.movieland.utils.Constants.TMDB_CAST_IMAGE_BASE_URL_W185
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.formatUpcomingDate
@@ -28,6 +37,7 @@ import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
@@ -42,6 +52,9 @@ class ComingSoonFragment : Fragment() {
     private var isFirstPrinted: Boolean = false
     private lateinit var popInAnim: Animation
     private var _movieResult: MovieResult? = null
+    private lateinit var fadeInAnim: Animation
+    private lateinit var imageLoader: ImageLoader
+    private lateinit var imageRequestBuilder: ImageRequest.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +68,11 @@ class ComingSoonFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         popInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
+        imageLoader = ImageLoader(requireContext())
+        imageRequestBuilder = ImageRequest.Builder(requireContext())
         setUpRecyclerview()
+
+        fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
 
         viewModel.comingSoon.observe(viewLifecycleOwner) {
             when (it) {
@@ -102,6 +119,19 @@ class ComingSoonFragment : Fragment() {
                 if (!isFirstPrinted) {
                     isFirstPrinted = true
                     binding.apply {
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            val imgBitmap = getBitmapFromUrl(it.posterPath!!)
+                            val dominantColor = calculateDominantColor(imgBitmap)
+
+                            withContext(Dispatchers.Main) {
+                                rootLayout.setBackgroundColor(dominantColor)
+                                rootLayout.startAnimation(fadeInAnim)
+                                (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(
+                                    dominantColor
+                                )
+                            }
+                        }
+
                         descriptionBox.startAnimation(popingAnim)
                         _movieResult = it
                         title.text = it.title
@@ -122,13 +152,28 @@ class ComingSoonFragment : Fragment() {
             comingSoonRv.setAlpha(true)
 
             // Setting Genre Recyclerview
-            genreAdapter = GenreAdapter(resources.getColor(R.color.black, resources.newTheme()))
+            genreAdapter =
+                GenreAdapter(resources.getColor(R.color.transparent, resources.newTheme()))
             rvGenres.setHasFixedSize(true)
             rvGenres.adapter = genreAdapter
 
             comingSoonRv.setItemSelectListener(object : CarouselLayoutManager.OnSelected {
                 override fun onItemSelected(position: Int) {
                     val movieResult = adapter.getSelectedItem(position)
+
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        val imgBitmap = getBitmapFromUrl(movieResult.posterPath!!)
+                        val dominantColor = calculateDominantColor(imgBitmap)
+
+                        withContext(Dispatchers.Main) {
+                            rootLayout.setBackgroundColor(dominantColor)
+                            rootLayout.startAnimation(fadeInAnim)
+                            (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(
+                                dominantColor
+                            )
+                        }
+                    }
+
                     descriptionBox.startAnimation(popingAnim)
                     _movieResult = movieResult
                     title.text = movieResult.title
@@ -137,11 +182,25 @@ class ComingSoonFragment : Fragment() {
                     overview.text = movieResult.overview
                     ratingText.text = String.format("%.1f", movieResult.voteAverage)
                     releaseDate.formatUpcomingDate(movieResult.releaseDate)
-                    rvGenres.scrollTo(0, 0)
+                    rvGenres.scrollToPosition(0)
                     setUpWatchListClick(movieResult)
                 }
             })
         }
+    }
+
+    private fun calculateDominantColor(bitmap: Bitmap): Int = Palette
+        .from(bitmap).generate().getDarkMutedColor(R.color.black)
+
+    // good: darkVibrantSwatch,
+    // fine: darkMutedSwatch
+
+    private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap {
+        val requestBuilder = imageRequestBuilder
+        val drawable = (imageLoader.execute(
+            requestBuilder.data(TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)).build()
+        ) as SuccessResult).drawable
+        return (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
     }
 
     private fun setUpWatchListClick(movieResult: MovieResult) = binding.apply {
@@ -178,6 +237,7 @@ class ComingSoonFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(R.color.black)
         _binding = null
     }
 }

@@ -91,6 +91,9 @@ dependencies {
     // Material Dot viewpager indicator library
     implementation "com.github.zhpanvip:viewpagerindicator:$dot_indicator"
 
+    // Pallet
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+
     // Intuit ssp & sdp
     implementation "com.intuit.sdp:sdp-android:$intuit_version"
     implementation "com.intuit.ssp:ssp-android:$intuit_version"

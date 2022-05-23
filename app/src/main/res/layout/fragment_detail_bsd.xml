@@ -72,7 +72,7 @@
                             android:layout_marginStart="@dimen/_4sdp"
                             android:gravity="center"
                             android:fontFamily="@font/montserrat"
-                            android:text="7.8"
+                            tools:text="7.8"
                             android:textColor="@color/text_primary" />
 
                     </LinearLayout>
