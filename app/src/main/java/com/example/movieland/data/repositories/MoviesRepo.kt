@@ -10,6 +10,7 @@ import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.MovieResult
+import com.example.datasource.remote.models.responses.WatchProvidersResponse
 import com.example.movieland.data.paging.AnimePagingSource
 import com.example.movieland.data.paging.BollywoodPagingSource
 import com.example.movieland.data.paging.GenresMoviesPagingSource
@@ -22,6 +23,9 @@ import com.example.movieland.data.paging.TrendingMediaPagingSource
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.SessionPrefs
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(
@@ -248,5 +252,21 @@ class MoviesRepo @Inject constructor(
             apiV3.deleteMovieRating(movieId = mediaId, sessionId = sessionId)
         else
             apiV3.deleteTvRating(tvId = mediaId, sessionId = sessionId)
+    }
+
+    suspend fun getTvShowExternalIds(tvId: Int) = safeApiCall {
+        apiV3.getTvShowExternalIds(tvId)
+    }
+
+    suspend fun getMovieWatchProviders(
+        movieId: Int,
+    ) = safeApiCall {
+        apiV3.getMovieWatchProviders(movieId)
+    }
+
+    suspend fun getTvWatchProviders(
+        tvId: Int,
+    ) = safeApiCall {
+        apiV3.getTvWatchProviders(tvId)
     }
 }

@@ -11,7 +11,9 @@ import android.view.animation.AnimationUtils
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -69,11 +71,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-/*
- 1) Create Exoplayer object
- 2) Create a Media Item & add it to exoplayer
-*/
-
 @AndroidEntryPoint
 class PlayerFragment : Fragment() {
 
@@ -82,18 +79,20 @@ class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModels()
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
 
+    private val customTabsIntent by lazy {
+        CustomTabsIntent.Builder().setShowTitle(true).build()
+    }
+
     // Adapters
     private lateinit var similarMediaAdapter: HorizontalAdapter
     private lateinit var recommendationsAdapter: RecommendationsAdapter
     private lateinit var tvShowEpisodesAdapter: TvShowEpisodesAdapter
     private lateinit var moreVideosAdapter: MoreVideosAdapter
-    private lateinit var genreAdapter: GenreAdapter
     private lateinit var castAdapter: CastListAdapter
 
     // Global variables
     private var _youTubePlayer: YouTubePlayer? = null
     private var youTubePlayerListener: AbstractYouTubePlayerListener? = null
-
     private var _isItMovie: Boolean = true
     private var _id: Int? = null
     private var _seasonList: List<Season>? = null
@@ -101,6 +100,7 @@ class PlayerFragment : Fragment() {
     private var _currentMovie: MovieDetailResponse? = null
     private var _currentTvShow: TvShowDetailsResponse? = null
     private lateinit var popingAnim: Animation
+    private var _watchProviderUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -124,6 +124,12 @@ class PlayerFragment : Fragment() {
     private fun setUpClickListeners() = binding.apply {
 
         backArrow.setOnClickListener { findNavController().popBackStack() }
+
+        btnGetWatchProviders.setOnClickListener {
+            _watchProviderUrl?.let { url ->
+                customTabsIntent.launchUrl(requireContext(), url.toUri())
+            }
+        }
 
         errorLayout.retryButton.setOnClickListener { fetchData() }
 
@@ -279,11 +285,32 @@ class PlayerFragment : Fragment() {
             popUpMenu.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.itemId) {
                     R.id.menu_imdb -> {
-                        Toast.makeText(requireContext(), "IMDB", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Opening on IMDB...", Toast.LENGTH_SHORT)
+                            .show()
+
+                        // https://www.imdb.com/title/{imdb_id}
+                        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                            if (_isItMovie) customTabsIntent.launchUrl(
+                                requireContext(),
+                                "https://www.imdb.com/title/${_currentMovie!!.imdbId}".toUri()
+                            )
+                            else {
+                                val res = viewModel.getTvShowExternalIds(_id!!).data?.imdbId
+                                customTabsIntent.launchUrl(
+                                    requireContext(),
+                                    "https://www.imdb.com/title/$res".toUri()
+                                )
+                            }
+                        }
+
                         true
                     }
                     R.id.menu_youtube -> {
-                        Toast.makeText(requireContext(), "YouTube", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Opening on YouTube...",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         true
                     }
                     else -> false
@@ -294,6 +321,17 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpObservers() {
+
+        viewModel.watchProviders.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> binding.apply {
+                    _watchProviderUrl = it.data?.results?.iN?.link
+                }
+                is Resource.Loading -> binding.apply {}
+                is Resource.Error -> binding.apply {}
+            }
+        }
+
         viewModel.movieDetail.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
@@ -466,12 +504,14 @@ class PlayerFragment : Fragment() {
     private fun fetchData() {
         if (!_isItMovie) {
             viewModel.getTvShowDetail(tvId = _id!!)
+            viewModel.getTvWatchProviders(tvId = _id!!)
             viewModel.getTvSeasonDetail(
                 tvId = _id!!,
                 seasonNumber = _currentSeasonNumber
             )
         } else {
             viewModel.getMovieDetail(movieId = _id!!)
+            viewModel.getMovieWatchProviders(movieId = _id!!)
         }
         viewModel.getMediaCast(_id!!, _isItMovie)
         viewModel.getRecommendationsMedia(mediaId = _id!!, _isItMovie)
@@ -516,7 +556,6 @@ class PlayerFragment : Fragment() {
         // Now, making loading state gone & main layout visible
         loadingBg.loadingStateLayout.isGone = true
         mainLayout.isGone = false
-        rvGenres.scrollToPosition(0)
 
         if (_isItMovie && movieDetails != null) {
             thumbnailContainer.backdropImage.load(
@@ -525,10 +564,9 @@ class PlayerFragment : Fragment() {
             titleText.text = movieDetails.title
             overviewText.text = movieDetails.overview
             yearText.formatMediaDate(movieDetails.releaseDate)
-            runtimeText.text = "${movieDetails.runtime / 60} h ${movieDetails.runtime % 60} min"
+            runtimeText.text = " |   ${movieDetails.runtime / 60} h ${movieDetails.runtime % 60} min   | "
             ratingText.text = String.format("%.1f", movieDetails.voteAverage)
-            // Setting up Genre Adapter
-            genreAdapter.submitList(movieDetails.genres)
+            tvGenres.text = movieDetails.genres.joinToString("  •  ") { it.name }
         } else {
             thumbnailContainer.backdropImage.load(
                 TMDB_IMAGE_BASE_URL_W780.plus(tvDetails!!.backdropPath)
@@ -538,8 +576,7 @@ class PlayerFragment : Fragment() {
             yearText.formatMediaDate(tvDetails.firstAirDate)
             // runtimeText.text = tvDetails.episodeRunTime
             ratingText.text = String.format("%.1f", tvDetails.voteAverage)
-            // Setting up Genre Adapter
-            genreAdapter.submitList(tvDetails.genres)
+            tvGenres.text = tvDetails.genres.joinToString("  •  ") { it.name }
         }
     }
 
@@ -568,20 +605,12 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpRecyclerViewAndUi() = binding.apply {
-        // Setting up Genre Adapter
-        genreAdapter = GenreAdapter(
-            cardBackColor = ContextCompat.getColor(requireContext(), R.color.black_light),
-            cardStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
-        )
-        binding.rvGenres.setHasFixedSize(true)
-        binding.rvGenres.adapter = genreAdapter
-
         // Setting up Cast Adapter
         castAdapter = CastListAdapter {
             openCastKnownForDialog(it)
         }
-        binding.rvCrews.setHasFixedSize(true)
-        binding.rvCrews.adapter = castAdapter
+        rvCrews.setHasFixedSize(true)
+        rvCrews.adapter = castAdapter
 
         // Setting up Similar list Adapter
         rvSimilarList.setHasFixedSize(true)
@@ -678,7 +707,6 @@ class PlayerFragment : Fragment() {
         }
         youtubePlayerView.addYouTubePlayerListener(youTubePlayerListener!!)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

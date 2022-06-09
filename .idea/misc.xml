@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/back_1.xml" value="0.1884259259259259" />
         <entry key="app/src/main/res/drawable/back_2.xml" value="0.1884259259259259" />
         <entry key="app/src/main/res/drawable/back_3.xml" value="0.1884259259259259" />
+        <entry key="app/src/main/res/drawable/back_arrow_transparent.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/bottom_bar_color.xml" value="0.21197916666666666" />
         <entry key="app/src/main/res/drawable/bottom_nav_selector.xml" value="0.21197916666666666" />
         <entry key="app/src/main/res/drawable/bsd_bg.xml" value="0.5" />
@@ -91,7 +92,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home_shimmer.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_player.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_player.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_player_loader.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_player_shimmer.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.13" />
@@ -111,11 +112,13 @@
         <entry key="app/src/main/res/layout/item_genres_options.xml" value="0.9" />
         <entry key="app/src/main/res/layout/item_media.xml" value="0.1716485507246377" />
         <entry key="app/src/main/res/layout/item_picker_option.xml" value="0.19583333333333333" />
-        <entry key="app/src/main/res/layout/item_poster.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_poster.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_poster_landscape.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/item_poster_rated.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_thumbnail_container.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_top_movie.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_video.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/item_watch_provider.xml" value="0.9" />
         <entry key="app/src/main/res/layout/movie_header_banner.xml" value="0.18" />
         <entry key="app/src/main/res/layout/page_error_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/page_state_item.xml" value="0.25" />

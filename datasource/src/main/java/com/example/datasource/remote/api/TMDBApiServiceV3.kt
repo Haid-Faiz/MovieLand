@@ -3,15 +3,7 @@ package com.example.datasource.remote.api
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.AccountDetailsResponse
-import com.example.datasource.remote.models.responses.ActorFilmography
-import com.example.datasource.remote.models.responses.MediaCastResponse
-import com.example.datasource.remote.models.responses.MovieDetailResponse
-import com.example.datasource.remote.models.responses.MovieListResponse
-import com.example.datasource.remote.models.responses.SessionResponse
-import com.example.datasource.remote.models.responses.TvEpisodeDetailResponse
-import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
-import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.*
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -301,6 +293,21 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1,
         @Query("sort_by") sortBy: String = "created_at.desc" // created_at.asc
     ): Response<MovieListResponse>
+
+    @GET("3/tv/{tv_id}/external_ids")
+    suspend fun getTvShowExternalIds(
+        @Path("tv_id") tvId: Int,
+    ): Response<TvShowExternalIdsResponse>
+
+    @GET("3/movie/{movie_id}/watch/providers")
+    suspend fun getMovieWatchProviders(
+        @Path("movie_id") movieId: Int,
+    ): Response<WatchProvidersResponse>
+
+    @GET("3/tv/{tv_id}/watch/providers")
+    suspend fun getTvWatchProviders(
+        @Path("tv_id") tvId: Int,
+    ): Response<WatchProvidersResponse>
 
 //    @GET("3/movie/latest")
 //    suspend fun fetchLatestMovies(

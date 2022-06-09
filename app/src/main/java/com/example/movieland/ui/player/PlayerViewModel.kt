@@ -38,6 +38,9 @@ class PlayerViewModel @Inject constructor(
     private val _tvSeasonDetail = MutableLiveData<Resource<TvSeasonDetailResponse>>()
     val tvSeasonDetail: LiveData<Resource<TvSeasonDetailResponse>> = _tvSeasonDetail
 
+    private val _watchProviders = MutableLiveData<Resource<WatchProvidersResponse>>()
+    val watchProviders: LiveData<Resource<WatchProvidersResponse>> = _watchProviders
+
     fun getMovieDetail(movieId: Int) = viewModelScope.launch {
         _movieDetail.postValue(Resource.Loading())
         _movieDetail.postValue(movieRepo.fetchMovieDetail(movieId = movieId))
@@ -84,6 +87,20 @@ class PlayerViewModel @Inject constructor(
     ): Resource<TvShowExternalIdsResponse> {
         return movieRepo.getTvShowExternalIds(tvId)
     }
+
+
+    fun getMovieWatchProviders(
+        movieId: Int
+    ) = viewModelScope.launch {
+        _watchProviders.postValue(movieRepo.getMovieWatchProviders(movieId))
+    }
+
+    fun getTvWatchProviders(
+        tvId: Int
+    ) = viewModelScope.launch {
+        _watchProviders.postValue(movieRepo.getTvWatchProviders(tvId))
+    }
+
 
     // ---------------------------Session Id is required in these requests-----------------------
 

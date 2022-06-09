@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:paddingVertical="@dimen/_4sdp"
             android:paddingHorizontal="@dimen/_4sdp"
+            android:paddingVertical="@dimen/_4sdp"
             android:src="@drawable/back_arrow_transparent"
             android:translationZ="@dimen/_100sdp" />
 
@@ -95,7 +95,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_1sdp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/_6sdp">
@@ -106,27 +106,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/montserrat"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp"
-                                tools:text="2016" />
+                                android:textSize="@dimen/_10ssp"
+                                tools:text="2016   |" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:background="@drawable/hd_tag"
-                                android:paddingHorizontal="4dp"
-                                android:paddingVertical="0dp">
-
-                                <TextView
-                                    android:id="@+id/hd_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="HD"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/runtime_text"
@@ -135,14 +117,14 @@
                                 android:layout_marginStart="8dp"
                                 android:fontFamily="@font/montserrat"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp"
-                                tools:text="2h 31m" />
+                                android:textSize="@dimen/_10ssp"
+                                tools:text="2h 31m   |" />
 
                             <LinearLayout
                                 android:id="@+id/rating_ll"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="7dp"
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
@@ -157,27 +139,80 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_2sdp"
+                                    android:layout_marginEnd="@dimen/_2sdp"
                                     android:fontFamily="@font/montserrat"
                                     android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/_10ssp"
                                     tools:text="8.8" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/_10sdp"
+                                    android:layout_marginStart="@dimen/_2sdp"
+                                    android:src="@drawable/ic_tmdb" />
+
                             </LinearLayout>
 
 
                         </LinearLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_genres"
+                        <TextView
+                            android:id="@+id/tvGenres"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_4sdp"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="horizontal"
+                            android:fontFamily="@font/montserrat"
                             android:paddingHorizontal="@dimen/_6sdp"
-                            android:paddingVertical="@dimen/_6sdp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:ignore="RtlSymmetry"
-                            tools:listitem="@layout/item_genre" />
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_10ssp"
+                            tools:text="Action • Adventure • Comedy • Scifi" />
+
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/btnGetWatchProviders"-->
+<!--                            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="@dimen/_30sdp"-->
+<!--                            android:layout_gravity="start"-->
+<!--                            android:layout_marginHorizontal="@dimen/_6sdp"-->
+<!--                            android:layout_marginTop="@dimen/_6sdp"-->
+<!--                            android:fontFamily="@font/montserrat"-->
+<!--                            android:text="Where to Watch"-->
+<!--                            android:textAllCaps="false"-->
+<!--                            android:textColor="@color/text_secondary"-->
+<!--                            android:textSize="@dimen/_10ssp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:cornerRadius="@dimen/_6sdp"-->
+<!--                            app:icon="@drawable/ic_open_with"-->
+<!--                            app:iconGravity="end"-->
+<!--                            app:iconPadding="@dimen/_6sdp"-->
+<!--                            app:iconSize="@dimen/_12sdp"-->
+<!--                            app:iconTint="@color/text_secondary"-->
+<!--                            app:strokeColor="@color/red"-->
+<!--                            app:strokeWidth="1dp" />-->
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnGetWatchProviders"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_32sdp"
+                            android:layout_gravity="start"
+                            android:layout_marginHorizontal="@dimen/_6sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:fontFamily="@font/montserrat"
+                            android:backgroundTint="@color/red"
+                            android:text="Where to Watch"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold"
+                            app:cornerRadius="@dimen/_4sdp"
+                            app:icon="@drawable/ic_open_with"
+                            app:iconGravity="end"
+                            app:iconPadding="@dimen/_6sdp"
+                            app:iconSize="@dimen/_12sdp"
+                            app:iconTint="@color/black" />
+
 
                         <TextView
                             android:id="@+id/overview_text"
@@ -188,8 +223,8 @@
                             android:fontFamily="@font/hind"
                             android:maxLines="4"
                             android:paddingHorizontal="@dimen/_6sdp"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/_13ssp"
                             tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
                         <LinearLayout
@@ -206,16 +241,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
-                                android:text="My List"
                                 android:fontFamily="@font/hind"
                                 android:maxLines="1"
+                                android:text="My List"
                                 android:textAllCaps="false"
-                                android:textColor="@color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_add"
                                 app:iconGravity="top"
                                 app:iconSize="@dimen/_16sdp"
-                                app:iconTint="@color/white" />
+                                app:iconTint="@color/text_primary" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/favourite_button"
@@ -223,16 +258,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
-                                android:text="Favourite"
-                                android:maxLines="1"
-                                android:textAllCaps="false"
                                 android:fontFamily="@font/hind"
-                                android:textColor="@color/white"
+                                android:maxLines="1"
+                                android:text="Favourite"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_primary"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_favorite_outline"
                                 app:iconGravity="top"
                                 app:iconSize="@dimen/_16sdp"
-                                app:iconTint="@color/white" />
+                                app:iconTint="@color/text_primary" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/rate_button"
@@ -240,16 +275,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
-                                android:text="Rate"
-                                android:maxLines="1"
-                                android:textAllCaps="false"
                                 android:fontFamily="@font/hind"
-                                android:textColor="@color/white"
+                                android:maxLines="1"
+                                android:text="Rate"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_primary"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_star_outline"
                                 app:iconGravity="top"
                                 app:iconSize="@dimen/_16sdp"
-                                app:iconTint="@color/white" />
+                                app:iconTint="@color/text_primary" />
 
 
                             <com.google.android.material.button.MaterialButton
@@ -258,16 +293,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent"
-                                android:text="Open with"
                                 android:fontFamily="@font/hind"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
                                 android:maxLines="1"
+                                android:text="Open with"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_primary"
                                 android:textSize="@dimen/_10ssp"
                                 app:icon="@drawable/ic_open_with"
                                 app:iconGravity="top"
                                 app:iconSize="@dimen/_16sdp"
-                                app:iconTint="@color/white" />
+                                app:iconTint="@color/text_primary" />
 
                         </LinearLayout>
 
