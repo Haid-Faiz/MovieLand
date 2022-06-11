@@ -7,11 +7,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.home.HomeFragment">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:translationZ="@dimen/_100sdp">
 
@@ -104,7 +104,7 @@
                 <ImageView
                     android:id="@+id/banner_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_398sdp"
+                    android:layout_height="@dimen/_420sdp"
                     android:background="@color/dark_gray"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/fast_saga" />
@@ -335,5 +335,3 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-

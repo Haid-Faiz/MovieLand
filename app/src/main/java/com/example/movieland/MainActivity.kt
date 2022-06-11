@@ -6,6 +6,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.example.movieland.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,6 +16,9 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    lateinit var imageLoader: ImageLoader
+    lateinit var imageRequestBuilder: ImageRequest.Builder
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +42,8 @@ class MainActivity : AppCompatActivity() {
                         destination.id != R.id.castDetailsFragment
             }
         }
+        imageLoader = ImageLoader(this)
+        imageRequestBuilder = ImageRequest.Builder(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

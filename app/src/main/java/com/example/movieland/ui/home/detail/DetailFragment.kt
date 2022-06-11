@@ -1,13 +1,14 @@
 package com.example.movieland.ui.home.detail
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.core.content.ContextCompat
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +18,6 @@ import coil.load
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentDetailBsdBinding
-import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HomeViewModel
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
@@ -37,10 +37,12 @@ import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.formatMediaDate
 import com.example.movieland.utils.showSnackBar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
-import java.util.ArrayList
+
 
 @AndroidEntryPoint
 class DetailFragment : BottomSheetDialogFragment() {
@@ -48,11 +50,11 @@ class DetailFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentDetailBsdBinding? = null
     private val homeViewModel: HomeViewModel by viewModels()
     private val binding get() = _binding!!
-    private lateinit var genreAdapter: GenreAdapter
     private var _mediaId: Int? = null
     private var _isItMovie = false
     private lateinit var popingAnim: Animation
     private lateinit var navController: NavController
+    private var isExpanded: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,21 +65,13 @@ class DetailFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-//    override fun getTheme(): Int {
-//        return R.style.AppBottomSheetDialog
-//    }
-
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        val dialog = BottomSheetDialog(requireContext(), R.style.Theme_MovieLand)
-//        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-//        return dialog
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
         popingAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         navController = findNavController()
-        setUpGenreRecyclerView()
         setUpFragmentResultListeners()
         setUpClickListeners()
     }
@@ -99,27 +93,32 @@ class DetailFragment : BottomSheetDialogFragment() {
                 val rating = getString(MEDIA_RATING_KEY)
 
                 binding.apply {
-                    genreAdapter.submitList(Helpers.getMovieGenreListFromIds(genreList))
+                    tvGenres.text = Helpers.getMovieGenreListFromIds(genreList)
+                        .joinToString("  •  ") { it.name }
                     posterImage.load(TMDB_IMAGE_BASE_URL_W780.plus(imgUrl))
                     titleText.text = title
-                    overviewText.text = overview
                     releaseDate.formatMediaDate(year)
                     ratingText.text = rating
+                    overviewText.text = overview
                 }
             }
         }
     }
 
-    private fun setUpGenreRecyclerView() {
-        genreAdapter = GenreAdapter(
-            cardBackColor = ContextCompat.getColor(requireContext(), R.color.dark_gray),
-            cardStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
-        )
-        binding.rvGenres.setHasFixedSize(true)
-        binding.rvGenres.adapter = genreAdapter
-    }
-
     private fun setUpClickListeners() = binding.apply {
+
+        overviewText.setOnClickListener {
+            if (!isExpanded) {
+                // Expand it
+                isExpanded = true
+                overviewText.maxLines = 100
+            } else {
+                // Collapse it
+                isExpanded = false
+                overviewText.maxLines = 4
+            }
+        }
+
         closeDetailBtn.setOnClickListener { dismiss() }
 
         playButton.setOnClickListener {

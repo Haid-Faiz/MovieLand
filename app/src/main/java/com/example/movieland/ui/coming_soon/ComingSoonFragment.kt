@@ -1,7 +1,6 @@
 package com.example.movieland.ui.coming_soon
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,8 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
-import coil.ImageLoader
-import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
@@ -53,8 +50,6 @@ class ComingSoonFragment : Fragment() {
     private lateinit var popInAnim: Animation
     private var _movieResult: MovieResult? = null
     private lateinit var fadeInAnim: Animation
-    private lateinit var imageLoader: ImageLoader
-    private lateinit var imageRequestBuilder: ImageRequest.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,8 +63,6 @@ class ComingSoonFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         popInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
-        imageLoader = ImageLoader(requireContext())
-        imageRequestBuilder = ImageRequest.Builder(requireContext())
         setUpRecyclerview()
 
         fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
@@ -190,15 +183,15 @@ class ComingSoonFragment : Fragment() {
     }
 
     private fun calculateDominantColor(bitmap: Bitmap): Int = Palette
-        .from(bitmap).generate().getDarkMutedColor(R.color.black)
-
+        .from(bitmap).generate().getDarkVibrantColor(R.color.black)
     // good: darkVibrantSwatch,
     // fine: darkMutedSwatch
 
     private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap {
-        val requestBuilder = imageRequestBuilder
-        val drawable = (imageLoader.execute(
-            requestBuilder.data(TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)).build()
+        val drawable = ((requireActivity() as MainActivity).imageLoader.execute(
+            (requireActivity() as MainActivity).imageRequestBuilder.data(
+                TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
+            ).build()
         ) as SuccessResult).drawable
         return (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
     }

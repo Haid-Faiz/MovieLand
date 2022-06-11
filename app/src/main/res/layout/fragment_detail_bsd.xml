@@ -107,7 +107,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/montserrat_bold"
-                        android:maxLines="2"
                         android:textColor="@color/text_primary"
                         android:textSize="@dimen/_16ssp"
                         tools:text="Batman v Superman: Dawn of Justice" />
@@ -119,31 +118,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!--                <ImageView-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    app:tint="@color/text_secondary"-->
-                    <!--                    android:layout_gravity="center_vertical"-->
-                    <!--                    android:src="@drawable/ic_rated_star"/>-->
-
-                    <!--                <TextView-->
-                    <!--                    android:layout_width="@dimen/_30sdp"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    android:text="7.8"-->
-                    <!--                    android:layout_gravity="center_vertical"-->
-                    <!--                    android:gravity="center"-->
-                    <!--                    android:textColor="@color/text_primary" />-->
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_genres"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_28sdp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        android:paddingVertical="@dimen/_6sdp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:ignore="RtlSymmetry"
-                        tools:listitem="@layout/item_genre" />
+                    <TextView
+                        android:id="@+id/tvGenres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_10ssp"
+                        tools:text="Action • Adventure • Comedy • Scifi" />
 
                 </LinearLayout>
 
@@ -151,6 +133,7 @@
                     android:id="@+id/release_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/text_secondary"
                     android:textSize="@dimen/_10ssp"
@@ -164,7 +147,8 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/hind"
                     android:maxLines="4"
-                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/text_primary"
                     tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
             </LinearLayout>
@@ -212,14 +196,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add"
-                    app:tint="@color/white" />
+                    app:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Add"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="@dimen/_8ssp" />
             </LinearLayout>
 

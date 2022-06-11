@@ -15,6 +15,8 @@ import com.example.movieland.utils.Constants.SEASONS_LIST_REQUEST_KEY
 import com.example.movieland.utils.Constants.SEASON_LIST
 import com.example.movieland.utils.Constants.SEASON_NUMBER
 import com.example.movieland.utils.Constants.SELECTED_SEASON_POSITION
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SeasonPickerDialogFragment : BottomSheetDialogFragment() {
@@ -38,6 +40,9 @@ class SeasonPickerDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
         parentFragmentManager.setFragmentResultListener(
             SEASONS_LIST_REQUEST_KEY,
             viewLifecycleOwner

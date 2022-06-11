@@ -78,7 +78,6 @@ class PlayerFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModels()
     private var onTabSelectedListener: TabLayout.OnTabSelectedListener? = null
-
     private val customTabsIntent by lazy {
         CustomTabsIntent.Builder().setShowTitle(true).build()
     }
@@ -101,6 +100,7 @@ class PlayerFragment : Fragment() {
     private var _currentTvShow: TvShowDetailsResponse? = null
     private lateinit var popingAnim: Animation
     private var _watchProviderUrl: String? = null
+    private var isExpanded: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,6 +122,18 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpClickListeners() = binding.apply {
+
+        overviewText.setOnClickListener {
+            if (!isExpanded) {
+                // Expand it
+                isExpanded = true
+                overviewText.maxLines = 100
+            } else {
+                // Collapse it
+                isExpanded = false
+                overviewText.maxLines = 4
+            }
+        }
 
         backArrow.setOnClickListener { findNavController().popBackStack() }
 
@@ -564,9 +576,11 @@ class PlayerFragment : Fragment() {
             titleText.text = movieDetails.title
             overviewText.text = movieDetails.overview
             yearText.formatMediaDate(movieDetails.releaseDate)
-            runtimeText.text = " |   ${movieDetails.runtime / 60} h ${movieDetails.runtime % 60} min   | "
             ratingText.text = String.format("%.1f", movieDetails.voteAverage)
             tvGenres.text = movieDetails.genres.joinToString("  •  ") { it.name }
+            runtimeText.isGone = false
+            runTimeDivider.isGone = false
+            runtimeText.text = "${movieDetails.runtime / 60} h ${movieDetails.runtime % 60} min"
         } else {
             thumbnailContainer.backdropImage.load(
                 TMDB_IMAGE_BASE_URL_W780.plus(tvDetails!!.backdropPath)
@@ -574,7 +588,8 @@ class PlayerFragment : Fragment() {
             titleText.text = tvDetails.name
             overviewText.text = tvDetails.overview
             yearText.formatMediaDate(tvDetails.firstAirDate)
-            // runtimeText.text = tvDetails.episodeRunTime
+            runtimeText.isGone = true
+            runTimeDivider.isGone = true
             ratingText.text = String.format("%.1f", tvDetails.voteAverage)
             tvGenres.text = tvDetails.genres.joinToString("  •  ") { it.name }
         }

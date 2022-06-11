@@ -47,4 +47,8 @@ object Constants {
     const val TOP_RATED_MOVIES = "Top Rated"
     const val ANIME_SERIES = "Anime Series"
     const val BOLLYWOOD_MOVIES = "Bollywood"
+
+    const val STATUS_BAR_HEIGHT = "status_bar_height"
+    const val DIMEN = "dimen"
+    const val ANDROID = "android"
 }

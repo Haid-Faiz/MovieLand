@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.Dimension
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +24,8 @@ import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentHomeBinding
+import com.example.movieland.utils.Constants.ANDROID
+import com.example.movieland.utils.Constants.DIMEN
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
@@ -31,6 +37,7 @@ import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
 import com.example.movieland.utils.Constants.MOVIE
+import com.example.movieland.utils.Constants.STATUS_BAR_HEIGHT
 import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TRENDING_MOVIES
 import com.example.movieland.utils.Constants.TRENDING_TV_SHOWS
@@ -38,6 +45,7 @@ import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -68,6 +76,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.appBarLayout.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            topMargin = resources.getDimensionPixelSize(
+                resources.getIdentifier(
+                    STATUS_BAR_HEIGHT,
+                    DIMEN,
+                    ANDROID
+                )
+            )
+        }
         navController = findNavController()
         popingAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpRecyclerView()
