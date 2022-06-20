@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "470409123726",
+    "project_id": "project-movieland",
+    "storage_bucket": "project-movieland.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470409123726:android:95bba793e064d8fe63f6df",
+        "android_client_info": {
+          "package_name": "com.example.movieland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470409123726-cbahathh65k6jd42ehq0jnvnk96np4k6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXwsFI7VAJ6F2SakPxGNAxc56zxIDWC0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470409123726-cbahathh65k6jd42ehq0jnvnk96np4k6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,6 +16,8 @@ buildscript {
         datastore_version = "1.0.0"
         chrome_custom_tab_version = "1.4.0"
         dot_indicator = "1.2.1"
+        firebase_crashlytics = "18.2.11"
+        firebase_analytics = "21.0.0"
     }
     repositories {
         google()
@@ -28,6 +30,9 @@ buildscript {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         // Safe args to pass data between destinations with type safety
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath 'com.google.gms:google-services:4.3.10'
+        // Firebase Crashlytics Gradle plugin
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
