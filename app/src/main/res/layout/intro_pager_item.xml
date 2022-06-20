@@ -1,57 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_118sdp"
-        android:background="@drawable/gradient_top"
-        android:layout_alignTop="@id/intro_image"
-        android:translationZ="@dimen/_100sdp" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/intro_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_418sdp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/fast_saga" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_118sdp"
+            android:layout_alignTop="@id/intro_image"
+            android:background="@drawable/gradient_top"
+            android:translationZ="@dimen/_100sdp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_212sdp"
-        android:layout_alignBottom="@id/intro_image"
-        android:background="@drawable/gradient_bottom"
-        android:translationZ="@dimen/_100sdp" />
+        <ImageView
+            android:id="@+id/intro_image"
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_24sdp"
+            tools:src="@drawable/img_intro_one" />
 
-    <TextView
-        android:id="@+id/intro_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/intro_description"
-        android:layout_marginHorizontal="@dimen/_24sdp"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="Trailers &amp; info of millions of movies, Tv shows"
-        android:textAlignment="center"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/_24ssp"
-        android:translationZ="@dimen/_100sdp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_212sdp"
+            android:layout_alignBottom="@id/intro_image"
+            android:background="@drawable/gradient_bottom"
+            android:translationZ="@dimen/_100sdp" />
 
-    <TextView
-        android:id="@+id/intro_description"
+    </RelativeLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/intro_image"
-        android:layout_marginHorizontal="@dimen/_28sdp"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:layout_marginBottom="-36dp"
-        android:fontFamily="@font/hind"
-        android:text="Every information of any movie/show at no price"
-        android:textAlignment="center"
-        android:textColor="@color/text_secondary"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
-        android:translationZ="@dimen/_100sdp" />
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/intro_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Trailers &amp; info of millions of movies, Tv shows"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_24ssp" />
+
+        <TextView
+            android:id="@+id/intro_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_28sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:fontFamily="@font/hind"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            tools:text="Every information of any movie/show at no price" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

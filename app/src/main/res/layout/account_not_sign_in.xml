@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/not_sign_in_root"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <View
         android:layout_width="match_parent"
@@ -15,10 +15,10 @@
     <ImageView
         android:id="@+id/intro_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_394sdp"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/intro_1" />
+        android:layout_height="@dimen/_432sdp"
+        android:src="@drawable/img_intro_one"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
@@ -34,7 +34,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:translationZ="@dimen/_90sdp"
-        android:layout_marginBottom="@dimen/_6sdp"
         app:layout_constraintBottom_toBottomOf="@id/intro_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -60,23 +59,22 @@
             android:textColor="@color/red"
             android:textSize="@dimen/_28ssp" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/movie_land_logo"-->
-<!--            android:layout_width="@dimen/_196sdp"-->
-<!--            android:translationZ="@dimen/_100sdp"-->
-<!--            android:layout_height="@dimen/_156sdp"-->
-<!--            android:paddingTop=""-->
-<!--            android:src="@drawable/ic_moviland_text_logo"/>-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/movie_land_logo"-->
+        <!--            android:layout_width="@dimen/_196sdp"-->
+        <!--            android:translationZ="@dimen/_100sdp"-->
+        <!--            android:layout_height="@dimen/_156sdp"-->
+        <!--            android:paddingTop=""-->
+        <!--            android:src="@drawable/ic_moviland_text_logo"/>-->
 
         <TextView
             android:id="@+id/intro_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_24sdp"
+            android:layout_marginHorizontal="@dimen/_24sdp"
             android:fontFamily="@font/hind"
-            android:layout_marginEnd="@dimen/_24sdp"
+            android:gravity="center"
             android:text="Unlock features like maintaining own movies list and rate movies, etc"
-            android:textAlignment="center"
             android:textColor="@color/text_secondary"
             android:textSize="@dimen/_14ssp" />
 
@@ -87,14 +85,14 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_40sdp"
         android:backgroundTint="@color/red"
-        android:text="Sign in now"
-        app:icon="@drawable/ic_movieland_foreground"
-        app:iconTint="@color/black"
         android:paddingEnd="@dimen/_30sdp"
-        app:iconGravity="start"
+        android:text="Sign in now"
         android:textColor="@color/black"
-        app:iconSize="@dimen/_38sdp"
+        app:icon="@drawable/ic_movieland_foreground"
+        app:iconGravity="start"
         app:iconPadding="@dimen/_12sdp"
+        app:iconSize="@dimen/_38sdp"
+        app:iconTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

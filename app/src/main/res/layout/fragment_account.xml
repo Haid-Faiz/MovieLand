@@ -71,7 +71,8 @@
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@color/black_light"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/_8sdp">
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -167,7 +168,7 @@
                 <TextView
                     android:id="@+id/empty_watchlist_msg"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_124sdp"
+                    android:layout_height="@dimen/_138sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/montserrat"
@@ -180,32 +181,32 @@
                     android:id="@+id/watchlist_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
@@ -217,7 +218,8 @@
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:background="@color/black_light"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/_8sdp">
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -313,7 +315,7 @@
                 <TextView
                     android:id="@+id/empty_ratings_msg"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_124sdp"
+                    android:layout_height="@dimen/_138sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/montserrat"
@@ -326,32 +328,32 @@
                     android:id="@+id/ratings_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
@@ -364,7 +366,8 @@
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:background="@color/black_light"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/_8sdp">
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -460,7 +463,7 @@
                 <TextView
                     android:id="@+id/empty_favourites_msg"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_124sdp"
+                    android:layout_height="@dimen/_138sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/montserrat"
@@ -473,36 +476,46 @@
                     android:id="@+id/favourite_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_2sdp">
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
-                        android:layout_width="@dimen/_92sdp"
-                        android:layout_height="@dimen/_124sdp"
-                        android:layout_margin="@dimen/_1sdp"
+                        android:layout_width="@dimen/_94sdp"
+                        android:layout_height="@dimen/_138sdp"
+                        android:layout_margin="@dimen/_2sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_24sdp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:text="MovieLand uses TMDb (The Movie Database) API but it is not endorsed or certified by TMDb."
+                android:textColor="@color/divider" />
 
         </LinearLayout>
 
