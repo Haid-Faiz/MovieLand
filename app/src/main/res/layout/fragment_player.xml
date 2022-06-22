@@ -92,10 +92,22 @@
                             android:textStyle="bold"
                             tools:text="Avengers: Age of ultron" />
 
+                        <TextView
+                            android:id="@+id/tvGenres"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_10ssp"
+                            tools:text="Action • Adventure • Comedy • Scifi" />
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
+                            android:layout_marginTop="@dimen/_1sdp"
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/_6sdp">
 
@@ -163,7 +175,10 @@
 
                                 <ImageView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/_10sdp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:paddingTop="@dimen/_3sdp"
+                                    android:paddingBottom="@dimen/_3sdp"
                                     android:layout_marginStart="@dimen/_2sdp"
                                     android:src="@drawable/ic_tmdb" />
 
@@ -171,17 +186,6 @@
 
 
                         </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tvGenres"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:fontFamily="@font/montserrat"
-                            android:paddingHorizontal="@dimen/_6sdp"
-                            android:textColor="@color/red"
-                            android:textSize="@dimen/_10ssp"
-                            tools:text="Action • Adventure • Comedy • Scifi" />
 
                         <!--                        <com.google.android.material.button.MaterialButton-->
                         <!--                            android:id="@+id/btnGetWatchProviders"-->
@@ -323,13 +327,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
-
-                    <!--                <View-->
-                    <!--                    android:layout_width="match_parent"-->
-                    <!--                    android:layout_height="1dp"-->
-                    <!--                    android:layout_marginTop="@dimen/_8sdp"-->
-                    <!--                    android:background="@color/divider" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"

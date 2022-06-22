@@ -508,14 +508,26 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvCredits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_24sdp"
                 android:fontFamily="@font/montserrat"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/_16sdp"
-                android:text="MovieLand uses TMDb (The Movie Database) API but it is not endorsed or certified by TMDb."
-                android:textColor="@color/divider" />
+                android:text="@string/tmdb_credits_note"
+                android:textColor="@color/divider"
+                android:textColorLink="@color/divider_2" />
+
+            <TextView
+                android:id="@+id/tvVersionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:fontFamily="@font/hind"
+                android:gravity="center"
+                android:textColor="@color/divider"
+                tools:text="Version: v1.1.0" />
 
         </LinearLayout>
 

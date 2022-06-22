@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import com.example.movieland.R
 import com.example.movieland.data.paging.PagingStateAdapter
 import com.example.movieland.databinding.FragmentMovieListBinding
-import com.example.movieland.ui.home.HorizontalPagerAdapter
+import com.example.movieland.ui.home.MediaListPagerAdapter
 import com.example.movieland.utils.Constants.BOLLYWOOD_MOVIES
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
@@ -38,7 +38,7 @@ class MovieListFragment : Fragment() {
 
     private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var horizontalAdapter: HorizontalPagerAdapter
+    private lateinit var adapter: MediaListPagerAdapter
     private val args: MovieListFragmentArgs by navArgs()
 
     @Inject
@@ -69,10 +69,10 @@ class MovieListFragment : Fragment() {
         setUpRecyclerViewAndNav()
 
         viewModel.categoryWiseMediaList.observe(viewLifecycleOwner) {
-            horizontalAdapter.submitData(lifecycle, it)
+            adapter.submitData(lifecycle, it)
         }
 
-        binding.errorLayout.retryButton.setOnClickListener { horizontalAdapter.retry() }
+        binding.errorLayout.retryButton.setOnClickListener { adapter.retry() }
     }
 
     private fun setUpRecyclerViewAndNav() {
@@ -80,7 +80,7 @@ class MovieListFragment : Fragment() {
             navController.popBackStack()
         }
 
-        horizontalAdapter = HorizontalPagerAdapter(
+        adapter = MediaListPagerAdapter(
             onPosterClick = if (args.mediaCategory != BOLLYWOOD_MOVIES) {
                 {
                     // callback of Poster click
@@ -105,7 +105,6 @@ class MovieListFragment : Fragment() {
                     )
                 }
             } else {
-
                 // BollyWood item click
                 {
                     parentFragmentManager.setFragmentResult(
@@ -124,13 +123,13 @@ class MovieListFragment : Fragment() {
             },
         )
 
-        binding.listRecyclerview.adapter = horizontalAdapter.withLoadStateHeaderAndFooter(
-            footer = PagingStateAdapter { horizontalAdapter.retry() },
-            header = PagingStateAdapter { horizontalAdapter.retry() }
+        binding.listRecyclerview.adapter = adapter.withLoadStateHeaderAndFooter(
+            footer = PagingStateAdapter { adapter.retry() },
+            header = PagingStateAdapter { adapter.retry() }
         )
         binding.listRecyclerview.setHasFixedSize(true)
 
-        horizontalAdapter.addLoadStateListener {
+        adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.NotLoading -> binding.apply {
                     progressBar.isGone = true

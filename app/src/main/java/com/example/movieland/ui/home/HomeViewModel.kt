@@ -46,7 +46,6 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchAllFeedLists() = viewModelScope.launch {
         _allFeedList.postValue(Resource.Loading())
-
         try {
             coroutineScope {
                 val nowPlayingMoviesListDef: Deferred<Resource<MovieListResponse>> =

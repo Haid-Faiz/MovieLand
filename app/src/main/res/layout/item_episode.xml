@@ -38,6 +38,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/montserrat"
                 android:maxLines="2"
+                android:paddingStart="1dp"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
@@ -74,6 +75,7 @@
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
             android:padding="@dimen/_4sdp"
+            android:visibility="invisible"
             android:src="@drawable/ic_add"
             android:layout_marginStart="@dimen/_8sdp"
             app:tint="@color/white" />

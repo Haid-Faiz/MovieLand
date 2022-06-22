@@ -5,6 +5,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="divider">#6F6B6B</color>
+    <color name="divider_2">#858585</color>
     <color name="text_primary">#E6E6E6</color>
     <color name="text_secondary">#B3B3B3</color>
     <color name="dark_gray">#262626</color>

@@ -86,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:fitsSystemWindows="false"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -104,10 +105,10 @@
                 <ImageView
                     android:id="@+id/banner_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_420sdp"
+                    android:layout_height="@dimen/_434sdp"
                     android:background="@color/dark_gray"
-                    android:scaleType="centerCrop"
-                    tools:src="@drawable/fast_saga" />
+                    android:scaleType="fitXY"
+                    tools:src="@drawable/img_intro_three" />
                 <!--tools:src="@tools:sample/backgrounds/scenic[6]"-->
 
                 <View
@@ -143,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/banner_image"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="6dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -163,19 +164,16 @@
                         app:iconGravity="top"
                         app:iconPadding="-1dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <ImageView
                         android:id="@+id/play_button"
-                        style="@style/Widget.MaterialComponents.Button.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:backgroundTint="@color/white"
-                        android:text="Play"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:icon="@drawable/ic_play_arrow"
-                        app:iconTint="@color/black" />
+                        android:layout_marginStart="@dimen/_16sdp"
+                        android:layout_marginEnd="@dimen/_16sdp"
+                        android:background="@drawable/bg_play_btn"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_play_arrow" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/banner_info_button"
@@ -237,25 +235,25 @@
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
@@ -281,7 +279,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Top Rated Movies"
+                        android:text="Popular Movies"
                         android:textColor="@color/text_primary"
                         android:textSize="@dimen/_16ssp" />
 
@@ -294,25 +292,25 @@
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
 
                     <View
                         android:layout_width="@dimen/_94sdp"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_138sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:background="@drawable/poster_bg" />
                 </LinearLayout>

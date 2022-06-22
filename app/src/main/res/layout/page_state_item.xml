@@ -6,18 +6,6 @@
     android:padding="@dimen/_16sdp"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <TextView-->
-<!--        android:id="@+id/load_msg"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/_10sdp"-->
-<!--        android:fontFamily="@font/montserrat"-->
-<!--        tools:text="Hang on... loading content"-->
-<!--        android:textColor="@color/text_primary"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
@@ -38,6 +26,5 @@
         android:textColor="@color/red"
         android:fontFamily="@font/montserrat"
         android:textAllCaps="false" />
-
 
 </RelativeLayout>

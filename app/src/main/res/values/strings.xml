@@ -6,4 +6,5 @@
     <string name="title_account">Account</string>
     <string name="title_imdb">IMDB</string>
     <string name="title_youtube">YouTube</string>
+    <string name="tmdb_credits_note">MovieLand is powered by <a href="https://www.themoviedb.org">TMDb (The Movie Database)</a> but it is not endorsed or certified by TMDb.</string>
 </resources>

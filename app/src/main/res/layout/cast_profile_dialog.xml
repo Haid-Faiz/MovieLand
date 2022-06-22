@@ -29,7 +29,7 @@
                 android:layout_height="@dimen/_160sdp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fast_saga" />
+                tools:src="@drawable/img_intro_three" />
 
         </com.google.android.material.card.MaterialCardView>
 

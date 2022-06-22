@@ -6,7 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.MediaCastResponse
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.TvShowExternalIdsResponse
+import com.example.datasource.remote.models.responses.WatchProvidersResponse
 import com.example.movieland.BaseViewModel
 import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
@@ -79,7 +85,6 @@ class PlayerViewModel @Inject constructor(
             _mediaCast.postValue(movieRepo.fetchMovieCast(movieId = mediaId))
         else
             _mediaCast.postValue(movieRepo.fetchTvShowCast(tvId = mediaId))
-
     }
 
     suspend fun getTvShowExternalIds(
@@ -87,7 +92,6 @@ class PlayerViewModel @Inject constructor(
     ): Resource<TvShowExternalIdsResponse> {
         return movieRepo.getTvShowExternalIds(tvId)
     }
-
 
     fun getMovieWatchProviders(
         movieId: Int
@@ -100,7 +104,6 @@ class PlayerViewModel @Inject constructor(
     ) = viewModelScope.launch {
         _watchProviders.postValue(movieRepo.getTvWatchProviders(tvId))
     }
-
 
     // ---------------------------Session Id is required in these requests-----------------------
 

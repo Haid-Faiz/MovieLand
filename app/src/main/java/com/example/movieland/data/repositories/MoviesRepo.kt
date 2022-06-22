@@ -10,7 +10,6 @@ import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
 import com.example.datasource.remote.models.responses.MovieResult
-import com.example.datasource.remote.models.responses.WatchProvidersResponse
 import com.example.movieland.data.paging.AnimePagingSource
 import com.example.movieland.data.paging.BollywoodPagingSource
 import com.example.movieland.data.paging.GenresMoviesPagingSource
@@ -23,9 +22,6 @@ import com.example.movieland.data.paging.TrendingMediaPagingSource
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.SessionPrefs
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
 import javax.inject.Inject
 
 class MoviesRepo @Inject constructor(

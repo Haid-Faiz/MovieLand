@@ -26,6 +26,7 @@ import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.utils.Constants
 import com.example.movieland.utils.Constants.MOVIE
 import com.example.movieland.utils.Constants.TMDB_CAST_IMAGE_BASE_URL_W185
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.formatUpcomingDate
@@ -64,14 +65,21 @@ class ComingSoonFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         popInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.poping_anim)
         setUpRecyclerview()
-
         fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
 
         viewModel.comingSoon.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> binding.apply {
-                    errorLayout.root.isGone = false
                     progressBar.isGone = true
+                    if (it.errorType == ErrorType.NETWORK) {
+                        errorLayout.statusTextTitle.text = "Connection Error"
+                        errorLayout.statusTextDesc.text =
+                            "Please check your internet/wifi connection"
+                    } else {
+                        errorLayout.statusTextTitle.text = "Oops..."
+                        errorLayout.statusTextDesc.text = it.message
+                    }
+                    errorLayout.root.isGone = false
                     mainLayout.isGone = true
                 }
                 is Resource.Loading -> binding.apply {
@@ -83,7 +91,7 @@ class ComingSoonFragment : Fragment() {
                     errorLayout.root.isGone = true
                     progressBar.isGone = true
                     mainLayout.isGone = false
-                    adapter.submitList(it.data?.movieResults)
+                    adapter.submitList(it.data?.movieResults?.filter { it.adult == false })
                 }
             }
         }
@@ -113,15 +121,10 @@ class ComingSoonFragment : Fragment() {
                     isFirstPrinted = true
                     binding.apply {
                         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                            val imgBitmap = getBitmapFromUrl(it.posterPath!!)
-                            val dominantColor = calculateDominantColor(imgBitmap)
-
-                            withContext(Dispatchers.Main) {
-                                rootLayout.setBackgroundColor(dominantColor)
-                                rootLayout.startAnimation(fadeInAnim)
-                                (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(
-                                    dominantColor
-                                )
+                            it.posterPath?.let { poster ->
+                                getBitmapFromUrl(poster)?.let { imgBitmap ->
+                                    setUpBackgroundColor(imgBitmap)
+                                }
                             }
                         }
 
@@ -145,55 +148,69 @@ class ComingSoonFragment : Fragment() {
             comingSoonRv.setAlpha(true)
 
             // Setting Genre Recyclerview
-            genreAdapter =
-                GenreAdapter(resources.getColor(R.color.transparent, resources.newTheme()))
+            genreAdapter = GenreAdapter()
             rvGenres.setHasFixedSize(true)
             rvGenres.adapter = genreAdapter
 
             comingSoonRv.setItemSelectListener(object : CarouselLayoutManager.OnSelected {
                 override fun onItemSelected(position: Int) {
-                    val movieResult = adapter.getSelectedItem(position)
+                    _binding?.let {
 
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        val imgBitmap = getBitmapFromUrl(movieResult.posterPath!!)
-                        val dominantColor = calculateDominantColor(imgBitmap)
-
-                        withContext(Dispatchers.Main) {
-                            rootLayout.setBackgroundColor(dominantColor)
-                            rootLayout.startAnimation(fadeInAnim)
-                            (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(
-                                dominantColor
-                            )
+                        val movieResult = adapter.getSelectedItem(position)
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            movieResult.posterPath?.let { poster ->
+                                getBitmapFromUrl(poster)?.let { imgBitmap ->
+                                    setUpBackgroundColor(imgBitmap)
+                                }
+                            }
                         }
+                        descriptionBox.startAnimation(popingAnim)
+                        _movieResult = movieResult
+                        title.text = movieResult.title
+                        // Setting the Genre List
+                        genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
+                        overview.text = movieResult.overview
+                        ratingText.text = String.format("%.1f", movieResult.voteAverage)
+                        releaseDate.formatUpcomingDate(movieResult.releaseDate)
+                        rvGenres.scrollToPosition(0)
+                        setUpWatchListClick(movieResult)
                     }
-
-                    descriptionBox.startAnimation(popingAnim)
-                    _movieResult = movieResult
-                    title.text = movieResult.title
-                    // Setting the Genre List
-                    genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
-                    overview.text = movieResult.overview
-                    ratingText.text = String.format("%.1f", movieResult.voteAverage)
-                    releaseDate.formatUpcomingDate(movieResult.releaseDate)
-                    rvGenres.scrollToPosition(0)
-                    setUpWatchListClick(movieResult)
                 }
             })
         }
     }
 
-    private fun calculateDominantColor(bitmap: Bitmap): Int = Palette
-        .from(bitmap).generate().getDarkVibrantColor(R.color.black)
-    // good: darkVibrantSwatch,
-    // fine: darkMutedSwatch
+    private suspend fun setUpBackgroundColor(imgBitmap: Bitmap) {
+        val dominantColor = calculateDominantColor(imgBitmap)
+        withContext(Dispatchers.Main) {
+            binding.rootLayout.setBackgroundColor(dominantColor)
+            binding.rootLayout.startAnimation(fadeInAnim)
+            (requireActivity() as MainActivity).binding.bottomNavView.setBackgroundColor(
+                dominantColor
+            )
+        }
+    }
 
-    private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap {
-        val drawable = ((requireActivity() as MainActivity).imageLoader.execute(
-            (requireActivity() as MainActivity).imageRequestBuilder.data(
-                TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
-            ).build()
-        ) as SuccessResult).drawable
-        return (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+    private fun calculateDominantColor(
+        bitmap: Bitmap
+    ): Int = Palette.from(bitmap).generate().let { palette: Palette ->
+        return palette.getDarkVibrantColor(palette.getDarkMutedColor(R.color.black))
+    }
+
+    private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap? {
+        return try {
+            val drawable = (
+                (requireActivity() as MainActivity).imageLoader.execute(
+                    (requireActivity() as MainActivity).imageRequestBuilder.data(
+                        TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
+                    ).build()
+                ) as SuccessResult
+                ).drawable
+            // Returning Bitmap
+            (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun setUpWatchListClick(movieResult: MovieResult) = binding.apply {

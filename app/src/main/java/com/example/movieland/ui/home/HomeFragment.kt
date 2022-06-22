@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.annotation.Dimension
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
-import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -45,7 +43,6 @@ import com.example.movieland.utils.Helpers
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -109,11 +106,11 @@ class HomeFragment : Fragment() {
                     binding.bannerGenres.text = Helpers.getMovieGenreListFromIds(
                         _bannerMovie!!.genreIds
                     ).joinToString(" • ") { it.name }
-
                     // Show RV
                     binding.rvPlaceholder.isGone = true
                     binding.rvHomeFeed.isGone = false
                 }
+                is Resource.Loading -> {}
             }
         }
 

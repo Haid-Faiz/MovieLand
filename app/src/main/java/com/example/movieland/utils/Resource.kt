@@ -8,8 +8,8 @@ sealed class Resource<T>(
 
     class Success<T>(data: T) : Resource<T>(data = data, status = Status.SUCCESS)
     class Error<T>(
-        errorMessage: String,
-        errorType: ErrorType? = null
+        val errorMessage: String,
+        val errorType: ErrorType? = null
     ) : Resource<T>(message = errorMessage, status = Status.ERROR)
     class Loading<T> : Resource<T>(status = Status.LOADING)
 }

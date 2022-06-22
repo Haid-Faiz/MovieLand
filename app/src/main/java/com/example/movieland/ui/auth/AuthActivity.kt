@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.lifecycle.lifecycleScope
 import com.example.datasource.remote.models.responses.RequestTokenResponse
 import com.example.datasource.remote.models.responses.SessionResponse
 import com.example.movieland.MainActivity
@@ -16,6 +15,7 @@ import com.example.movieland.utils.Constants.TMDB_AUTHENTICATION_WEB_PAGE_REDIRE
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 /*** Steps for generating valid session id for TMDB
  * 1.) Generate request token
@@ -32,56 +32,56 @@ class AuthActivity : AppCompatActivity() {
     private var _requestToken: String? = null
     private var isCustomTabOpened = false
     private var isOnNewIntentCalled = false
+    private val customTab: CustomTabsIntent by lazy {
+        CustomTabsIntent.Builder().setShowTitle(true).build()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isUserLoggedIn()
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        isUserLoggedIn()
+        initUI()
+    }
 
-        val customTab: CustomTabsIntent = CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .build()
+    private fun initUI() = binding.apply {
+        viewpagerAuth.adapter = IntroPagerAdapter()
+        dotsIndicator.setupWithViewPager(binding.viewpagerAuth)
+        buttonSignIn.setOnClickListener { authViewModel.requestToken() }
 
-        binding.apply {
-            viewpagerAuth.adapter = IntroPagerAdapter()
-            dotsIndicator.setupWithViewPager(binding.viewpagerAuth)
-            buttonSignIn.setOnClickListener { authViewModel.requestToken() }
-
-            authViewModel.requestToken.observe(this@AuthActivity) { result: Resource<RequestTokenResponse> ->
-                when (result) {
-                    is Resource.Error -> {
-                        buttonSignIn.loadingFailed()
-                        buttonSignIn.isEnabled = true
-                        buttonSkip.isEnabled = true
-                        isCustomTabOpened = false
-                    }
-                    is Resource.Loading -> {
-                        buttonSignIn.startLoading()
-                        buttonSignIn.isEnabled = false
-                        buttonSkip.isEnabled = false
-                        isCustomTabOpened = true
-                    }
-                    is Resource.Success -> {
-                        _requestToken = result.data?.requestToken
-                        customTab.launchUrl(
-                            this@AuthActivity,
-                            Uri.parse(TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL.plus(_requestToken))
-                        )
-                    }
+        authViewModel.requestToken.observe(this@AuthActivity) { result: Resource<RequestTokenResponse> ->
+            when (result) {
+                is Resource.Error -> {
+                    buttonSignIn.loadingFailed()
+                    buttonSignIn.isEnabled = true
+                    buttonSkip.isEnabled = true
+                    isCustomTabOpened = false
+                }
+                is Resource.Loading -> {
+                    buttonSignIn.startLoading()
+                    buttonSignIn.isEnabled = false
+                    buttonSkip.isEnabled = false
+                    isCustomTabOpened = true
+                }
+                is Resource.Success -> {
+                    _requestToken = result.data?.requestToken
+                    customTab.launchUrl(
+                        this@AuthActivity,
+                        Uri.parse(TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL.plus(_requestToken))
+                    )
                 }
             }
+        }
 
-            buttonSkip.setOnClickListener {
-                startActivity(Intent(this@AuthActivity, MainActivity::class.java))
-                finish()
-            }
+        buttonSkip.setOnClickListener {
+            startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+            finish()
         }
     }
 
     private fun isUserLoggedIn() {
         // Check if user Session ID & Account ID is saved or not
-        lifecycleScope.launchWhenCreated {
+        runBlocking {
             if (authViewModel.getSessionId().first() != null &&
                 authViewModel.getAccountId().first() != null
             ) {

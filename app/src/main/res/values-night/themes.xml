@@ -9,11 +9,15 @@
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/red</item>
         <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/black_light</item>
     </style>
 
     <style name="Theme.MovieLand.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -25,11 +29,11 @@
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/red</item>
         <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash_bg</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
     </style>
 
     <style name="AppBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">

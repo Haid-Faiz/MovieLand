@@ -53,7 +53,6 @@ class AccountMediaAdapter(
                         )
                         imgDelete.isEnabled = true
                     }
-
                 }
             }
             movieResult.ratingByYou?.let {
@@ -61,7 +60,6 @@ class AccountMediaAdapter(
             }
         }
     }
-
 
     class DiffUtilCallback : DiffUtil.ItemCallback<MovieResult>() {
 

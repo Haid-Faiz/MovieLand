@@ -12,7 +12,6 @@ import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -33,13 +32,13 @@ import com.example.movieland.R
 import com.example.movieland.databinding.FragmentPlayerBinding
 import com.example.movieland.databinding.RatingDialogBinding
 import com.example.movieland.ui.cast.CastListAdapter
-import com.example.movieland.ui.genres.GenreAdapter
 import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.home.RecommendationsAdapter
 import com.example.movieland.ui.player.adapters.MoreVideosAdapter
 import com.example.movieland.ui.player.adapters.TvShowEpisodesAdapter
 import com.example.movieland.utils.Constants.CURRENT_SEASON_POSITION
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
+import com.example.movieland.utils.Constants.IMDB_BASE_URL
 import com.example.movieland.utils.Constants.IS_IT_A_MOVIE_KEY
 import com.example.movieland.utils.Constants.MEDIA_ID_KEY
 import com.example.movieland.utils.Constants.MEDIA_IMAGE_KEY
@@ -59,6 +58,8 @@ import com.example.movieland.utils.Constants.TMDB_IMAGE_BASE_URL_W780
 import com.example.movieland.utils.Constants.TRAILER
 import com.example.movieland.utils.Constants.TV
 import com.example.movieland.utils.Constants.YOUTUBE
+import com.example.movieland.utils.Constants.YOUTUBE_VIDEO_URL
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.formatMediaDate
 import com.example.movieland.utils.safeFragmentNavigation
@@ -93,7 +94,7 @@ class PlayerFragment : Fragment() {
     private var _youTubePlayer: YouTubePlayer? = null
     private var youTubePlayerListener: AbstractYouTubePlayerListener? = null
     private var _isItMovie: Boolean = true
-    private var _id: Int? = null
+    private var _mediaId: Int? = null
     private var _seasonList: List<Season>? = null
     private var _currentSeasonNumber: Int = 1
     private var _currentMovie: MovieDetailResponse? = null
@@ -101,6 +102,7 @@ class PlayerFragment : Fragment() {
     private lateinit var popingAnim: Animation
     private var _watchProviderUrl: String? = null
     private var isExpanded: Boolean = false
+    private var youtubeVideoKey: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -140,6 +142,8 @@ class PlayerFragment : Fragment() {
         btnGetWatchProviders.setOnClickListener {
             _watchProviderUrl?.let { url ->
                 customTabsIntent.launchUrl(requireContext(), url.toUri())
+            } ?: kotlin.run {
+                showSnackBar("Information not available")
             }
         }
 
@@ -214,7 +218,7 @@ class PlayerFragment : Fragment() {
                                         is Resource.Success -> {
                                             // Dismiss dialog
                                             dialog.dismiss()
-                                            showSnackBar("Success")
+                                            showSnackBar("Rated successfully")
                                         }
                                     }
                                 }
@@ -300,29 +304,37 @@ class PlayerFragment : Fragment() {
                         Toast.makeText(requireContext(), "Opening on IMDB...", Toast.LENGTH_SHORT)
                             .show()
 
-                        // https://www.imdb.com/title/{imdb_id}
-                        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                            if (_isItMovie) customTabsIntent.launchUrl(
-                                requireContext(),
-                                "https://www.imdb.com/title/${_currentMovie!!.imdbId}".toUri()
-                            )
-                            else {
-                                val res = viewModel.getTvShowExternalIds(_id!!).data?.imdbId
-                                customTabsIntent.launchUrl(
-                                    requireContext(),
-                                    "https://www.imdb.com/title/$res".toUri()
-                                )
+                        if (_isItMovie) customTabsIntent.launchUrl(
+                            requireContext(),
+                            IMDB_BASE_URL.plus(_currentMovie!!.imdbId).toUri()
+                        )
+                        else
+                            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                                viewModel.getTvShowExternalIds(_mediaId!!).data?.imdbId?.let { imdbId ->
+                                    customTabsIntent.launchUrl(
+                                        requireContext(),
+                                        IMDB_BASE_URL.plus(imdbId).toUri()
+                                    )
+                                }
                             }
-                        }
 
                         true
                     }
                     R.id.menu_youtube -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Opening on YouTube...",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        youtubeVideoKey?.let { key ->
+                            Toast.makeText(
+                                requireContext(),
+                                "Opening on YouTube...",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            customTabsIntent.launchUrl(
+                                requireContext(),
+                                YOUTUBE_VIDEO_URL.plus(key).toUri()
+                            )
+                        } ?: kotlin.run {
+                            showSnackBar("YouTube video not available")
+                        }
                         true
                     }
                     else -> false
@@ -349,6 +361,14 @@ class PlayerFragment : Fragment() {
                 is Resource.Error -> binding.apply {
                     showSnackBar(it.message!!)
                     loadingBg.loadingStateLayout.isGone = true
+                    if (it.errorType == ErrorType.NETWORK) {
+                        errorLayout.statusTextTitle.text = "Connection Error"
+                        errorLayout.statusTextDesc.text =
+                            "Please check your internet/wifi connection"
+                    } else {
+                        errorLayout.statusTextTitle.text = "Oops..."
+                        errorLayout.statusTextDesc.text = it.message
+                    }
                     errorLayout.root.isGone = false
                     mainLayout.isGone = true
                 }
@@ -369,11 +389,11 @@ class PlayerFragment : Fragment() {
                         rvMoreVideosList.isGone = true
                     } else {
                         val trailer = if (trailers.isEmpty()) totalVideos[0] else trailers[0]
+                        youtubeVideoKey = trailer.key
 
                         if (_youTubePlayer == null)
                             initializePlayer(trailer.key)
                         else _youTubePlayer!!.loadVideo(trailer.key, 0f)
-
 
                         // removing already played trailer from totalVideos
                         totalVideos.remove(trailer)
@@ -418,6 +438,7 @@ class PlayerFragment : Fragment() {
                         rvMoreVideosList.isGone = true
                     } else {
                         val trailer = if (trailers.isEmpty()) totalVideos[0] else trailers[0]
+                        youtubeVideoKey = trailer.key
 
                         if (_youTubePlayer == null)
                             initializePlayer(trailer.key)
@@ -507,7 +528,7 @@ class PlayerFragment : Fragment() {
             binding.episodesLayout.isGone = _isItMovie
             setUpTabLayout()
             bundle.getInt(MEDIA_ID_KEY).let { mediaId: Int ->
-                _id = mediaId
+                _mediaId = mediaId
                 fetchData()
             }
         }
@@ -515,19 +536,19 @@ class PlayerFragment : Fragment() {
 
     private fun fetchData() {
         if (!_isItMovie) {
-            viewModel.getTvShowDetail(tvId = _id!!)
-            viewModel.getTvWatchProviders(tvId = _id!!)
+            viewModel.getTvShowDetail(tvId = _mediaId!!)
+            viewModel.getTvWatchProviders(tvId = _mediaId!!)
             viewModel.getTvSeasonDetail(
-                tvId = _id!!,
+                tvId = _mediaId!!,
                 seasonNumber = _currentSeasonNumber
             )
         } else {
-            viewModel.getMovieDetail(movieId = _id!!)
-            viewModel.getMovieWatchProviders(movieId = _id!!)
+            viewModel.getMovieDetail(movieId = _mediaId!!)
+            viewModel.getMovieWatchProviders(movieId = _mediaId!!)
         }
-        viewModel.getMediaCast(_id!!, _isItMovie)
-        viewModel.getRecommendationsMedia(mediaId = _id!!, _isItMovie)
-        viewModel.getSimilarMedia(mediaId = _id!!, _isItMovie)
+        viewModel.getMediaCast(_mediaId!!, _isItMovie)
+        viewModel.getRecommendationsMedia(mediaId = _mediaId!!, _isItMovie)
+        viewModel.getSimilarMedia(mediaId = _mediaId!!, _isItMovie)
     }
 
     override fun onResume() {
@@ -538,14 +559,13 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             bundle.getInt(MEDIA_ID_KEY).let {
-                _id = it
+                _mediaId = it
                 _isItMovie = bundle.getBoolean(IS_IT_A_MOVIE_KEY)
                 binding.scrollView.scrollY = 0
                 _youTubePlayer?.pause()
                 fetchData()
             }
         }
-
 
         if (!_isItMovie) {
             parentFragmentManager.setFragmentResultListener(
@@ -554,7 +574,7 @@ class PlayerFragment : Fragment() {
             ) { _, bundle ->
                 _currentSeasonNumber = bundle.getInt(SEASON_NUMBER, 1)
                 binding.pickSeasonBtn.text = "Season $_currentSeasonNumber"
-                _id?.let {
+                _mediaId?.let {
                     viewModel.getTvSeasonDetail(tvId = it, seasonNumber = _currentSeasonNumber)
                 }
             }

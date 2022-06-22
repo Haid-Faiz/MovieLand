@@ -2,7 +2,7 @@ package com.example.movieland.ui.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +13,15 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenStarted
 import androidx.navigation.fragment.findNavController
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.responses.MovieResult
+import com.example.movieland.BuildConfig
 import com.example.movieland.R
 import com.example.movieland.databinding.FragmentAccountBinding
 import com.example.movieland.ui.auth.AuthActivity
 import com.example.movieland.ui.auth.AuthViewModel
-import com.example.movieland.ui.home.HorizontalAdapter
 import com.example.movieland.ui.home.AccountMediaAdapter
 import com.example.movieland.ui.home.DeletedState
 import com.example.movieland.utils.Constants.GENRES_ID_LIST_KEY
@@ -43,11 +42,9 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.util.*
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -81,6 +78,10 @@ class AccountFragment : Fragment() {
         setUpRecyclerView()
         checkLoginStatus() // This method will also fetch the data
         setUpClickListeners()
+        setUpObservers()
+    }
+
+    private fun setUpObservers() {
 
         authViewModel.watchList.observe(viewLifecycleOwner) {
             when (it) {
@@ -131,6 +132,7 @@ class AccountFragment : Fragment() {
                         emptyRatingsMsg.isGone = false
                     }
                 }
+                is Resource.Error -> {}
             }
         }
 
@@ -155,6 +157,7 @@ class AccountFragment : Fragment() {
                         emptyFavouritesMsg.isGone = false
                     }
                 }
+                is Resource.Error -> {}
             }
         }
     }
@@ -572,6 +575,8 @@ class AccountFragment : Fragment() {
         binding.apply {
             notSignInLayout.notSignInRoot.isGone = true
             mainLoggedInLayout.isGone = false
+            tvCredits.movementMethod = LinkMovementMethod.getInstance()
+            tvVersionName.text = "Version: ${BuildConfig.VERSION_NAME}"
         }
         getUserDetailsFromPrefs()
     } ?: run {

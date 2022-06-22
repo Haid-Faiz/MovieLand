@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/poster_card"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginVertical="@dimen/_4sdp"
-    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_204sdp"
+    android:layout_marginVertical="@dimen/_6sdp"
+    android:layout_marginStart="@dimen/_2sdp"
+    android:layout_marginEnd="@dimen/_8sdp"
     app:cardCornerRadius="@dimen/_6sdp">
 
     <ImageView
         android:id="@+id/poster_image"
-        android:layout_width="@dimen/_94sdp"
-        android:layout_height="@dimen/_138sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:background="@drawable/poster_bg"
         tools:src="@tools:sample/backgrounds/scenic" />
@@ -24,12 +25,13 @@
         android:layout_gravity="end|top"
         android:layout_margin="@dimen/_4sdp"
         android:background="@drawable/rating_bg"
+        android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/_1sdp"
-        android:text="7.8"
         android:textColor="@color/text_primary"
-        android:textSize="@dimen/_10ssp" />
+        android:textSize="@dimen/_10ssp"
+        tools:text="7.8" />
 
 
 </com.google.android.material.card.MaterialCardView>

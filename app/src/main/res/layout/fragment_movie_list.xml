@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="24dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_24sdp">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -29,12 +29,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingTop="@dimen/_4sdp"
         android:visibility="gone"
-        android:paddingEnd="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
+        app:spanCount="2"
         tools:itemCount="18"
-        tools:listitem="@layout/item_poster"
+        tools:listitem="@layout/item_poster_list"
         tools:visibility="visible" />
 
     <ProgressBar

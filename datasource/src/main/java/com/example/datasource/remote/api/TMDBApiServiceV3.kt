@@ -3,10 +3,27 @@ package com.example.datasource.remote.api
 import com.example.datasource.remote.models.requests.AddToFavouriteRequest
 import com.example.datasource.remote.models.requests.AddToWatchListRequest
 import com.example.datasource.remote.models.requests.MediaRatingRequest
-import com.example.datasource.remote.models.responses.*
+import com.example.datasource.remote.models.responses.AccountDetailsResponse
+import com.example.datasource.remote.models.responses.ActorFilmography
+import com.example.datasource.remote.models.responses.MediaCastResponse
+import com.example.datasource.remote.models.responses.MovieDetailResponse
+import com.example.datasource.remote.models.responses.MovieListResponse
+import com.example.datasource.remote.models.responses.SessionResponse
+import com.example.datasource.remote.models.responses.TvEpisodeDetailResponse
+import com.example.datasource.remote.models.responses.TvSeasonDetailResponse
+import com.example.datasource.remote.models.responses.TvShowDetailsResponse
+import com.example.datasource.remote.models.responses.TvShowExternalIdsResponse
+import com.example.datasource.remote.models.responses.WatchProvidersResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 // TMDB API Version - 3
 interface TMDBApiServiceV3 {
@@ -39,7 +56,8 @@ interface TMDBApiServiceV3 {
     @GET("3/movie/upcoming")
     suspend fun fetchUpcomingMovies(
         @Query("language") lang: String? = "en-US",
-        @Query("page") page: Int = 1
+        @Query("page") page: Int = 1,
+        @Query("region") region: String = "US"
     ): Response<MovieListResponse>
 
     // movie/451048?append_to_response=videos

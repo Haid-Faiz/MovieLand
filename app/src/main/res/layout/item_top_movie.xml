@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/movie_image"
-        android:layout_width="@dimen/_124sdp"
-        android:layout_height="@dimen/_82sdp"
+        android:layout_width="@dimen/_128sdp"
+        android:layout_height="@dimen/_80sdp"
         android:scaleType="centerCrop"
         android:background="@drawable/poster_bg"
         tools:src="@tools:sample/backgrounds/scenic"/>

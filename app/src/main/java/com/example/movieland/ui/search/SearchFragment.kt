@@ -27,6 +27,7 @@ import com.example.movieland.utils.Constants.MEDIA_RATING_KEY
 import com.example.movieland.utils.Constants.MEDIA_SEND_REQUEST_KEY
 import com.example.movieland.utils.Constants.MEDIA_TITLE_KEY
 import com.example.movieland.utils.Constants.MEDIA_YEAR_KEY
+import com.example.movieland.utils.ErrorType
 import com.example.movieland.utils.Resource
 import com.example.movieland.utils.safeFragmentNavigation
 import com.example.movieland.utils.showSnackBar
@@ -72,6 +73,14 @@ class SearchFragment : Fragment() {
                     showSnackBar(it.message!!)
                     searchedResultRv.isGone = true
                     topSearchesRv.isGone = true
+                    if (it.errorType == ErrorType.NETWORK) {
+                        errorLayout.statusTextTitle.text = "Connection Error"
+                        errorLayout.statusTextDesc.text =
+                            "Please check your internet/wifi connection"
+                    } else {
+                        errorLayout.statusTextTitle.text = "Oops..."
+                        errorLayout.statusTextDesc.text = it.message
+                    }
                     errorLayout.root.isGone = false
                     emptySearch.isGone = true
                 }
@@ -178,6 +187,14 @@ class SearchFragment : Fragment() {
                     showSnackBar(it.message!!)
                     searchedResultRv.isGone = true
                     topSearchesRv.isGone = true
+                    if (it.errorType == ErrorType.NETWORK) {
+                        errorLayout.statusTextTitle.text = "Connection Error"
+                        errorLayout.statusTextDesc.text =
+                            "Please check your internet/wifi connection"
+                    } else {
+                        errorLayout.statusTextTitle.text = "Oops..."
+                        errorLayout.statusTextDesc.text = it.message
+                    }
                     errorLayout.root.isGone = false
                 }
                 // is Resource.Loading -> binding.apply { }

@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/poster_image"
                 android:layout_width="@dimen/_94sdp"
-                android:layout_height="@dimen/_136sdp"
+                android:layout_height="@dimen/_138sdp"
                 android:background="@drawable/poster_bg"
                 android:scaleType="fitXY"
                 tools:src="@tools:sample/backgrounds/scenic[1]" />

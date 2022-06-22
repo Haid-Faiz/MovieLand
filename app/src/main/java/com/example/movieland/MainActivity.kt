@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var imageLoader: ImageLoader
     lateinit var imageRequestBuilder: ImageRequest.Builder
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -33,13 +32,13 @@ class MainActivity : AppCompatActivity() {
                 navContrl.previousBackStackEntry?.destination?.id == R.id.navigation_account
             ) {
                 binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
-                        destination.id != R.id.movieListFragment &&
-                        destination.id != R.id.castDetailsFragment
+                    destination.id != R.id.movieListFragment &&
+                    destination.id != R.id.castDetailsFragment
             } else {
                 binding.bottomNavView.isVisible = destination.id != R.id.playerFragment &&
-                        destination.id != R.id.movieListFragment &&
-                        destination.id != R.id.detailFragment &&
-                        destination.id != R.id.castDetailsFragment
+                    destination.id != R.id.movieListFragment &&
+                    destination.id != R.id.detailFragment &&
+                    destination.id != R.id.castDetailsFragment
             }
         }
         imageLoader = ImageLoader(this)

@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card"
+    android:id="@+id/genres_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/_6sdp"
-    app:cardBackgroundColor="@color/dark_gray"
-    app:cardCornerRadius="@dimen/_8sdp"
-    app:strokeColor="@color/red"
-    app:strokeWidth="1dp">
-
-    <TextView
-        android:id="@+id/genres_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="@font/hind"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:paddingVertical="@dimen/_1sdp"
-        android:textColor="@color/text_secondary"
-        android:textSize="@dimen/_9ssp"
-        tools:text="Action" />
-
-</com.google.android.material.card.MaterialCardView>
+    android:background="@drawable/bg_genre_outline"
+    android:fontFamily="@font/hind"
+    android:paddingHorizontal="@dimen/_12sdp"
+    android:paddingVertical="@dimen/_1sdp"
+    android:textColor="@color/text_secondary"
+    android:textSize="@dimen/_9ssp"
+    tools:text="Action" />

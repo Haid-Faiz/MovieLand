@@ -17,7 +17,10 @@ import com.example.movieland.data.repositories.MoviesRepo
 import com.example.movieland.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.HttpException

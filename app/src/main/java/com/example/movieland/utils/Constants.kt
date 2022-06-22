@@ -14,6 +14,7 @@ object Constants {
     const val TMDB_CAST_IMAGE_BASE_URL_W342 = "https://image.tmdb.org/t/p/w342"
     const val SESSION_DATASTORE = "sign_in_session_datastore"
     const val YOUTUBE_VIDEO_URL = "https://m.youtube.com/watch?v="
+    const val IMDB_BASE_URL = "https://www.imdb.com/title/"
     const val GENRES_ID_LIST_KEY = "genre_ids_list"
     const val MEDIA_TITLE_KEY = "media_title"
     const val IS_IT_A_MOVIE_KEY = "is_it_a_movie"

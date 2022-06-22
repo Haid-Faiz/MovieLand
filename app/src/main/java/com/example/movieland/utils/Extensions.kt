@@ -57,12 +57,12 @@ fun TextView.formatMediaDate(inputTime: String?) = if (!inputTime.isNullOrEmpty(
 } else text = "Unknown"
 
 fun TextView.formatUpcomingDate(inputTime: String?) = if (!inputTime.isNullOrEmpty()) {
-    // Making SDF object by giving input time patter
+    // Making SDF object by giving input time pattern
     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     // Parsing inputTime
     val parsedDate: Date? = sdf.parse(inputTime)
     // Formatting parsed input time/date
-    val formattedTime = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(parsedDate)
+    val formattedTime = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(parsedDate)
     // Setting time to this textview
     this.text = "Coming on $formattedTime"
 } else

@@ -37,7 +37,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/poster_bg"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/avengers_red" />
+                        tools:src="@drawable/img_intro_two" />
 
                     <ImageView
                         android:id="@+id/close_detail_btn"
@@ -70,10 +70,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/_4sdp"
-                            android:gravity="center"
                             android:fontFamily="@font/montserrat"
-                            tools:text="7.8"
-                            android:textColor="@color/text_primary" />
+                            android:gravity="center"
+                            android:textColor="@color/text_primary"
+                            tools:text="7.8" />
 
                     </LinearLayout>
 
@@ -113,27 +113,19 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvGenres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvGenres"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/_10ssp"
-                        tools:text="Action • Adventure • Comedy • Scifi" />
-
-                </LinearLayout>
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_10ssp"
+                    tools:text="Action • Adventure • Comedy • Scifi" />
 
                 <TextView
                     android:id="@+id/release_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/text_secondary"
                     android:textSize="@dimen/_10ssp"
@@ -147,8 +139,8 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/hind"
                     android:maxLines="4"
-                    android:textSize="@dimen/_13ssp"
                     android:textColor="@color/text_primary"
+                    android:textSize="@dimen/_13ssp"
                     tools:text="In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages." />
 
             </LinearLayout>
