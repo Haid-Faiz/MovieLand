@@ -132,7 +132,6 @@ class ComingSoonFragment : Fragment() {
                         _movieResult = it
                         title.text = it.title
                         overview.text = it.overview
-                        ratingText.text = String.format("%.1f", it.voteAverage)
                         releaseDate.formatUpcomingDate(it.releaseDate)
                         genreAdapter.submitList(Helpers.getMovieGenreListFromIds(it.genreIds))
                         setUpWatchListClick(it)
@@ -170,7 +169,6 @@ class ComingSoonFragment : Fragment() {
                         // Setting the Genre List
                         genreAdapter.submitList(Helpers.getMovieGenreListFromIds(movieResult.genreIds))
                         overview.text = movieResult.overview
-                        ratingText.text = String.format("%.1f", movieResult.voteAverage)
                         releaseDate.formatUpcomingDate(movieResult.releaseDate)
                         rvGenres.scrollToPosition(0)
                         setUpWatchListClick(movieResult)
@@ -200,12 +198,12 @@ class ComingSoonFragment : Fragment() {
     private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap? {
         return try {
             val drawable = (
-                (requireActivity() as MainActivity).imageLoader.execute(
-                    (requireActivity() as MainActivity).imageRequestBuilder.data(
-                        TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
-                    ).build()
-                ) as SuccessResult
-                ).drawable
+                    (requireActivity() as MainActivity).imageLoader.execute(
+                        (requireActivity() as MainActivity).imageRequestBuilder.data(
+                            TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
+                        ).build()
+                    ) as SuccessResult
+                    ).drawable
             // Returning Bitmap
             (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
         } catch (e: Exception) {
