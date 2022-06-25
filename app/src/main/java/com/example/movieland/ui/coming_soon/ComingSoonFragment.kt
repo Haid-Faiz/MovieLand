@@ -198,12 +198,12 @@ class ComingSoonFragment : Fragment() {
     private suspend fun getBitmapFromUrl(imgUrl: String): Bitmap? {
         return try {
             val drawable = (
-                    (requireActivity() as MainActivity).imageLoader.execute(
-                        (requireActivity() as MainActivity).imageRequestBuilder.data(
-                            TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
-                        ).build()
-                    ) as SuccessResult
-                    ).drawable
+                (requireActivity() as MainActivity).imageLoader.execute(
+                    (requireActivity() as MainActivity).imageRequestBuilder.data(
+                        TMDB_CAST_IMAGE_BASE_URL_W185.plus(imgUrl)
+                    ).build()
+                ) as SuccessResult
+                ).drawable
             // Returning Bitmap
             (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
         } catch (e: Exception) {
