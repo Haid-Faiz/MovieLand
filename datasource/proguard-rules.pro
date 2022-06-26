@@ -21,4 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 # This will keep the all classes in models package... & will not shrink them & change the name
--keep class com.example.datasource.remote.models.*
+-keep class com.codingcosmos.datasource.remote.models.*

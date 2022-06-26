@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.movieland.ui.home.HomeFragment"
+        android:name="com.codingcosmos.movieland.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.movieland.ui.search.SearchFragment"
+        android:name="com.codingcosmos.movieland.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/navigation_coming_soon"
-        android:name="com.example.movieland.ui.coming_soon.ComingSoonFragment"
+        android:name="com.codingcosmos.movieland.ui.coming_soon.ComingSoonFragment"
         android:label="@string/title_coming_soon"
         tools:layout="@layout/fragment_coming_soon">
         <action
@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="com.example.movieland.ui.account.AccountFragment"
+        android:name="com.codingcosmos.movieland.ui.account.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account">
         <action
@@ -73,7 +73,7 @@
     </fragment>
     <dialog
         android:id="@+id/detailFragment"
-        android:name="com.example.movieland.ui.home.detail.DetailFragment"
+        android:name="com.codingcosmos.movieland.ui.home.detail.DetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/fragment_detail_bsd">
         <action
@@ -82,7 +82,7 @@
     </dialog>
     <fragment
         android:id="@+id/movieListFragment"
-        android:name="com.example.movieland.ui.media_list.MovieListFragment"
+        android:name="com.codingcosmos.movieland.ui.media_list.MovieListFragment"
         android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list">
         <action
@@ -97,7 +97,7 @@
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
-        android:name="com.example.movieland.ui.player.PlayerFragment"
+        android:name="com.codingcosmos.movieland.ui.player.PlayerFragment"
         android:label="PlayerFragment">
         <action
             android:id="@+id/action_playerFragment_to_detailFragment"
@@ -111,11 +111,11 @@
     </fragment>
     <dialog
         android:id="@+id/seasonPickerDialogFragment"
-        android:name="com.example.movieland.ui.player.SeasonPickerDialogFragment"
+        android:name="com.codingcosmos.movieland.ui.player.SeasonPickerDialogFragment"
         android:label="SeasonPickerDialogFragment" />
     <dialog
         android:id="@+id/selectGenresDialogFragment"
-        android:name="com.example.movieland.ui.genres.GenresDialogFragment"
+        android:name="com.codingcosmos.movieland.ui.genres.GenresDialogFragment"
         android:label="SelectGenresDialogFragment">
         <action
             android:id="@+id/action_selectGenresDialogFragment_to_detailFragment"
@@ -123,7 +123,7 @@
     </dialog>
     <dialog
         android:id="@+id/castDetailsFragment"
-        android:name="com.example.movieland.ui.cast.CastDetailsFragment"
+        android:name="com.codingcosmos.movieland.ui.cast.CastDetailsFragment"
         android:label="CastDetailsFragment">
         <action
             android:id="@+id/action_castKnownForFragment_to_detailFragment"

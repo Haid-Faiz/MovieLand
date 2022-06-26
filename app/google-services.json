@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "199294595299",
-    "project_id": "project-movieland-e3dd1",
-    "storage_bucket": "project-movieland-e3dd1.appspot.com"
+    "project_number": "59260206324",
+    "project_id": "project-movieland-21774",
+    "storage_bucket": "project-movieland-21774.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:199294595299:android:8d99e56c396c31eb7695d6",
+        "mobilesdk_app_id": "1:59260206324:android:5efb81a52688649d4b32a1",
         "android_client_info": {
-          "package_name": "com.example.movieland"
+          "package_name": "com.codingcosmos.movieland"
         }
       },
       "oauth_client": [
         {
-          "client_id": "199294595299-uvkabql5dl21gr8k97c27qot1p6dr91o.apps.googleusercontent.com",
+          "client_id": "59260206324-nd4lljfscoj692o79biq6gunbpi4r1dg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDvBeVdO6gr7UwHf3eoWjyxm1dWjEbDDg0"
+          "current_key": "AIzaSyCpTdwzG1OL5zGUaU50RzUCkh4DBVwuHLM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "199294595299-uvkabql5dl21gr8k97c27qot1p6dr91o.apps.googleusercontent.com",
+              "client_id": "59260206324-nd4lljfscoj692o79biq6gunbpi4r1dg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

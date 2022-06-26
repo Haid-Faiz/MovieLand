@@ -13,7 +13,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.movieland"
+        applicationId "com.codingcosmos.movieland"
         minSdkVersion 23
         targetSdkVersion 32
         versionCode 1
@@ -39,7 +39,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.example.movieland'
+    namespace 'com.codingcosmos.movieland'
 }
 
 dependencies {

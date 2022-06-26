@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.example.movieland"
+                    android:host="com.codingcosmos.movieland"
                     android:pathPrefix="/ui/auth/AuthActivity"
                     android:scheme="android" />
             </intent-filter>
