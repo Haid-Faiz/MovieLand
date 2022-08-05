@@ -23,11 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
         android:layout_margin="@dimen/_4sdp"
+        android:fontFamily="@font/montserrat"
         android:background="@drawable/rating_bg"
         android:gravity="center"
         android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/_1sdp"
-        android:text="7.8"
+        tools:text="7.8"
         android:textColor="@color/text_primary"
         android:textSize="@dimen/_10ssp" />
 

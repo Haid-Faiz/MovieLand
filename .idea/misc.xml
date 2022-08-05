@@ -80,7 +80,7 @@
         <entry key="app/src/main/res/font/montserrat.xml" value="0.20092592592592592" />
         <entry key="app/src/main/res/font/montserrat_bold.xml" value="0.20092592592592592" />
         <entry key="app/src/main/res/layout/account_not_sign_in.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/banner_item.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/cast_profile_dialog.xml" value="0.21" />
@@ -115,9 +115,9 @@
         <entry key="app/src/main/res/layout/item_genres_options.xml" value="0.9" />
         <entry key="app/src/main/res/layout/item_media.xml" value="0.1716485507246377" />
         <entry key="app/src/main/res/layout/item_picker_option.xml" value="0.19583333333333333" />
-        <entry key="app/src/main/res/layout/item_poster.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_poster.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_poster_landscape.xml" value="0.19322916666666667" />
-        <entry key="app/src/main/res/layout/item_poster_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_poster_list.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_poster_rated.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_thumbnail_container.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_top_movie.xml" value="0.25" />

@@ -35,6 +35,7 @@
                 android:layout_margin="@dimen/_4sdp"
                 android:background="@drawable/rating_bg"
                 android:gravity="center"
+                android:fontFamily="@font/montserrat"
                 android:includeFontPadding="false"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_1sdp"
