@@ -1,5 +1,6 @@
 package com.codingcosmos.movieland.ui.auth
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,7 +39,7 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isUserLoggedIn()
+//        isUserLoggedIn()
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initUI()
@@ -52,10 +53,7 @@ class AuthActivity : AppCompatActivity() {
         authViewModel.requestToken.observe(this@AuthActivity) { result: Resource<RequestTokenResponse> ->
             when (result) {
                 is Resource.Error -> {
-                    buttonSignIn.loadingFailed()
-                    buttonSignIn.isEnabled = true
-                    buttonSkip.isEnabled = true
-                    isCustomTabOpened = false
+                    resetAfterError()
                 }
                 is Resource.Loading -> {
                     buttonSignIn.startLoading()
@@ -65,16 +63,24 @@ class AuthActivity : AppCompatActivity() {
                 }
                 is Resource.Success -> {
                     _requestToken = result.data?.requestToken
-                    customTab.launchUrl(
-                        this@AuthActivity,
-                        Uri.parse(TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL.plus(_requestToken))
-                    )
+                    try {
+                        customTab.launchUrl(
+                            this@AuthActivity,
+                            Uri.parse(TMDB_AUTHENTICATION_WEB_PAGE_REDIRECT_URL.plus(_requestToken))
+                        )
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(
+                            this@AuthActivity,
+                            "Your phone doesn't have supported browser to open this",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        resetAfterError()
+                    }
                 }
             }
         }
 
         buttonSkip.setOnClickListener {
-            startActivity(Intent(this@AuthActivity, MainActivity::class.java))
             finish()
         }
     }
@@ -91,6 +97,13 @@ class AuthActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun resetAfterError() = binding.apply {
+        buttonSignIn.loadingFailed()
+        buttonSignIn.isEnabled = true
+        buttonSkip.isEnabled = true
+        isCustomTabOpened = false
     }
 
     // iff instance of this activity already exists
@@ -110,10 +123,7 @@ class AuthActivity : AppCompatActivity() {
         authViewModel.accessToken.observe(this@AuthActivity) { result ->
             when (result) {
                 is Resource.Error -> {
-                    binding.buttonSignIn.loadingFailed()
-                    binding.buttonSignIn.isEnabled = true
-                    binding.buttonSkip.isEnabled = true
-                    isCustomTabOpened = false
+                    resetAfterError()
                 }
                 // is Resource.Loading -> TODO()
                 is Resource.Success -> {
@@ -125,12 +135,8 @@ class AuthActivity : AppCompatActivity() {
                         // Save the sessionToken/UserAccessToken and User Account ID
                         when (sessionResponse) {
                             is Resource.Error -> {
-                                binding.buttonSignIn.loadingFailed()
-                                binding.buttonSignIn.isEnabled = true
-                                binding.buttonSkip.isEnabled = true
-                                isCustomTabOpened = false
+                                resetAfterError()
                             }
-                            // is Resource.Loading -> TODO()
                             is Resource.Success -> {
                                 authViewModel.saveSessionId(sessionId = sessionResponse.data!!.sessionId)
                                 // Fetching user details
@@ -141,22 +147,22 @@ class AuthActivity : AppCompatActivity() {
                                             this, "Something went wrong",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        // is Resource.Loading -> TODO()
                                         is Resource.Success -> {
                                             authViewModel.saveAccountId(accountId = it.data!!.id)
                                             authViewModel.saveUserName(username = it.data.username)
                                             binding.buttonSignIn.loadingSuccessful()
-                                            startActivity(
-                                                Intent(this@AuthActivity, MainActivity::class.java)
-                                            )
+                                            // Sign-in finish, now simply going back to MainActivity
                                             finish()
                                         }
+                                        is Resource.Loading -> {}
                                     }
                                 }
                             }
+                            is Resource.Loading -> {}
                         }
                     }
                 }
+                is Resource.Loading -> {}
             }
         }
     }
@@ -168,10 +174,7 @@ class AuthActivity : AppCompatActivity() {
             // User has cancelled the approval. hence, onNewIntent hasn't called
             // Dismiss loading & show approval cancelled
             Toast.makeText(this, "Authentication approval denied", Toast.LENGTH_SHORT).show()
-            binding.buttonSignIn.loadingFailed()
-            binding.buttonSignIn.isEnabled = true
-            binding.buttonSkip.isEnabled = true
-            isCustomTabOpened = false
+            resetAfterError()
         }
     }
 }

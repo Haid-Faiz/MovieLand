@@ -176,7 +176,6 @@ class AccountFragment : Fragment() {
 
         notSignInLayout.accountSignInBtn.setOnClickListener {
             startActivity(Intent(requireActivity(), AuthActivity::class.java))
-            requireActivity().finish()
         }
 
         watchlistMoviesCard.setOnClickListener {
