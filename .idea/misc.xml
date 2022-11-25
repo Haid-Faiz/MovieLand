@@ -115,7 +115,7 @@
         <entry key="app/src/main/res/layout/item_genres_options.xml" value="0.9" />
         <entry key="app/src/main/res/layout/item_media.xml" value="0.1716485507246377" />
         <entry key="app/src/main/res/layout/item_picker_option.xml" value="0.19583333333333333" />
-        <entry key="app/src/main/res/layout/item_poster.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_poster.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_poster_landscape.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/item_poster_list.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_poster_rated.xml" value="0.5" />

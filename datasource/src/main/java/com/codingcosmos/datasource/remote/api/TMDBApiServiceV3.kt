@@ -53,6 +53,12 @@ interface TMDBApiServiceV3 {
         @Query("page") page: Int = 1
     ): Response<MovieListResponse>
 
+    @GET("3/discover/tv")
+    suspend fun fetchNetflixTvShows(
+        @Query("language") lang: String? = "en-US",
+        @Query("with_networks") page: String = "213" // network code for NetFlix
+    ): Response<MovieListResponse>
+
     @GET("3/movie/upcoming")
     suspend fun fetchUpcomingMovies(
         @Query("language") lang: String? = "en-US",

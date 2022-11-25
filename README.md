@@ -1,4 +1,4 @@
-# MovieLand 
+# MovieLand
 [![Build](https://github.com/Haid-Faiz/MovieLand/actions/workflows/build_ci.yml/badge.svg)](https://github.com/Haid-Faiz/MovieLand/actions/workflows/build_ci.yml)
 [![Unit Tests](https://github.com/Haid-Faiz/MovieLand/actions/workflows/unit_tests_ci.yml/badge.svg)](https://github.com/Haid-Faiz/MovieLand/actions/workflows/unit_tests_ci.yml)
 [![Kolint Lint](https://github.com/Haid-Faiz/MovieLand/actions/workflows/kotlin_lint_ci.yml/badge.svg)](https://github.com/Haid-Faiz/MovieLand/actions/workflows/kotlin_lint_ci.yml)
@@ -6,29 +6,21 @@
 [![API](https://img.shields.io/badge/API-23%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=23)
 
 
-**MovieLand** is a full fledge Android application that provides information about millions of Movies and TvShows. You can watch Trailers & more, get ratings, cast & etc. You can Rate Movies/Shows and even create your own WatchList, Favourite List.  
-*It's UI is inspired from **Netflix** & **IMDB**.*
+**MovieLand** is a full fledge Android application that provides information about millions of Movies and TvShows. You can watch Trailers & more, get ratings, cast & etc. You can Rate Movies/Shows and even create your own WatchList, Favourite List.
 
-***You can Install the latest MovieLand app from below 👇***
+***Click below to Install now from playstore 👇***
 
-[![MovieLand App](https://img.shields.io/badge/MovieLand-APK-FF9800?style=for-the-badge&logo=android)](https://github.com/Haid-Faiz/MovieLand/releases/download/v1.0.0/movie_land_v1.0.0.apk)
+[<img alt="MovieLand" width="80px" src="https://user-images.githubusercontent.com/56159740/177520478-47dc489f-099e-4a92-92eb-a527144895a2.png" />](https://play.google.com/store/apps/details?id=com.codingcosmos.movieland)
 
 
-## App Look
 <table>
-   <ul>
-      <li>
-         <h4>Authentication Screen || Home screen || Player screen<h4>
-      </li>
-   </ul>
+
    <tr>
-<td><img src = "https://user-images.githubusercontent.com/56159740/141646430-811625ea-10b5-49a9-a115-a37a03a5e8e2.gif" height = "380" width="200"></td>
-<td><img src = "https://user-images.githubusercontent.com/56159740/142729351-3b693ab4-aa42-4028-8fcc-7075d7cf33e4.gif" height = "380" width="200"></td>
-<td><img src = "https://user-images.githubusercontent.com/56159740/142728925-cb62860b-3e67-41ce-a33d-5d1f17f05319.gif" height = "380" width="200"></td>
-<td><img src = "https://user-images.githubusercontent.com/56159740/142738156-93541c99-960f-40c2-bae6-9f076177c963.gif" height = "380" width="200"></td>
+<td><img src = "https://user-images.githubusercontent.com/56159740/177519299-66d4d473-b995-47a5-8120-623717d667e6.jpg" height = "420" width="800"></td>
   </tr>
 </table>
 
+<!--- 
 <table>
       <ul>
       <li>
@@ -43,6 +35,8 @@
   </tr>
 </table>
 
+--->
+
 
 ## About
 
@@ -56,7 +50,7 @@
   There are two _modules_ in the project
 
   `app` - The UI of the app. The main project that forms the APK.
-  
+
   `datastore` - The REST API consumption android library
 
 ### Developed with
@@ -74,4 +68,4 @@
 - [Coil-kt](https://coil-kt.github.io/coil/) - An image loading library for Android backed by Kotlin Coroutines.
 - [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) - A cold asynchronous data stream that sequentially emits values and completes normally or with an exception.
 - [Jetpack DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - Jetpack DataStore is a data storage solution that allows you to
- store key-value pairs. Basically it's a replacement for SharedPreferences.
+  store key-value pairs. Basically it's a replacement for SharedPreferences.
