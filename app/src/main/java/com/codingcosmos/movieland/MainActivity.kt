@@ -47,22 +47,22 @@ class MainActivity : AppCompatActivity() {
         imageLoader = ImageLoader(this)
         imageRequestBuilder = ImageRequest.Builder(this)
 
-        FirebaseDynamicLinks.getInstance()
-            .getDynamicLink(intent)
-            .addOnSuccessListener {
-                // Get deep link from result (may be null if no link is found)
-                var deepLink: Uri? = null
-                if (it != null) {
-                    deepLink = it.link
-                }
-
-                // Handle the deep link. For example, open the linked content,
-                // or apply promotional credit to the user's account.
-            }
-            .addOnFailureListener {
-                Toast.makeText(this@MainActivity, it.message ?: "failure", Toast.LENGTH_SHORT)
-                    .show()
-            }
+//        FirebaseDynamicLinks.getInstance()
+//            .getDynamicLink(intent)
+//            .addOnSuccessListener {
+//                // Get deep link from result (may be null if no link is found)
+//                var deepLink: Uri? = null
+//                if (it != null) {
+//                    deepLink = it.link
+//                }
+//
+//                // Handle the deep link. For example, open the linked content,
+//                // or apply promotional credit to the user's account.
+//            }
+//            .addOnFailureListener {
+//                Toast.makeText(this@MainActivity, it.message ?: "failure", Toast.LENGTH_SHORT)
+//                    .show()
+//            }
     }
 
     override fun onSupportNavigateUp(): Boolean {
