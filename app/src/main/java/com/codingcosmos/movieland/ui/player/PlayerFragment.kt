@@ -139,9 +139,9 @@ class PlayerFragment : Fragment() {
 
         backArrow.setOnClickListener { findNavController().popBackStack() }
 
-        btnShare.setOnClickListener {
-
-        }
+//        btnShare.setOnClickListener {
+//
+//        }
 
         btnGetWatchProviders.setOnClickListener {
             _watchProviderUrl?.let { url ->

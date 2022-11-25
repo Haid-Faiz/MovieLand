@@ -115,6 +115,10 @@ class DetailFragment : BottomSheetDialogFragment() {
             }
         }
 
+//        btnShare.setOnClickListener {
+//
+//        }
+
         closeDetailBtn.setOnClickListener { dismiss() }
 
         playButton.setOnClickListener {
@@ -156,7 +160,7 @@ class DetailFragment : BottomSheetDialogFragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message ?: "Something went wrong"
                             )
-                            // is Resource.Loading -> TODO()
+                             is Resource.Loading -> {}
                             is Resource.Success -> showSnackBar("Added to My List")
                         }
                     }

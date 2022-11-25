@@ -152,7 +152,8 @@ class AuthActivity : AppCompatActivity() {
                                             authViewModel.saveUserName(username = it.data.username)
                                             binding.buttonSignIn.loadingSuccessful()
                                             // Sign-in finish, now simply going back to MainActivity
-                                            finish()
+                                            startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+                                            finishAffinity()
                                         }
                                         is Resource.Loading -> {}
                                     }

@@ -7,6 +7,7 @@
     android:background="@drawable/bsd_bg"
     android:paddingHorizontal="@dimen/_10sdp"
     android:paddingTop="@dimen/_10sdp"
+    tools:context=".ui.home.detail.DetailFragment"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
@@ -197,7 +198,39 @@
                     android:text="Add"
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/_8ssp" />
+
             </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/btnShare"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignTop="@id/play_button"-->
+<!--                android:layout_alignBottom="@id/play_button"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:background="?selectableItemBackgroundBorderless"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingHorizontal="@dimen/_10sdp">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="22dp"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:src="@drawable/ic_share"-->
+<!--                    app:tint="@color/text_primary" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:text="Share"-->
+<!--                    android:textColor="@color/text_primary"-->
+<!--                    android:textSize="@dimen/_8ssp" />-->
+
+<!--            </LinearLayout>-->
 
         </RelativeLayout>
 
