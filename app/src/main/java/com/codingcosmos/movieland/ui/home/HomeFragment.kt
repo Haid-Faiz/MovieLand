@@ -171,7 +171,7 @@ class HomeFragment : Fragment() {
                                 is Resource.Error -> showSnackBar(
                                     response.message!!
                                 )
-                                // is Resource.Loading -> TODO()
+                                 is Resource.Loading -> {}
                                 is Resource.Success -> showSnackBar("Added to My List")
                             }
                         }

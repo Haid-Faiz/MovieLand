@@ -9,15 +9,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.codingcosmos.movieland"
         minSdkVersion 23
-        targetSdkVersion 32
-        versionCode 2
-        versionName "v1.1.1 (Beta)"
+        targetSdkVersion 33
+        versionCode 1
+        versionName "v1.1.0 (Beta)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,9 +56,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // ViewModel & LiveData
@@ -99,10 +99,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     // [Firebase Analytics/Crashlytics]
-    // implementation platform('com.google.firebase:firebase-bom:30.1.0')
+     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation "com.google.firebase:firebase-crashlytics-ktx:$firebase_crashlytics"
-    implementation "com.google.firebase:firebase-analytics-ktx:$firebase_analytics"
+    implementation "com.google.firebase:firebase-dynamic-links-ktx"
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
     // Chrome Custom Tab
     implementation "androidx.browser:browser:$chrome_custom_tab_version"
@@ -119,6 +120,6 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 }
