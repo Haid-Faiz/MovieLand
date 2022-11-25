@@ -160,7 +160,7 @@ class DetailFragment : BottomSheetDialogFragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message ?: "Something went wrong"
                             )
-                             is Resource.Loading -> {}
+                            is Resource.Loading -> {}
                             is Resource.Success -> showSnackBar("Added to My List")
                         }
                     }

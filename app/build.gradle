@@ -16,8 +16,8 @@ android {
         applicationId "com.codingcosmos.movieland"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 1
-        versionName "v1.1.0 (Beta)"
+        versionCode 2
+        versionName "v1.2.0 (Beta)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
