@@ -1,6 +1,8 @@
 package com.codingcosmos.movieland
 
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -9,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.codingcosmos.movieland.databinding.ActivityMainBinding
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,6 +46,23 @@ class MainActivity : AppCompatActivity() {
         }
         imageLoader = ImageLoader(this)
         imageRequestBuilder = ImageRequest.Builder(this)
+
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener {
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (it != null) {
+                    deepLink = it.link
+                }
+
+                // Handle the deep link. For example, open the linked content,
+                // or apply promotional credit to the user's account.
+            }
+            .addOnFailureListener {
+                Toast.makeText(this@MainActivity, it.message ?: "failure", Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {

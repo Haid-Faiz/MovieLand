@@ -197,7 +197,7 @@ class SearchFragment : Fragment() {
                     }
                     errorLayout.root.isGone = false
                 }
-                // is Resource.Loading -> binding.apply { }
+                is Resource.Loading -> { }
                 is Resource.Success -> binding.apply {
                     searchingProgressBar.isGone = true
                     if (it.data!!.movieResults.isNotEmpty()) {

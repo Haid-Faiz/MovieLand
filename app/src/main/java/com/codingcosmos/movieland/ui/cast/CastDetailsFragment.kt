@@ -58,7 +58,6 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
         viewModel.actorMoviesShows.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
-                // is Resource.Loading -> TODO()
                 is Resource.Success -> {
                     val filteredList = it.data!!.cast.filter { movieResult ->
                         !movieResult.posterPath.isNullOrEmpty() && !movieResult.backdropPath.isNullOrEmpty()
@@ -67,6 +66,7 @@ class CastDetailsFragment : BottomSheetDialogFragment() {
                     binding.progressBar.isGone = true
                     adapter.submitList(filteredList)
                 }
+                is Resource.Loading -> {}
             }
         }
     }

@@ -139,6 +139,10 @@ class PlayerFragment : Fragment() {
 
         backArrow.setOnClickListener { findNavController().popBackStack() }
 
+//        btnShare.setOnClickListener {
+//
+//        }
+
         btnGetWatchProviders.setOnClickListener {
             _watchProviderUrl?.let { url ->
                 customTabsIntent.launchUrl(requireContext(), url.toUri())
@@ -214,7 +218,7 @@ class PlayerFragment : Fragment() {
                                             rateButton.isEnabled = true
                                             showSnackBar(it.message!!)
                                         }
-//                                is Resource.Loading -> TODO()
+                                        is Resource.Loading -> {}
                                         is Resource.Success -> {
                                             // Dismiss dialog
                                             dialog.dismiss()
@@ -253,7 +257,7 @@ class PlayerFragment : Fragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message!!
                             )
-                            // is Resource.Loading -> TODO()
+                            is Resource.Loading -> {}
                             is Resource.Success -> {
                                 showSnackBar("Added to My List")
                             }
@@ -284,7 +288,7 @@ class PlayerFragment : Fragment() {
                             is Resource.Error -> showSnackBar(
                                 response.message!!
                             )
-                            // is Resource.Loading -> TODO()
+                            is Resource.Loading -> {}
                             is Resource.Success -> {
                                 showSnackBar("Added to Favourites")
                             }
@@ -294,9 +298,9 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        openWithButton.setOnClickListener {
+        btnOpenWith.setOnClickListener {
             // This popup menu needs to be tied to a view, hence passing this view
-            val popUpMenu = PopupMenu(requireContext(), openWithButton)
+            val popUpMenu = PopupMenu(requireContext(), btnOpenWith)
             popUpMenu.inflate(R.menu.open_with_menu)
             popUpMenu.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.itemId) {
@@ -503,7 +507,7 @@ class PlayerFragment : Fragment() {
         viewModel.tvSeasonDetail.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> showSnackBar(it.message!!)
-                // is Resource.Loading -> { }
+                is Resource.Loading -> {}
                 is Resource.Success -> binding.apply {
                     tvEpisodesStatusMsg.isGone = true
                     if (it.data!!.episodes.isNotEmpty()) {

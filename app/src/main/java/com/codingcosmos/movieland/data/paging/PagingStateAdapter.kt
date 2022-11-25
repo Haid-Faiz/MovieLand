@@ -42,6 +42,7 @@ class PagingStateAdapter(val retry: () -> Unit) :
                     progressBar.isGone = true
                     retryButton.isGone = false
                 }
+                is LoadState.NotLoading -> {}
             }
         }
     }

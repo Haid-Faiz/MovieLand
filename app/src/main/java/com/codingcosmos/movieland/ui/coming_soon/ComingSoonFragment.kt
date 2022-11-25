@@ -232,7 +232,7 @@ class ComingSoonFragment : Fragment() {
                             is Resource.Error -> withContext(Dispatchers.Main) {
                                 showSnackBar(it.message ?: "Something went wrong")
                             }
-                            // is Resource.Loading -> { }
+                            is Resource.Loading -> { }
                             is Resource.Success -> withContext(Dispatchers.Main) {
                                 showSnackBar("${movieResult.title} added to watchlist")
                             }
